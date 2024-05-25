@@ -1,9 +1,0 @@
-# ninja log v5
-6	565	7382047360281944	POODPUML_autogen/timestamp	7ef29c0eb188c9b9
-6	565	7382047360281944	POODPUML_autogen/mocs_compilation.cpp	7ef29c0eb188c9b9
-6	565	7382047360281944	C:/Users/mabbo/OneDrive/Bureau/C++/POODPUML/POODPUML/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/POODPUML_autogen/timestamp	7ef29c0eb188c9b9
-6	565	7382047360281944	C:/Users/mabbo/OneDrive/Bureau/C++/POODPUML/POODPUML/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/POODPUML_autogen/mocs_compilation.cpp	7ef29c0eb188c9b9
-565	2472	7382047379868208	CMakeFiles/POODPUML.dir/POODPUML_autogen/mocs_compilation.cpp.obj	231ac3b779aed77a
-570	2509	7382047380239691	CMakeFiles/POODPUML.dir/main.cpp.obj	48c8c8c776b8c35d
-574	2553	7382047380676020	CMakeFiles/POODPUML.dir/mainwindow.cpp.obj	5b38d78008bd337b
-2553	2744	7382047382505765	POODPUML.exe	d102736fcc84e6a0
