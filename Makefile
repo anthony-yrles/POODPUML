@@ -9,18 +9,22 @@ BIN_FOLDER := .
 
 SDL_INCLUDE := -I./include
 
-CFLAGS := -g -Wall -Wextra -flto -O1 -I$(INCLUDE_FOLDER) -I$(PREREQUISITES_FOLDER) -I$(SDL_INCLUDE) -MMD
+CFLAGS := -g -Wall -Wextra -flto -O1 -I$(INCLUDE_FOLDER) -I$(PREREQUISITES_FOLDER) $(SDL_INCLUDE) -MMD
 LDFLAGS := -L./lib/
 
 SRCS_RAW := main.cpp \
-			GuiMenu.cpp \
-			Draw.cpp \
-			GuiOptions.cpp \
+            ModelCpp/GuiMenu.cpp \
+            ModelCpp/GuiButton.cpp \
+            ModelCpp/GuiText.cpp \
 
 SRCS := $(addprefix $(SRCS_FOLDER)/, $(SRCS_RAW))
 OBJS := $(SRCS:$(SRCS_FOLDER)/%.cpp=$(OBJS_FOLDER)/%.o)
 DEPS := $(OBJS:.o=.d)
 PREREQUISITES := $(wildcard $(PREREQUISITES_FOLDER)/*.cpp)
+
+# Liste des sous-répertoires des sources
+SRCS_SUBDIRS := $(sort $(dir $(SRCS)))
+OBJS_SUBDIRS := $(addprefix $(OBJS_FOLDER)/, $(SRCS_SUBDIRS))
 
 .PHONY: all clean re fclean test
 
@@ -29,13 +33,17 @@ all: $(TARGET)
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $(BIN_FOLDER)/$@ $^ -lSDL2 -lSDL2_ttf -lSDL2_image
 
-$(OBJS_FOLDER)/%.o: $(SRCS_FOLDER)/%.cpp | $(OBJS_FOLDER)
+$(OBJS_FOLDER)/%.o: $(SRCS_FOLDER)/%.cpp | $(OBJS_FOLDER) $(OBJS_SUBDIRS)
 	$(CC) $(CFLAGS) -c $< -o $@ -MMD -MF $(@:.o=.d)
 
--include $(DEPS)
-
+# Créer le répertoire des objets et les sous-répertoires nécessaires
 $(OBJS_FOLDER):
 	mkdir -p $(OBJS_FOLDER)
+
+$(OBJS_SUBDIRS):
+	mkdir -p $@
+
+-include $(DEPS)
 
 clean:
 	$(RM) $(OBJS) $(DEPS)

@@ -1,4 +1,4 @@
-#include "GuiOptions.h"
+#include ".\ModelH\GuiOptions.h"
 
 GuiOptions::GuiOptions(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool clicked, bool running, SDL_Event evenement){
     this->WIDTH = WIDTH;
@@ -7,7 +7,6 @@ GuiOptions::GuiOptions(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool click
     this->mouseY = mouseY;
     this->clicked = clicked;
     this->running = running;
-    this->evenement = evenement;
 }
 
 bool GuiOptions::drawOptions(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool clicked, bool running, SDL_Event evenement) {
@@ -63,6 +62,9 @@ bool GuiOptions::drawOptions(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool
         cout << "Button clicked";
     });
 
+    draw.drawRect(310, 180, 680, 50, 255, 255, 255, 255);
+    draw.drawRect(310, 180, 680, 50, 0, 0, 0, 255);
+
     draw.createButton(250, 245, 50, 50, "./assets/images/-.png", mouseX, mouseY, clicked, [](){
         cout << "Button clicked";
     });
@@ -70,6 +72,9 @@ bool GuiOptions::drawOptions(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool
         cout << "Button clicked";
     });
 
+    draw.drawRect(310, 245, 680, 50, 255, 255, 255, 255);
+    draw.drawRect(310, 245, 680, 50, 0, 0, 0, 255);
+    
     vector<string> links;
 
     for (int i = 1; i < 10; i++) {

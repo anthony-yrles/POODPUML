@@ -1,5 +1,5 @@
 #include <windows.h>
-#include "GuiMenu.h"
+#include ".\ModelH\GuiMenu.h"
 
 // Constants
 const int WIDTH = 1200;

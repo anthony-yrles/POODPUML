@@ -1,5 +1,5 @@
-#include "GuiMenu.h"
-#include "GuiOptions.h"
+#include ".\ModelH\GuiMenu.h"
+#include ".\ModelH\GuiOptions.h"
 
 
 GuiMenu::GuiMenu(SDL_Renderer* renderer, int mouseX, int mouseY, SDL_Window* window, int WIDTH, int HEIGHT, bool clicked, bool running, SDL_Event evenement) {

@@ -1,7 +1,7 @@
 #ifndef GUI_OPTIONS_H
 #define GUI_OPTIONS_H
 
-#include "Draw.h"
+#include ".\ModelH\Draw.h"
 #include <sstream>
 #include <vector>
 

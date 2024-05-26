@@ -1,4 +1,4 @@
-#include "draw.h"
+#include ".\ModelH\Draw.h"
 
 Draw::Draw(SDL_Renderer* renderer, bool clicked) {
     this->renderer = renderer;

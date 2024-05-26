@@ -1,7 +1,7 @@
 #ifndef GUI_MENU_H
 #define GUI_MENU_H
 
-#include "Draw.h"
+#include ".\ModelH\Draw.h"
 
 class GuiMenu {
     public:
