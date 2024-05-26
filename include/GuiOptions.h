@@ -2,17 +2,21 @@
 #define GUI_OPTIONS_H
 
 #include "Draw.h"
+#include <sstream>
+#include <vector>
 
 class GuiOptions {
     public:
-        GuiOptions(int mouseX, int mouseY, int WIDTH, int HEIGHT, bool clicked);
+        GuiOptions(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool clicked, bool running, SDL_Event evenement);
 
-        void drawOptions(int mouseX, int mouseY, int WIDTH, int HEIGHT, bool clicked);
+        bool drawOptions(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool clicked, bool running, SDL_Event evenement);
         
     private:
-        int mouseX, mouseY;
         int WIDTH, HEIGHT;
+        int mouseX, mouseY;
         bool clicked;
+        bool running;
+        SDL_Event evenement;
 };
 
 #endif // GUI_OPTIONS_H
