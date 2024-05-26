@@ -70,7 +70,6 @@ int main() {
             } else if (evenement.type == SDL_MOUSEBUTTONDOWN) {
                 clicked = true;
                 SDL_GetMouseState(&mouseX, &mouseY);
-                // Create a GuiMenu object
             } else if (evenement.type == SDL_MOUSEBUTTONUP) {
                 clicked = false;
             }
@@ -78,8 +77,8 @@ int main() {
         // Clear the renderer
         SDL_RenderClear(renderer);
         // Draw the menu
-        GuiMenu menu(renderer, mouseX, mouseY, window, WIDTH, HEIGHT, clicked);
-        menu.drawMenu(renderer, mouseX, mouseY, window, WIDTH, HEIGHT, clicked);
+        GuiMenu menu(renderer, mouseX, mouseY, window, WIDTH, HEIGHT, clicked, running, evenement);
+        running = menu.drawMenu(renderer, mouseX, mouseY, window, WIDTH, HEIGHT, clicked, running, evenement);
         // Present the renderer
         SDL_RenderPresent(renderer);
     }
