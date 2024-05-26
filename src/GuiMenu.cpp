@@ -2,7 +2,7 @@
 #include "GuiOptions.h"
 
 
-GuiMenu::GuiMenu(SDL_Renderer* renderer, int mouseX, int mouseY, SDL_Window* window, int WIDTH, int HEIGHT, bool clicked) {
+GuiMenu::GuiMenu(SDL_Renderer* renderer, int mouseX, int mouseY, SDL_Window* window, int WIDTH, int HEIGHT, bool clicked, bool running, SDL_Event evenement) {
     this->renderer = renderer;
     this->mouseX = mouseX;
     this->mouseY = mouseY;
@@ -10,13 +10,14 @@ GuiMenu::GuiMenu(SDL_Renderer* renderer, int mouseX, int mouseY, SDL_Window* win
     this->WIDTH = WIDTH;
     this->HEIGHT = HEIGHT;
     this->clicked = clicked;
+    this->running = running;
 }
 
-void GuiMenu::drawMenu(SDL_Renderer* renderer, int mouseX, int mouseY, SDL_Window* window, int WIDTH, int HEIGHT, bool clicked) {
+bool GuiMenu::drawMenu(SDL_Renderer* renderer, int mouseX, int mouseY, SDL_Window* window, int WIDTH, int HEIGHT, bool clicked, bool running, SDL_Event evenement) {
 
     // Create a Draw object
     Draw draw(renderer, clicked);
-    GuiOptions options(mouseX, mouseY, WIDTH, HEIGHT, clicked);
+    GuiOptions options(WIDTH, HEIGHT, mouseX, mouseY, clicked, running, evenement);
 
     // Using of the drawImage method from the Draw class to draw the background
     draw.drawImage(0, 0, 1200, 600, "./assets/images/bcgMenu.png");
@@ -27,7 +28,8 @@ void GuiMenu::drawMenu(SDL_Renderer* renderer, int mouseX, int mouseY, SDL_Windo
     });
     draw.createButton(450, 370, 300, 50, "./assets/images/optionButton.png", mouseX, mouseY, clicked, [&](){
         SDL_DestroyWindow(window);
-        options.drawOptions(mouseX, mouseY, WIDTH, HEIGHT, clicked);
+        running = options.drawOptions(WIDTH, HEIGHT, mouseX, mouseY, clicked, running, evenement);
+        return running;
     });
     draw.createButton(450, 510, 300, 50, "./assets/images/hallOfFame.png", mouseX, mouseY, clicked, [](){
         cout << "Button clicked" << endl;
@@ -37,4 +39,6 @@ void GuiMenu::drawMenu(SDL_Renderer* renderer, int mouseX, int mouseY, SDL_Windo
     draw.drawText(550, 230, "Jouer", 0, 0, 0, 0);
     draw.drawText(530, 370, "Options", 0, 0, 0, 0);
     draw.drawText(490, 510, "Hall of Fame", 0, 0, 0, 0);
+
+    return running;
 }
