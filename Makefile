@@ -13,9 +13,10 @@ CFLAGS := -g -Wall -Wextra -flto -O1 -I$(INCLUDE_FOLDER) -I$(PREREQUISITES_FOLDE
 LDFLAGS := -L./lib/
 
 SRCS_RAW := main.cpp \
-            ModelCpp/GuiMenu.cpp \
-            ModelCpp/GuiButton.cpp \
-            ModelCpp/GuiText.cpp \
+            VueCpp/GuiMenu.cpp \
+            VueCpp/GuiButton.cpp \
+            VueCpp/GuiText.cpp \
+			ControlleurCpp/Controlleur.cpp \
 
 SRCS := $(addprefix $(SRCS_FOLDER)/, $(SRCS_RAW))
 OBJS := $(SRCS:$(SRCS_FOLDER)/%.cpp=$(OBJS_FOLDER)/%.o)
