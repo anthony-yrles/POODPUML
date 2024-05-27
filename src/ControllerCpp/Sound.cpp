@@ -1,11 +1,31 @@
-#include "Sound.h"
+#include "./ControllerH/Sound.h"
 
 // Initialisation of the singleton instance to nullptr
 Sound* Sound::instance = nullptr;
 
-// Private constructor
+// Private constructor to prevent instancing, initialisation of the audio device and the audio mixer
 Sound::Sound() : currentVolume(MIX_MAX_VOLUME) {
-    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+    // Initialize the SDL_AudioSpec structure and set the desired audio parameters
+    SDL_AudioSpec desiredSpec;
+    desiredSpec.freq = 44100;
+    desiredSpec.format = AUDIO_S16SYS; // 16 bits audio format
+    desiredSpec.channels = 2; // Stéréo
+    desiredSpec.samples = 2048; // Size of the audio buffer
+    desiredSpec.callback = NULL;
+    desiredSpec.userdata = NULL;
+
+    // Open audio peripheric with the desired audio parameters
+    SDL_AudioDeviceID deviceId = SDL_OpenAudioDevice(NULL, 0, &desiredSpec, NULL, 0);
+    if (deviceId == 0) {
+        printf("SDL could not open audio device! SDL Error: %s\n", SDL_GetError());
+        return;
+    }
+
+    // Open the audio mixer with the desired audio parameters
+    if (Mix_OpenAudio(deviceId, &desiredSpec) < 0) {
+        printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+        return;
+    }
 }
 
 // Destructor to free the memory
