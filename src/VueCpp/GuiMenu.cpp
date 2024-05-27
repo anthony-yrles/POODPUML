@@ -1,6 +1,6 @@
 #include ".\VueH\GuiMenu.h"
 #include ".\VueH\GuiOptions.h"
-#include ".\ControllerH\Sound.h"
+// #include ".\ControllerH\Sound.h"
 
 
 GuiMenu::GuiMenu(SDL_Renderer* renderer, int mouseX, int mouseY, SDL_Window* window, int WIDTH, int HEIGHT, bool clicked, bool running, SDL_Event evenement) {

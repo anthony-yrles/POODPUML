@@ -17,7 +17,7 @@ SRCS_RAW := main.cpp \
             VueCpp/GuiInGame.cpp \
             VueCpp/GuiMenu.cpp \
             VueCpp/GuiOptions.cpp \
-            ControllerCpp/Sound.cpp \
+            # ControllerCpp/Sound.cpp \
 
 SRCS := $(addprefix $(SRCS_FOLDER)/, $(SRCS_RAW))
 OBJS := $(SRCS:$(SRCS_FOLDER)/%.cpp=$(OBJS_FOLDER)/$(SRCS_FOLDER)/%.o)
@@ -33,7 +33,7 @@ OBJS_SUBDIRS := $(addprefix $(OBJS_FOLDER)/, $(SRCS_SUBDIRS))
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $(BIN_FOLDER)/$@ $^ -lSDL2 -lSDL2_ttf -lSDL2_image -lSDL2_mixer
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $(BIN_FOLDER)/$@ $^ -lSDL2 -lSDL2_ttf -lSDL2_image
 
 $(OBJS_FOLDER)/$(SRCS_FOLDER)/%.o: $(SRCS_FOLDER)/%.cpp | $(OBJS_FOLDER) $(OBJS_SUBDIRS)
 	$(CC) $(CFLAGS) -c $< -o $@ -MMD -MF $(@:.o=.d)
