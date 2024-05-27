@@ -12,8 +12,8 @@
 #include <cstddef> // size_t
 #include <functional> // hash
 
-#include <nlohmann/detail/abi_macros.hpp>
-#include <nlohmann/detail/value_t.hpp>
+#include <SDL2/nlohmann/detail/abi_macros.hpp>
+#include <SDL2/nlohmann/detail/value_t.hpp>
 
 NLOHMANN_JSON_NAMESPACE_BEGIN
 namespace detail

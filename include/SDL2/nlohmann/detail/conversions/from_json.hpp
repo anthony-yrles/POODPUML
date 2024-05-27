@@ -20,14 +20,14 @@
 #include <utility> // pair, declval
 #include <valarray> // valarray
 
-#include <nlohmann/detail/exceptions.hpp>
-#include <nlohmann/detail/macro_scope.hpp>
-#include <nlohmann/detail/meta/cpp_future.hpp>
-#include <nlohmann/detail/meta/identity_tag.hpp>
-#include <nlohmann/detail/meta/std_fs.hpp>
-#include <nlohmann/detail/meta/type_traits.hpp>
-#include <nlohmann/detail/string_concat.hpp>
-#include <nlohmann/detail/value_t.hpp>
+#include <SDL2/nlohmann/detail/exceptions.hpp>
+#include <SDL2/nlohmann/detail/macro_scope.hpp>
+#include <SDL2/nlohmann/detail/meta/cpp_future.hpp>
+#include <SDL2/nlohmann/detail/meta/identity_tag.hpp>
+#include <SDL2/nlohmann/detail/meta/std_fs.hpp>
+#include <SDL2/nlohmann/detail/meta/type_traits.hpp>
+#include <SDL2/nlohmann/detail/string_concat.hpp>
+#include <SDL2/nlohmann/detail/value_t.hpp>
 
 NLOHMANN_JSON_NAMESPACE_BEGIN
 namespace detail

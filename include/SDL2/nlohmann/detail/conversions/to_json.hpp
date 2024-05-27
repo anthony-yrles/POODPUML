@@ -17,12 +17,12 @@
 #include <valarray> // valarray
 #include <vector> // vector
 
-#include <nlohmann/detail/iterators/iteration_proxy.hpp>
-#include <nlohmann/detail/macro_scope.hpp>
-#include <nlohmann/detail/meta/cpp_future.hpp>
-#include <nlohmann/detail/meta/std_fs.hpp>
-#include <nlohmann/detail/meta/type_traits.hpp>
-#include <nlohmann/detail/value_t.hpp>
+#include <SDL2/nlohmann/detail/iterators/iteration_proxy.hpp>
+#include <SDL2/nlohmann/detail/macro_scope.hpp>
+#include <SDL2/nlohmann/detail/meta/cpp_future.hpp>
+#include <SDL2/nlohmann/detail/meta/std_fs.hpp>
+#include <SDL2/nlohmann/detail/meta/type_traits.hpp>
+#include <SDL2/nlohmann/detail/value_t.hpp>
 
 NLOHMANN_JSON_NAMESPACE_BEGIN
 namespace detail

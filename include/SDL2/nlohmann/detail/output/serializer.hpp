@@ -22,14 +22,14 @@
 #include <type_traits> // is_same
 #include <utility> // move
 
-#include <nlohmann/detail/conversions/to_chars.hpp>
-#include <nlohmann/detail/exceptions.hpp>
-#include <nlohmann/detail/macro_scope.hpp>
-#include <nlohmann/detail/meta/cpp_future.hpp>
-#include <nlohmann/detail/output/binary_writer.hpp>
-#include <nlohmann/detail/output/output_adapters.hpp>
-#include <nlohmann/detail/string_concat.hpp>
-#include <nlohmann/detail/value_t.hpp>
+#include <SDL2/nlohmann/detail/conversions/to_chars.hpp>
+#include <SDL2/nlohmann/detail/exceptions.hpp>
+#include <SDL2/nlohmann/detail/macro_scope.hpp>
+#include <SDL2/nlohmann/detail/meta/cpp_future.hpp>
+#include <SDL2/nlohmann/detail/output/binary_writer.hpp>
+#include <SDL2/nlohmann/detail/output/output_adapters.hpp>
+#include <SDL2/nlohmann/detail/string_concat.hpp>
+#include <SDL2/nlohmann/detail/value_t.hpp>
 
 NLOHMANN_JSON_NAMESPACE_BEGIN
 namespace detail

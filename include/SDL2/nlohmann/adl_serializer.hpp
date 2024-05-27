@@ -10,10 +10,10 @@
 
 #include <utility>
 
-#include <nlohmann/detail/abi_macros.hpp>
-#include <nlohmann/detail/conversions/from_json.hpp>
-#include <nlohmann/detail/conversions/to_json.hpp>
-#include <nlohmann/detail/meta/identity_tag.hpp>
+#include <SDL2/nlohmann/detail/abi_macros.hpp>
+#include <SDL2/nlohmann/detail/conversions/from_json.hpp>
+#include <SDL2/nlohmann/detail/conversions/to_json.hpp>
+#include <SDL2/nlohmann/detail/meta/identity_tag.hpp>
 
 NLOHMANN_JSON_NAMESPACE_BEGIN
 
