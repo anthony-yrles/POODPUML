@@ -9,7 +9,7 @@ GuiOptions::GuiOptions(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool click
     this->running = running;
 }
 
-bool GuiOptions::drawOptions(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool clicked, bool running) {
+bool GuiOptions::drawOptions(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool clicked, bool running, SDL_Window* optionWindow, SDL_Renderer* optionRenderer) {
 
     Draw draw(clicked);
     optionWindow = draw.createWindow(WIDTH, HEIGHT, "Options", optionWindow);

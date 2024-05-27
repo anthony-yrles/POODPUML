@@ -9,7 +9,7 @@ class GuiOptions {
     public:
         GuiOptions(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool clicked, bool running);
 
-        bool drawOptions(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool clicked, bool running);
+        bool drawOptions(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool clicked, bool running, SDL_Window* optionWindow, SDL_Renderer* optionRenderer);
         
     private:
         int WIDTH, HEIGHT;
@@ -17,8 +17,6 @@ class GuiOptions {
         bool clicked;
         bool running;
         SDL_Event evenement;
-        SDL_Window* optionsWindow;
-        SDL_Renderer* optionsRenderer;
 };
 
 #endif // GUI_OPTIONS_H

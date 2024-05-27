@@ -6,7 +6,7 @@ Draw::Draw(bool clicked) {
 
 SDL_Window* Draw::createWindow(int WIDTH, int HEIGHT, const char *title, SDL_Window* name) {
     // Create a new window
-    SDL_Window* name = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
+    name = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
     // Error handling
     if (!name) {
         cerr << "Erreur lors de la création de la fenêtre: " << SDL_GetError();
@@ -15,16 +15,16 @@ SDL_Window* Draw::createWindow(int WIDTH, int HEIGHT, const char *title, SDL_Win
     return name;
 }
 
-SDL_Renderer* Draw::createRenderer(SDL_Window* name, SDL_renderer* rendererName) {
+SDL_Renderer* Draw::createRenderer(SDL_Window* name, SDL_Renderer* rendererName) {
     // Create a renderer
-    SDL_Renderer* rendererName = SDL_CreateRenderer(name, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    rendererName = SDL_CreateRenderer(name, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     // Error handling
-    if (!renderer) {
+    if (!rendererName) {
         cerr << "Erreur lors de la création du renderer: " << SDL_GetError();
         SDL_DestroyWindow(name);
         SDL_Quit();
     }
-    return renderer;
+    return rendererName;
 }
 
 void Draw::drawRect(SDL_Renderer* renderer, int x, int y, int width, int height , int r, int g, int b, int a) {

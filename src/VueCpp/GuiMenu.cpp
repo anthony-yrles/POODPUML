@@ -29,7 +29,9 @@ bool GuiMenu::drawMenu(SDL_Renderer* renderer, int mouseX, int mouseY, SDL_Windo
     });
     draw.createButton(renderer, 450, 370, 300, 50, "./assets/images/optionButton.png", mouseX, mouseY, clicked, [&](){
         SDL_DestroyWindow(window);
-        running = options.drawOptions(WIDTH, HEIGHT, mouseX, mouseY, clicked, running);
+        SDL_Window* optionWindow = NULL;
+        SDL_Renderer* optionRenderer = NULL;
+        running = options.drawOptions(WIDTH, HEIGHT, mouseX, mouseY, clicked, running, optionWindow, optionRenderer);
         return running;
     });
     draw.createButton(renderer, 450, 510, 300, 50, "./assets/images/hallOfFame.png", mouseX, mouseY, clicked, [](){

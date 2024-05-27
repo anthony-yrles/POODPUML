@@ -13,14 +13,14 @@ CFLAGS := -g -Wall -Wextra -flto -O1 -I$(INCLUDE_FOLDER) -I$(PREREQUISITES_FOLDE
 LDFLAGS := -L./lib/ 
 
 SRCS_RAW := main.cpp \
+			VueCpp/Draw.cpp \
+            VueCpp/GuiInGame.cpp \
             VueCpp/GuiMenu.cpp \
-            VueCpp/GuiButton.cpp \
-            VueCpp/GuiText.cpp \
-			VueCpp/GuiInGame.cpp \
-			ControlleurCpp/Controlleur.cpp \
+            VueCpp/GuiOptions.cpp \
+            ControllerCpp/Sound.cpp \
 
 SRCS := $(addprefix $(SRCS_FOLDER)/, $(SRCS_RAW))
-OBJS := $(SRCS:$(SRCS_FOLDER)/%.cpp=$(OBJS_FOLDER)/%.o)
+OBJS := $(SRCS:$(SRCS_FOLDER)/%.cpp=$(OBJS_FOLDER)/$(SRCS_FOLDER)/%.o)
 DEPS := $(OBJS:.o=.d)
 PREREQUISITES := $(wildcard $(PREREQUISITES_FOLDER)/*.cpp)
 
@@ -35,7 +35,7 @@ all: $(TARGET)
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $(BIN_FOLDER)/$@ $^ -lSDL2 -lSDL2_ttf -lSDL2_image -lSDL2_mixer
 
-$(OBJS_FOLDER)/%.o: $(SRCS_FOLDER)/%.cpp | $(OBJS_FOLDER) $(OBJS_SUBDIRS)
+$(OBJS_FOLDER)/$(SRCS_FOLDER)/%.o: $(SRCS_FOLDER)/%.cpp | $(OBJS_FOLDER) $(OBJS_SUBDIRS)
 	$(CC) $(CFLAGS) -c $< -o $@ -MMD -MF $(@:.o=.d)
 
 # Créer le répertoire des objets et les sous-répertoires nécessaires
