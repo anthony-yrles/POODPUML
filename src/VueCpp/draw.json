@@ -1,0 +1,41 @@
+{
+    "image": {
+        "menu": [
+            {"renderer": "renderer", "x": "0", "y": "0", "width": 1200, "height": 600, "image": "./assets/images/bcgMenu.png"}
+        ],
+        "options": [
+            {"renderer": "optionRenderer", "x": "0", "y": "0", "width": 1200, "height": 600, "image": "./assets/images/bcgOptions.png"},
+            {"renderer": "optionRenderer", "x": "-100", "y": "-50", "width": 1400, "height": 750, "image": "./assets/images/settings.png"}
+        ]       
+    },
+    "rect": {
+        "options": [
+            {"renderer": "optionRenderer", "x": "310", "y": "180", "width": 600, "height": 50, "r": "255", "g": "255", "b": "255", "a": "255"},
+            {"renderer": "optionRenderer", "x": "310", "y": "180", "width": 600, "height": 550, "r": "0", "g": "0", "b": "0", "a": "255"},
+            {"renderer": "optionRenderer", "x": "310", "y": "245", "width": 680, "height": 50, "r": "255", "g": "255", "b": "255", "a": "255"},
+            {"renderer": "optionRenderer", "x": "310", "y": "245", "width": 680, "height": 50, "r": "0", "g": "0", "b": "0", "a": "255"}
+        ]
+    },
+    "buttons": {
+        "menu": [
+            {"renderer": "renderer", "x": "450", "y": "230", "width": 300, "height": 50, "image": "./assets/images/playButton.png", "mouseX": "mouseX", "mouseY": "mouseY", "clicked": "clicked", "method": "[&](){\ncout << 'Button clicked';}"},
+            {"renderer": "renderer", "x": "450", "y": "370", "width": 300, "height": 50, "image": "./assets/images/optionsButton.png", "mouseX": "mouseX", "mouseY": "mouseY", "clicked": "clicked", "method": "[&](){\nSDL_DestroyWindow(window);\nrunning = options.drawOptions(WIDTH, HEIGHT, mouseX, mouseY, clicked, running);\nreturn running;}"},
+            {"renderer": "renderer", "x": "450", "y": "510", "width": 300, "height": 50, "image": "./assets/images/hallOfFame.png", "mouseX": "mouseX", "mouseY": "mouseY", "clicked": "clicked", "method": "[&](){\ncout << 'Button clicked';}"}
+        ],
+        "options": [
+            {"renderer": "optionRenderer", "x": "250", "y": "180", "width": 50, "height": 50, "image": "./assets/images/-.png", "mouseX": "mouseX", "mouseY": "mouseY", "clicked": "clicked", "method": "[&](){\ncout << 'Button clicked';}"},
+            {"renderer": "optionRenderer", "x": "1000", "y": "180", "width": 50, "height": 50, "image": "./assets/images/+.png", "mouseX": "mouseX", "mouseY": "mouseY", "clicked": "clicked", "method": "[&](){\ncout << 'Button clicked';}"},
+            {"renderer": "optionRenderer", "x": "250", "y": "245", "width": 50, "height": 50, "image": "./assets/images/-.png", "mouseX": "mouseX", "mouseY": "mouseY", "clicked": "clicked", "method": "[&](){\ncout << 'Button clicked';}"},
+            {"renderer": "optionRenderer", "x": "1000", "y": "245", "width": 50, "height": 50, "image": "./assets/images/+.png", "mouseX": "mouseX", "mouseY": "mouseY", "clicked": "clicked", "method": "[&](){\ncout << 'Button clicked';}"},
+            {"renderer": "optionRenderer", "x": "180", "y": "400", "width": 50, "height": 50, "image": "./assets/images/1.png", "mouseX": "mouseX", "mouseY": "mouseY", "clicked": "clicked", "method": "[&](){\ncout << 'Button 1 clicked';}"},
+            {"renderer": "optionRenderer", "x": "280", "y": "400", "width": 50, "height": 50, "image": "./assets/images/2.png", "mouseX": "mouseX", "mouseY": "mouseY", "clicked": "clicked", "method": "[&](){\ncout << 'Button 2 clicked';}"},
+            {"renderer": "optionRenderer", "x": "380", "y": "400", "width": 50, "height": 50, "image": "./assets/images/3.png", "mouseX": "mouseX", "mouseY": "mouseY", "clicked": "clicked", "method": "[&](){\ncout << 'Button 3 clicked';}"},
+            {"renderer": "optionRenderer", "x": "480", "y": "400", "width": 50, "height": 50, "image": "./assets/images/4.png", "mouseX": "mouseX", "mouseY": "mouseY", "clicked": "clicked", "method": "[&](){\ncout << 'Button 4 clicked';}"},
+            {"renderer": "optionRenderer", "x": "580", "y": "400", "width": 50, "height": 50, "image": "./assets/images/5.png", "mouseX": "mouseX", "mouseY": "mouseY", "clicked": "clicked", "method": "[&](){\ncout << 'Button 5 clicked';}"},
+            {"renderer": "optionRenderer", "x": "680", "y": "400", "width": 50, "height": 50, "image": "./assets/images/6.png", "mouseX": "mouseX", "mouseY": "mouseY", "clicked": "clicked", "method": "[&](){\ncout << 'Button 6 clicked';}"},
+            {"renderer": "optionRenderer", "x": "780", "y": "400", "width": 50, "height": 50, "image": "./assets/images/7.png", "mouseX": "mouseX", "mouseY": "mouseY", "clicked": "clicked", "method": "[&](){\ncout << 'Button 7 clicked';}"},
+            {"renderer": "optionRenderer", "x": "880", "y": "400", "width": 50, "height": 50, "image": "./assets/images/8.png", "mouseX": "mouseX", "mouseY": "mouseY", "clicked": "clicked", "method": "[&](){\ncout << 'Button 8 clicked';}"},
+            {"renderer": "optionRenderer", "x": "980", "y": "400", "width": 50, "height": 50, "image": "./assets/images/9.png", "mouseX": "mouseX", "mouseY": "mouseY", "clicked": "clicked", "method": "[&](){\ncout << 'Button 9 clicked';}"}
+        ]
+    }
+}
