@@ -2,7 +2,6 @@
 #define CREATEFROMJSON_H
 
 #include "./VueH/Draw.h"
-#include "./VueH/Options.h"
 #include <SDL2/nlohmann/json.hpp>
 #include <fstream>
 #include <unordered_map>

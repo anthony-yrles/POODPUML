@@ -1,7 +1,7 @@
 #ifndef INGAME_H
 #define INGAME_H
 
-#include "./VueH/Draw.h"
+#include "./VueH/CreateFromJson.h"
 
 class GuiInGame {
     public:
