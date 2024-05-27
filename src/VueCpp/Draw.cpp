@@ -1,11 +1,33 @@
 #include ".\VueH\Draw.h"
 
-Draw::Draw(SDL_Renderer* renderer, bool clicked) {
-    this->renderer = renderer;
+Draw::Draw(bool clicked) {
     this->clicked = clicked;
 }
 
-void Draw::drawRect(int x, int y, int width, int height , int r, int g, int b, int a) {
+SDL_Window* Draw::createWindow(int WIDTH, int HEIGHT, const char *title, SDL_Window* name) {
+    // Create a new window
+    SDL_Window* name = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
+    // Error handling
+    if (!name) {
+        cerr << "Erreur lors de la création de la fenêtre: " << SDL_GetError();
+        SDL_Quit();
+    }
+    return name;
+}
+
+SDL_Renderer* Draw::createRenderer(SDL_Window* name, SDL_renderer* rendererName) {
+    // Create a renderer
+    SDL_Renderer* rendererName = SDL_CreateRenderer(name, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    // Error handling
+    if (!renderer) {
+        cerr << "Erreur lors de la création du renderer: " << SDL_GetError();
+        SDL_DestroyWindow(name);
+        SDL_Quit();
+    }
+    return renderer;
+}
+
+void Draw::drawRect(SDL_Renderer* renderer, int x, int y, int width, int height , int r, int g, int b, int a) {
 
     // Clamp the values, so they are between 0 and 255
     Uint8 red = clamp(r, 0, 255);
@@ -20,7 +42,7 @@ void Draw::drawRect(int x, int y, int width, int height , int r, int g, int b, i
     SDL_RenderFillRect(renderer, &rect);
 }
 
-void Draw::drawImage(int x, int y, int width, int height , const char *image) {
+void Draw::drawImage(SDL_Renderer* renderer, int x, int y, int width, int height , const char *image) {
 
     // Load the image
     SDL_Texture* texture = IMG_LoadTexture(renderer, image);
@@ -38,7 +60,7 @@ void Draw::drawImage(int x, int y, int width, int height , const char *image) {
     SDL_DestroyTexture(texture);
 }
 
-void Draw::drawText(int x, int y, const char *text, int r, int g, int b, int a) {
+void Draw::drawText(SDL_Renderer* renderer, int x, int y, const char *text, int r, int g, int b, int a) {
 
     // Clamp the values, so they are between 0 and 255
     Uint8 red = clamp(r, 0, 255);
@@ -76,8 +98,8 @@ void Draw::drawText(int x, int y, const char *text, int r, int g, int b, int a) 
     TTF_CloseFont(font);
 }
 
-void Draw::createButton(int x, int y, int width, int height, const char *image, int mouseX, int mouseY, bool clicked, function<void()> onClick) {
-    drawImage(x, y, width, height, image);
+void Draw::createButton(SDL_Renderer* renderer, int x, int y, int width, int height, const char *image, int mouseX, int mouseY, bool clicked, function<void()> onClick) {
+    drawImage(renderer, x, y, width, height, image);
 
     // Create a point for the mouse click
     SDL_Point point = { mouseX, mouseY };
@@ -89,7 +111,6 @@ void Draw::createButton(int x, int y, int width, int height, const char *image, 
         if (clicked) {
             onClick();
             clicked = false;
-            cout << "Button clicked" << endl;
         }
     }
 }

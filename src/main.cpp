@@ -7,6 +7,8 @@ const int WIDTH = 1200;
 const int HEIGHT = 600;
 int mouseX, mouseY = 0;
 bool clicked = false;
+SDL_Window* window;
+SDL_Renderer* renderer;
 
 
 // Main function
@@ -18,25 +20,9 @@ int main() {
         return 1;
     }
 
-    // Create a window
-    SDL_Window* window = SDL_CreateWindow("Menu Tower Défense", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
-
-    // Error handling
-    if (!window) {
-        cerr << "Erreur lors de la création de la fenêtre: " << SDL_GetError();
-        SDL_Quit();
-        return 1;
-    }
-
-    // Create a renderer
-    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    // Error handling
-    if (!renderer) {
-        cerr << "Erreur lors de la création du renderer: " << SDL_GetError();
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-        return 1;
-    }
+    Draw draw(clicked);
+    window = draw.createWindow(WIDTH, HEIGHT, "Menu Tower Défense", window);
+    renderer = draw.createRenderer(window, renderer);
 
     // Load a font
     TTF_Init();

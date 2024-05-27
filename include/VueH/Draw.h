@@ -16,15 +16,16 @@ class Draw {
     // It also creates buttons that can be clicked.
     
 public:
-    explicit Draw(SDL_Renderer* renderer, bool clicked);
+    explicit Draw(bool clicked);
 
-    void drawRect(int x, int y, int width, int height, int r, int g, int b, int a);
-    void drawImage(int x, int y, int width, int height, const char* image);
-    void drawText(int x, int y, const char* text, int r, int g, int b, int a);
-    void createButton(int x, int y, int width, int height, const char* image, int mouseX, int mouseY, bool clicked, std::function<void()> onClick);
+    SDL_Window* createWindow(int WIDTH, int HEIGHT, const char *title, SDL_Window* name);
+    SDL_Renderer* createRenderer(SDL_Window* name, SDL_Renderer* rendererName);
+    void drawRect(SDL_Renderer* renderer, int x, int y, int width, int height, int r, int g, int b, int a);
+    void drawImage(SDL_Renderer* renderer, int x, int y, int width, int height, const char* image);
+    void drawText(SDL_Renderer* renderer, int x, int y, const char* text, int r, int g, int b, int a);
+    void createButton(SDL_Renderer* renderer, int x, int y, int width, int height, const char* image, int mouseX, int mouseY, bool clicked, std::function<void()> onClick);
 
 private:
-    SDL_Renderer* renderer;
     bool clicked;
 };
 

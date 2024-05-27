@@ -16,6 +16,7 @@ SRCS_RAW := main.cpp \
             VueCpp/GuiMenu.cpp \
             VueCpp/GuiButton.cpp \
             VueCpp/GuiText.cpp \
+			VueCpp/GuiInGame.cpp \
 			ControlleurCpp/Controlleur.cpp \
 
 SRCS := $(addprefix $(SRCS_FOLDER)/, $(SRCS_RAW))
