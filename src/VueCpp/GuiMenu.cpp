@@ -1,5 +1,6 @@
 #include ".\VueH\GuiMenu.h"
 #include ".\VueH\GuiOptions.h"
+#include ".\VueH\GuiInGame.h"
 // #include ".\ControllerH\Sound.h"
 
 
@@ -19,13 +20,18 @@ bool GuiMenu::drawMenu(SDL_Renderer* renderer, int mouseX, int mouseY, SDL_Windo
     // Create a Draw object
     Draw draw(clicked);
     GuiOptions options(WIDTH, HEIGHT, mouseX, mouseY, clicked, running);
+    GuiInGame game(WIDTH, HEIGHT, mouseX, mouseY, clicked, running, evenement);
 
     // Using of the drawImage method from the Draw class to draw the background
     draw.drawImage(renderer, 0, 0, 1200, 600, "./assets/images/bcgMenu.png");
 
     //  Using of the creteButton method from the Draw class to create 3 buttons
-    draw.createButton(renderer, 450, 230, 300, 50, "./assets/images/playButton.png", mouseX, mouseY, clicked, [](){
-        cout << "Button clicked" << endl;
+    draw.createButton(renderer, 450, 230, 300, 50, "./assets/images/playButton.png", mouseX, mouseY, clicked, [&](){
+        SDL_DestroyWindow(window);
+        SDL_Window* gameWindow = NULL;
+        SDL_Renderer* gameRenderer = NULL;
+        running = game.drawInGame(WIDTH, HEIGHT, mouseX, mouseY, clicked, running, evenement);
+        return running;
     });
     draw.createButton(renderer, 450, 370, 300, 50, "./assets/images/optionButton.png", mouseX, mouseY, clicked, [&](){
         SDL_DestroyWindow(window);
