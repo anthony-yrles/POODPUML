@@ -38,7 +38,7 @@ void Tower::setPosition(int x, int y) {
     position = {x, y};
 }
 
-int Tower::fire(vector<Enemy>& enemies) {
+void Tower::fire(vector<Enemy>& enemies) {
     for (size_t i = 0; i < enemies.size(); i++) {
         vector<int> enemyPosition = enemies[i].getPosition();
         int distance = abs(enemyPosition[0] - position[0]) + abs(enemyPosition[1] - position[1]);

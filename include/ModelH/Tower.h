@@ -1,5 +1,6 @@
 #pragma once
 #include "./ModelH/Observable.h"
+#include "./ModelH/Enemy.h"
 
 class Tower : public Observable {
 public:
@@ -28,7 +29,7 @@ private:
     int damage;
     int range;
     int fireSpeed;
-    int numberofFire;
+    int numberOfFire;
     vector<int> position;
 
-}
+};
