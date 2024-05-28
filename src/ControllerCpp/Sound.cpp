@@ -1,45 +1,9 @@
 #include "./ControllerH/Sound.h"
+#include <iostream>
 
-// Initialisation of the singleton instance to nullptr
+// Initialisation de l'instance singleton à nullptr
 Sound* Sound::instance = nullptr;
 
-// Private constructor to prevent instancing, initialisation of the audio device and the audio mixer
-Sound::Sound() : currentVolume(MIX_MAX_VOLUME) {
-    // Initialize the SDL_AudioSpec structure and set the desired audio parameters
-    SDL_AudioSpec desiredSpec;
-    desiredSpec.freq = 44100;
-    desiredSpec.format = AUDIO_S16SYS; // 16 bits audio format
-    desiredSpec.channels = 2; // Stéréo
-    desiredSpec.samples = 2048; // Size of the audio buffer
-    desiredSpec.callback = NULL;
-    desiredSpec.userdata = NULL;
-
-    // Open audio peripheric with the desired audio parameters
-    SDL_AudioDeviceID deviceId = SDL_OpenAudioDevice(NULL, 0, &desiredSpec, NULL, 0);
-    if (deviceId == 0) {
-        printf("SDL could not open audio device! SDL Error: %s\n", SDL_GetError());
-        return;
-    }
-
-    // Open the audio mixer with the desired audio parameters
-    if (Mix_OpenAudio(deviceId, &desiredSpec) < 0) {
-        printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
-        return;
-    }
-}
-
-// Destructor to free the memory
-Sound::~Sound() {
-    for (auto& pair : musics) {
-        Mix_FreeMusic(pair.second);
-    }
-    for (auto& pair : sounds) {
-        Mix_FreeChunk(pair.second);
-    }
-    Mix_CloseAudio();
-}
-
-// Méthode to obtain the unique instance of the singleton
 Sound* Sound::getInstance() {
     if (instance == nullptr) {
         instance = new Sound();
@@ -47,70 +11,107 @@ Sound* Sound::getInstance() {
     return instance;
 }
 
-// Loading of a music from the "./assets/music/" folder
-void Sound::loadMusic(const string& key, const string& musicPath) {
-    string fullPath = "./assets/music/" + musicPath;
-    Mix_Music* music = Mix_LoadMUS(fullPath.c_str());
-    if (music == nullptr) {
-        cout << "Error loading music: " << fullPath << endl;
+Sound::Sound() : currentVolume(SDL_MIX_MAXVOLUME), musicBuffer(nullptr), musicLength(0), musicPaused(false) {
+    SDL_Init(SDL_INIT_AUDIO);
+    SDL_AudioSpec desiredSpec;
+    SDL_zero(desiredSpec);
+    desiredSpec.freq = 44100;
+    desiredSpec.format = AUDIO_F32;
+    desiredSpec.channels = 2;
+    desiredSpec.samples = 4096;
+    desiredSpec.callback = nullptr;
+
+    audioDevice = SDL_OpenAudioDevice(nullptr, 0, &desiredSpec, &obtainedSpec, SDL_AUDIO_ALLOW_ANY_CHANGE);
+    if (audioDevice == 0) {
+        cerr << "Failed to open audio device: " << SDL_GetError();
+    } else {
+        SDL_PauseAudioDevice(audioDevice, 0);
+    }
+}
+
+Sound::~Sound() {
+    for (auto& pair : audioBuffers) {
+        SDL_FreeWAV(pair.second);
+    }
+    if (musicBuffer) {
+        SDL_FreeWAV(musicBuffer);
+    }
+    SDL_CloseAudioDevice(audioDevice);
+    SDL_Quit();
+}
+
+void Sound::loadSoundEffect(const std::string& soundEffect) {
+    SDL_AudioSpec spec;
+    Uint8* buffer;
+    Uint32 length;
+    if (SDL_LoadWAV(soundEffect.c_str(), &spec, &buffer, &length) == nullptr) {
+        cerr << "Failed to load sound effect: " << SDL_GetError();
         return;
     }
-    musics[key] = music;
+    soundEffects[soundEffect] = spec;
+    audioBuffers[soundEffect] = buffer;
+    audioLengths[soundEffect] = length;
 }
 
-// Loadind of a sound from the "./assets/sound/" folder
-void Sound::loadSound(const string& key, const string& soundPath) {
-    string fullPath = "./assets/sound/" + soundPath;
-    Mix_Chunk* sound = Mix_LoadWAV(fullPath.c_str());
-    if (sound == nullptr) {
-        cout << "Error loading sound: " << fullPath << endl;
-        return;
-    }
-    sounds[key] = sound;
-}
-
-// Playing of a music
-void Sound::playMusic(const string& key) {
-    auto it = musics.find(key);
-    if (it != musics.end()) {
-        Mix_PlayMusic(it->second, -1);
+void Sound::playSoundEffect(const std::string& soundEffect) {
+    auto it = audioBuffers.find(soundEffect);
+    if (it != audioBuffers.end()) {
+        SDL_QueueAudio(audioDevice, it->second, audioLengths[soundEffect]);
     } else {
-        cout << "Music not found: " << key << endl;
+        cerr << "Sound effect not found: " << soundEffect;
     }
 }
 
-// Playing of a sound
-void Sound::playSound(const string& key) {
-    auto it = sounds.find(key);
-    if (it != sounds.end()) {
-        Mix_PlayChannel(-1, it->second, 0);
+void Sound::loadMusic(const std::string& music) {
+    if (musicBuffer) {
+        SDL_FreeWAV(musicBuffer);
+        musicBuffer = nullptr;
+    }
+    if (SDL_LoadWAV(music.c_str(), &obtainedSpec, &musicBuffer, &musicLength) == nullptr) {
+        cerr << "Failed to load music: " << SDL_GetError();
+    }
+}
+
+void Sound::playMusic() {
+    if (musicBuffer) {
+        SDL_QueueAudio(audioDevice, musicBuffer, musicLength);
     } else {
-        cout << "Sound not found: " << key << endl;
+        cerr << "Music not loaded";
     }
 }
 
-// Stop music
 void Sound::stopMusic() {
-    Mix_HaltMusic();
+    SDL_ClearQueuedAudio(audioDevice);
 }
 
-// Stop sound
-void Sound::stopSound() {
-    Mix_HaltChannel(-1);
+void Sound::pauseMusic() {
+    SDL_PauseAudioDevice(audioDevice, 1);
+    musicPaused = true;
 }
 
-// Decrease volume
-void Sound::volumeDown() {
+void Sound::resumeMusic() {
+    SDL_PauseAudioDevice(audioDevice, 0);
+    musicPaused = false;
+}
+
+void Sound::decreaseVolume() {
     if (currentVolume > 0) {
-        currentVolume--;
-        Mix_VolumeMusic(currentVolume);
+        currentVolume -= SDL_MIX_MAXVOLUME / 10;
+        SDL_ClearQueuedAudio(audioDevice);
+        SDL_MixAudioFormat(nullptr, musicBuffer, obtainedSpec.format, musicLength, currentVolume);
+        playMusic();
     }
 }
 
-// Augment volume
-void Sound::volumeUp() {
-    if (currentVolume < MIX_MAX_VOLUME) {
-        currentVolume++;
-        Mix_VolumeMusic(currentVolume);
+void Sound::increaseVolume() {
+    if (currentVolume < SDL_MIX_MAXVOLUME) {
+        currentVolume += SDL_MIX_MAXVOLUME / 10;
+        SDL_ClearQueuedAudio(audioDevice);
+        SDL_MixAudioFormat(nullptr, musicBuffer, obtainedSpec.format, musicLength, currentVolume);
+        playMusic();
     }
+}
+
+void Sound::getVolume() {
+    cout << "Volume: " << currentVolume << endl;
 }

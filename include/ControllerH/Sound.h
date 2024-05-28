@@ -1,33 +1,39 @@
-#ifndef SOUND_H
-#define SOUND_H
+#pragma once
 
-#include <string>
+#include <SDL2/SDL.h>
 #include <map>
-#include <SDL2/SDL_mixer.h>
-#include <iostream>
+#include <string>
 
 using namespace std;
 
 class Sound {
+public:
+    static Sound* getInstance();
+    
+    void loadSoundEffect(const string& soundEffect);
+    void playSoundEffect(const string& soundEffect);
+    void loadMusic(const string& music);
+    void playMusic();
+    void stopMusic();
+    void pauseMusic();
+    void resumeMusic();
+    void decreaseVolume();
+    void increaseVolume();
+    void getVolume();
+
+    ~Sound();
+
 private:
     static Sound* instance;
-    map<string, Mix_Music*> musics;
-    map<string, Mix_Chunk*> sounds;
+    map<string, SDL_AudioSpec> soundEffects;
+    map<string, Uint8*> audioBuffers;
+    map<string, Uint32> audioLengths;
+    SDL_AudioDeviceID audioDevice;
+    SDL_AudioSpec obtainedSpec;
+    Uint8* musicBuffer;
+    Uint32 musicLength;
     int currentVolume;
+    bool musicPaused;
 
-    Sound(); //  Private constructor to prevent instancing
-
-public:
-    static Sound* getInstance(); // Static access method
-    void loadMusic(const string& key, const string& musicPath);
-    void loadSound(const string& key, const string& soundPath);
-    void playMusic(const string& key);
-    void playSound(const string& key);
-    void stopMusic();
-    void stopSound();
-    void volumeDown();
-    void volumeUp();
-    ~Sound();  // Destructor
+    Sound();
 };
-
-#endif
