@@ -22,7 +22,7 @@ SRCS_RAW := main.cpp \
 			ModelCpp/Map.cpp \
 			ModelCpp/Observable.cpp \
 			ModelCpp/Tower.cpp \
-            # ControllerCpp/Sound.cpp \
+            ControllerCpp/Sound.cpp \
 
 SRCS := $(addprefix $(SRCS_FOLDER)/, $(SRCS_RAW))
 OBJS := $(SRCS:$(SRCS_FOLDER)/%.cpp=$(OBJS_FOLDER)/$(SRCS_FOLDER)/%.o)

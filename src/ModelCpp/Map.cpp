@@ -50,7 +50,7 @@ void Map::createMap(const string& filename) {
             bool isTurnRight = (line[x] == '6');
             bool isTurnLeft = (line[x] == '7');
 
-            setTileType(x, y, isMonsterPath, isMonsterBegin, isMonsterEnd, isTowerEmplacement, isDecoration);
+            setTileType(x, y, isEmpty, isMonsterPath, isMonsterBegin, isMonsterEnd, isTowerEmplacement, isDecoration, isTurnRight, isTurnLeft);
         }
         y++;
     }
