@@ -35,10 +35,9 @@ void MapController::initializeMap() {
 }
 
 void MapController::createEnemy() {
-    if (enemyCount < spawnNumber) {
+    for (enemyCount = 0; enemyCount < spawnNumber; enemyCount++) {
         Enemy* enemy = new Enemy(enemyLifePoints, enemySpeed, enemyPositionX, enemyPositionY);
         enemies.push_back(enemy);
-        enemyCount++;
     }  
 }
 
