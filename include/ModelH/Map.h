@@ -1,3 +1,6 @@
+#ifndef MAP_H
+#define MAP_H
+
 #pragma once
 #include <iostream>
 #include <fstream>
@@ -32,3 +35,5 @@ class Map {
         int height;
         vector<vector<TileType>> tiles;
 };
+
+#endif // MAP_H

@@ -1,3 +1,6 @@
+#ifndef ENEMY_H
+#define ENEMY_H
+
 #pragma once
 #include <vector>
 #include "./ModelH/Observable.h"
@@ -24,3 +27,5 @@ private:
     int speed;
     vector<int> position;
 };
+
+#endif // ENEMY_H

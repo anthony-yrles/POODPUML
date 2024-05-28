@@ -1,3 +1,6 @@
+#ifndef __DISPLAY_H__
+#define __DISPLAY_H__
+
 #pragma once
 #include "./ModelH/Observer.h"
 #include "./ModelH/Enemy.h"
@@ -11,3 +14,5 @@ public:
 
     void update() override;
 };
+
+#endif // __DISPLAY_H__
