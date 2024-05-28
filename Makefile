@@ -13,15 +13,19 @@ CFLAGS := -g -Wall -Wextra -flto -O1 -I$(INCLUDE_FOLDER) -I$(PREREQUISITES_FOLDE
 LDFLAGS := -L./lib/ 
 
 SRCS_RAW := main.cpp \
+			VueCpp/Draw.cpp \
+            VueCpp/GuiInGame.cpp \
             VueCpp/GuiMenu.cpp \
-            VueCpp/GuiButton.cpp \
-            VueCpp/GuiText.cpp \
-			VueCpp/GuiInGame.cpp \
-			VueCpp/CreateFromJson.cpp \
-			ControlleurCpp/Controlleur.cpp \
+            VueCpp/GuiOptions.cpp \
+			ModelCpp/Castle.cpp \
+			ModelCpp/Enemy.cpp \
+			ModelCpp/Map.cpp \
+			ModelCpp/Observable.cpp \
+			ModelCpp/Tower.cpp \
+            # ControllerCpp/Sound.cpp \
 
 SRCS := $(addprefix $(SRCS_FOLDER)/, $(SRCS_RAW))
-OBJS := $(SRCS:$(SRCS_FOLDER)/%.cpp=$(OBJS_FOLDER)/%.o)
+OBJS := $(SRCS:$(SRCS_FOLDER)/%.cpp=$(OBJS_FOLDER)/$(SRCS_FOLDER)/%.o)
 DEPS := $(OBJS:.o=.d)
 PREREQUISITES := $(wildcard $(PREREQUISITES_FOLDER)/*.cpp)
 
@@ -34,9 +38,9 @@ OBJS_SUBDIRS := $(addprefix $(OBJS_FOLDER)/, $(SRCS_SUBDIRS))
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $(BIN_FOLDER)/$@ $^ -lSDL2 -lSDL2_ttf -lSDL2_image -lSDL2_mixer
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $(BIN_FOLDER)/$@ $^ -lSDL2 -lSDL2_ttf -lSDL2_image
 
-$(OBJS_FOLDER)/%.o: $(SRCS_FOLDER)/%.cpp | $(OBJS_FOLDER) $(OBJS_SUBDIRS)
+$(OBJS_FOLDER)/$(SRCS_FOLDER)/%.o: $(SRCS_FOLDER)/%.cpp | $(OBJS_FOLDER) $(OBJS_SUBDIRS)
 	$(CC) $(CFLAGS) -c $< -o $@ -MMD -MF $(@:.o=.d)
 
 # Créer le répertoire des objets et les sous-répertoires nécessaires

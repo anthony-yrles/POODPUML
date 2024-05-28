@@ -1,6 +1,4 @@
-// Last update: 22:00 11.05.2020
-#ifndef DRAW_H
-#define DRAW_H
+#pragma once
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
@@ -28,5 +26,3 @@ public:
 private:
     bool clicked;
 };
-
-#endif // DRAW_H
