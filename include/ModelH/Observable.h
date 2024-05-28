@@ -1,6 +1,3 @@
-#ifndef OBSERVABLE_H
-#define OBSERVABLE_H
-
 #pragma once
 #include <vector>
 #include "./ModelH/Observer.h"
@@ -17,5 +14,3 @@ public:
     void removeObserver(Observer* observer);
     void notifyObservers();
 };
-
-#endif // OBSERVABLE_H

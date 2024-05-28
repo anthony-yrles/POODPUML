@@ -1,5 +1,4 @@
-#ifndef INGAME_H
-#define INGAME_H
+#pragma once
 
 #include "./VueH/Draw.h"
 
@@ -18,5 +17,3 @@ class GuiInGame {
         SDL_Window* gameWindow;
         SDL_Renderer* gameRenderer;
 };
-
-#endif // INGAME_H

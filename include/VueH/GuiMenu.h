@@ -1,5 +1,4 @@
-#ifndef GUI_MENU_H
-#define GUI_MENU_H
+#pragma once
 
 #include ".\VueH\Draw.h"
 
@@ -17,5 +16,3 @@ class GuiMenu {
         bool running;
         SDL_Event evenement;
 };
-
-#endif // GUI_MENU_H

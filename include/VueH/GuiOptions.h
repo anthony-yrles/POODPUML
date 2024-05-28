@@ -1,5 +1,4 @@
-#ifndef GUI_OPTIONS_H
-#define GUI_OPTIONS_H
+#pragma once
 
 #include ".\VueH\Draw.h"
 #include <sstream>
@@ -18,5 +17,3 @@ class GuiOptions {
         bool running;
         SDL_Event evenement;
 };
-
-#endif // GUI_OPTIONS_H

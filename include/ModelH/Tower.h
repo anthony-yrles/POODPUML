@@ -1,6 +1,3 @@
-#ifndef TOWER_H
-#define TOWER_H
-
 #pragma once
 #include "./ModelH/Observable.h"
 #include "./ModelH/Enemy.h"
@@ -36,5 +33,3 @@ private:
     vector<int> position;
 
 };
-
-#endif // TOWER_H
