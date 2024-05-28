@@ -5,30 +5,32 @@
 
 using namespace std;
 
-enum class TileType {
-    EMPTY,
-    DECORATION,
-    MONSTER_PATH,
-    TOWER_EMPLACEMENT
-};
-
 struct Tile {
-    TileType type;
+    bool isEmpty;
+    bool isMonsterPath;
+    bool isMonsterBegin;
+    bool isMonsterEnd;
+    bool isTowerEmplacement;
+    bool isDecoration;
+    bool isTurnRight;
+    bool isTurnLeft;
+
+    Tile() : isEmpty(false), isMonsterPath(false), isMonsterBegin(false), isMonsterEnd(false), isTowerEmplacement(false), isDecoration(false), isTurnRight(false), isTurnLeft(false) {}
 };
 
 class Map {
-    public:
-        Map(int width, int height);
-        ~Map();
+public:
+    Map(int width, int height);
+    ~Map();
 
-        void setTileType(int x, int y, TileType type);
-        TileType getTileType(int x, int y);
-        int getWidth();
-        int getHeight();
-        void createMap(string& filename);
-        
-    private:
-        int width;
-        int height;
-        vector<vector<TileType>> tiles;
+    void setTileType(int x, int y, bool isEmpty, bool isMonsterPath, bool isMonsterBegin, bool isMonsterEnd, bool isTowerEmplacement, bool isDecoration, bool isTurnRight, bool isTurnLeft);
+    Tile getTile(int x, int y) const;
+    int getWidth() const;
+    int getHeight() const;
+    void createMap(const string& filename);
+
+private:
+    int width;
+    int height;
+    vector<vector<Tile>> tiles;
 };

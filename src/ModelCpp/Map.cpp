@@ -1,59 +1,57 @@
 #include "./ModelH/Map.h"
 
-Map::~Map() {
+Map::Map(int width, int height) : width(width), height(height) {
+    tiles = vector<vector<Tile>>(width, vector<Tile>(height));
 }
 
-void Map::setTileType(int x, int y, TileType type) {
-    tiles[x][y] = type;
+Map::~Map() {}
+
+void Map::setTileType(int x, int y, bool isEmpty, bool isMonsterPath, bool isMonsterBegin, bool isMonsterEnd, bool isTowerEmplacement, bool isDecoration, bool isTurnRight, bool isTurnLeft) {
+    tiles[x][y].isEmpty = isEmpty;
+    tiles[x][y].isMonsterPath = isMonsterPath;
+    tiles[x][y].isMonsterBegin = isMonsterBegin;
+    tiles[x][y].isMonsterEnd = isMonsterEnd;
+    tiles[x][y].isTowerEmplacement = isTowerEmplacement;
+    tiles[x][y].isDecoration = isDecoration;
+    tiles[x][y].isTurnRight = isTurnRight;
+    tiles[x][y].isTurnLeft = isTurnLeft;
 }
 
-TileType Map::getTileType(int x, int y) {
+Tile Map::getTile(int x, int y) const {
     return tiles[x][y];
 }
 
-int Map::getWidth() {
+int Map::getWidth() const {
     return width;
 }
 
-int Map::getHeight() {
+int Map::getHeight() const {
     return height;
 }
 
-void Map::createMap(string& filename) {
-
+void Map::createMap(const string& filename) {
     ifstream file(filename);
     if (!file.is_open()) {
         cout << "Error: could not open file " << filename << endl;
         return;
     }
 
-    tiles.clear();
-
     string line;
+    int y = 0;
     while (getline(file, line)) {
-        vector<TileType> row;
-        for (char c : line) {
-            TileType type;
-            switch (c) {
-                case '0':
-                    type = TileType::EMPTY;
-                    break;
-                case '1':
-                    type = TileType::DECORATION;
-                    break;
-                case '2':
-                    type = TileType::MONSTER_PATH;
-                    break;
-                case '3':
-                    type = TileType::TOWER_EMPLACEMENT;
-                    break;
-                default:
-                    cout << "Error: invalid cell type " << c << endl;
-                    type = TileType::EMPTY; // Utilisation d'une valeur par défaut
-                    break;
-            }
-            row.push_back(type);
+        for (int x = 0; x < line.size(); ++x) {
+            // Décoder les types de tuiles à partir du fichier
+            bool isEmpty = (line[x] == '0');
+            bool isMonsterPath = (line[x] == '1');
+            bool isMonsterBegin = (line[x] == '2');
+            bool isMonsterEnd = (line[x] == '3');
+            bool isTowerEmplacement = (line[x] == '4');
+            bool isDecoration = (line[x] == '5');
+            bool isTurnRight = (line[x] == '6');
+            bool isTurnLeft = (line[x] == '7');
+
+            setTileType(x, y, isMonsterPath, isMonsterBegin, isMonsterEnd, isTowerEmplacement, isDecoration);
         }
-        tiles.push_back(row);
+        y++;
     }
 }
