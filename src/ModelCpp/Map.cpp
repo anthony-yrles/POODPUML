@@ -21,6 +21,11 @@ Tile Map::getTile(int x, int y) const {
     return tiles[x][y];
 }
 
+vector<vector<Tile>> Map::getTiles() const {
+    return tiles;
+}
+
+
 int Map::getWidth() const {
     return width;
 }
@@ -39,18 +44,32 @@ void Map::createMap(const string& filename) {
     string line;
     int y = 0;
     while (getline(file, line)) {
-        for (int x = 0; x < line.size(); ++x) {
+        for (long long unsigned int x = 0; x < line.size(); ++x) {
+            // Créer une instance temporaire de Tile
+            Tile tile;
+            
             // Décoder les types de tuiles à partir du fichier
-            bool isEmpty = (line[x] == '0');
-            bool isMonsterPath = (line[x] == '1');
-            bool isMonsterBegin = (line[x] == '2');
-            bool isMonsterEnd = (line[x] == '3');
-            bool isTowerEmplacement = (line[x] == '4');
-            bool isDecoration = (line[x] == '5');
-            bool isTurnRight = (line[x] == '6');
-            bool isTurnLeft = (line[x] == '7');
-
-            setTileType(x, y, isEmpty, isMonsterPath, isMonsterBegin, isMonsterEnd, isTowerEmplacement, isDecoration, isTurnRight, isTurnLeft);
+            if (line[x] == '2') {
+                tile.isMonsterBegin = true;
+                tile.isMonsterPath = true;
+            } else if (line[x] == '3') {
+                tile.isMonsterEnd = true;
+                tile.isMonsterPath = true;
+            } else if (line[x] == '6') {
+                tile.isTurnRight = true;
+                tile.isEmpty = true;
+            } else if (line[x] == '7') {
+                tile.isTurnLeft = true;
+                tile.isEmpty = true;
+            } else {
+                tile.isEmpty = (line[x] == '0');
+                tile.isMonsterPath = (line[x] == '1');
+                tile.isTowerEmplacement = (line[x] == '4');
+                tile.isDecoration = (line[x] == '5');
+            }
+            
+            // Définir le type de tuile dans la grille
+            setTileType(x, y, tile.isEmpty, tile.isMonsterPath, tile.isMonsterBegin, tile.isMonsterEnd, tile.isTowerEmplacement, tile.isDecoration, tile.isTurnRight, tile.isTurnLeft);
         }
         y++;
     }

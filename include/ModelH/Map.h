@@ -25,6 +25,7 @@ public:
 
     void setTileType(int x, int y, bool isEmpty, bool isMonsterPath, bool isMonsterBegin, bool isMonsterEnd, bool isTowerEmplacement, bool isDecoration, bool isTurnRight, bool isTurnLeft);
     Tile getTile(int x, int y) const;
+    vector<vector<Tile>> getTiles() const;
     int getWidth() const;
     int getHeight() const;
     void createMap(const string& filename);
@@ -32,5 +33,5 @@ public:
 private:
     int width;
     int height;
-    vector<vector<Tile>> tiles;
+    std::vector<std::vector<Tile>> tiles;
 };
