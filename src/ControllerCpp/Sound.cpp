@@ -11,7 +11,13 @@ Sound* Sound::getInstance() {
     return instance;
 }
 
-Sound::Sound() : currentVolume(SDL_MIX_MAXVOLUME), musicBuffer(nullptr), musicLength(0), musicPaused(false) {
+Sound::Sound() :
+    currentVolume(SDL_MIX_MAXVOLUME),
+    musicBuffer(nullptr),
+    musicLength(0),
+    musicPaused(false),
+    audioDevice(0),
+    obtainedSpec() {
     SDL_Init(SDL_INIT_AUDIO);
     SDL_AudioSpec desiredSpec;
     SDL_zero(desiredSpec);
