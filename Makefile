@@ -22,6 +22,7 @@ SRCS_RAW := main.cpp \
 			ModelCpp/Map.cpp \
 			ModelCpp/Observable.cpp \
 			ModelCpp/Tower.cpp \
+			ControllerCpp/MapController.cpp \
             ControllerCpp/Sound.cpp \
 
 SRCS := $(addprefix $(SRCS_FOLDER)/, $(SRCS_RAW))
