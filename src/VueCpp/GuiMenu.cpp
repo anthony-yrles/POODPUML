@@ -4,7 +4,7 @@
 // #include ".\ControllerH\Sound.h"
 
 
-GuiMenu::GuiMenu(SDL_Renderer* renderer, int mouseX, int mouseY, SDL_Window* window, int WIDTH, int HEIGHT, bool clicked, bool running, SDL_Event evenement) {
+GuiMenu::GuiMenu(SDL_Renderer* renderer, int mouseX, int mouseY, SDL_Window* window, int WIDTH, int HEIGHT, bool clicked, bool running, SDL_Event /*evenement*/) {
     this->renderer = renderer;
     this->mouseX = mouseX;
     this->mouseY = mouseY;
@@ -15,7 +15,7 @@ GuiMenu::GuiMenu(SDL_Renderer* renderer, int mouseX, int mouseY, SDL_Window* win
     this->running = running;
 }
 
-bool GuiMenu::drawMenu(SDL_Renderer* renderer, int mouseX, int mouseY, SDL_Window* window, int WIDTH, int HEIGHT, bool clicked, bool running, SDL_Event evenement) {
+bool GuiMenu::drawMenu(SDL_Renderer* renderer, int mouseX, int mouseY, SDL_Window* window, int WIDTH, int HEIGHT, bool clicked, bool running, SDL_Event /*evenement*/) {
 
     // Create a Draw object
     Draw draw(clicked);
@@ -28,8 +28,6 @@ bool GuiMenu::drawMenu(SDL_Renderer* renderer, int mouseX, int mouseY, SDL_Windo
     //  Using of the creteButton method from the Draw class to create 3 buttons
     draw.createButton(renderer, 450, 230, 300, 50, "./assets/images/playButton.png", mouseX, mouseY, clicked, [&](){
         SDL_DestroyWindow(window);
-        SDL_Window* gameWindow = NULL;
-        SDL_Renderer* gameRenderer = NULL;
         running = game.drawInGame(WIDTH, HEIGHT, mouseX, mouseY, clicked, running, evenement);
         return running;
     });
