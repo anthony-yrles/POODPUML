@@ -1,25 +1,11 @@
 #pragma once
-#include "./ModelH/Observer.h"
+#include "./ModelH/Observable.h"
 #include "./ModelH/Map.h"
-#include "./ModelH/Enemy.h"
-#include "./ModelH/Tower.h"
-#include "./ModelH/Castle.h"
 
-class MapController : Observer {
+class MapController : Observable {
 public:
-    MapController(long int spawnTime, int spawnNumber, vector<Enemy*> enemies, vector<Tower*> towers);
+    MapController();
     ~MapController();
 
-    void startGame();
-    void initializeMap();
-    void createEnemy();
-    void enemySpawn();
-    void destroyEnemy();
-    void createTower();
-    void upgradeTower();
-    void towerAttack();
-    void victory();
-    void defeat();
-
-private:
+    std::vector<std::vector<Tile>> createAndReturnMap(const std::string& filename, int width, int height, Map* map);  // Changez 'vector' en 'std::vector<std::vector<Tile>>'
 };
