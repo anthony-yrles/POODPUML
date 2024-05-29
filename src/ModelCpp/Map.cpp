@@ -89,8 +89,6 @@ void Map::searchFileWidthHeight(const string& filename) {
     while (getline(file, line)) {
         fileWidth = line.size();
         fileHeight++;
-        cout<<fileWidth<<endl;
-        cout<<fileHeight<<endl;
     }
     setFileHeight(fileHeight);
     setFileWidth(fileWidth);
@@ -105,8 +103,8 @@ void Map::createMap(const string& filename) {
     }
 
     string line;
-    for (int y = 0; y < fileHeight; ++y) {
-        for (int x = 0; x < fileWidth; ++x) {
+    for (int x = 0; x < fileHeight; ++x) {
+        for (int y = 0; y < fileWidth; ++y) {
             // Créer une instance temporaire de Tile
             Tile tile;
             // Décoder les types de tuiles à partir du fichier
@@ -130,7 +128,6 @@ void Map::createMap(const string& filename) {
             }
             
             // Définir le type de tuile dans la grille
-            cout << "Setting tile at position (" << x << ", " << y << ")" << endl;
             setTileType(x, y, tile.isEmpty, tile.isMonsterPath, tile.isMonsterBegin, tile.isMonsterEnd, tile.isTowerEmplacement, tile.isDecoration, tile.isTurnRight, tile.isTurnLeft);
         }
     }

@@ -53,7 +53,7 @@ int main() {
     sound->loadMusic(musicFile);
     sound->loadSoundEffect(soundEffectFile);
     sound->playMusic();
-    sound->getVolume();
+    // sound->getVolume();
 
     // Main loop
     while (!running) {
