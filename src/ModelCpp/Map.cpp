@@ -38,19 +38,6 @@ Tile Map::getTile(int x, int y) const {
 }
 
 vector<vector<Tile>> Map::getTiles() const {
-    // for (size_t i = 0; i < tiles.size(); ++i) {
-    //     for (size_t j = 0; j < tiles[i].size(); ++j) {
-
-    //         cout << "Tile at position (" << i << ", " << j << "):" << endl;
-    //         cout << "isEmpty: " << tiles[i][j].isEmpty << endl;
-    //         cout << "isMonsterPath: " << tiles[i][j].isMonsterPath << endl;
-    //         cout << "isMonsterBegin: " << tiles[i][j].isMonsterBegin << endl;
-    //         cout << "isMonsterEnd: " << tiles[i][j].isMonsterEnd << endl;
-    //         cout << "isTowerEmplacement: " << tiles[i][j].isTowerEmplacement << endl;
-    //         cout << "isDecoration: " << tiles[i][j].isDecoration << endl;
-    //         cout << endl;
-    //     }
-    // }
     return tiles;
 }
 
@@ -86,6 +73,7 @@ void Map::searchFileWidthHeight(const string& filename) {
     }
 
     string line;
+    fileHeight = 0;
     while (getline(file, line)) {
         fileWidth = line.size();
         fileHeight++;
@@ -96,6 +84,8 @@ void Map::searchFileWidthHeight(const string& filename) {
 
 void Map::createMap(const string& filename) {
 
+    searchFileWidthHeight(filename);
+
     ifstream file(filename);
     if (!file.is_open()) {
         cout << "Error: could not open file " << filename << endl;
@@ -104,27 +94,28 @@ void Map::createMap(const string& filename) {
 
     string line;
     for (int x = 0; x < fileHeight; ++x) {
+        getline(file, line);
         for (int y = 0; y < fileWidth; ++y) {
             // Créer une instance temporaire de Tile
             Tile tile;
             // Décoder les types de tuiles à partir du fichier
-            if (line[x] == '2') {
+            if (line[y] == '2') {
                 tile.isMonsterBegin = true;
                 tile.isMonsterPath = true;
-            } else if (line[x] == '3') {
+            } else if (line[y] == '3') {
                 tile.isMonsterEnd = true;
                 tile.isMonsterPath = true;
-            } else if (line[x] == '6') {
+            } else if (line[y] == '6') {
                 tile.isTurnRight = true;
                 tile.isEmpty = true;
-            } else if (line[x] == '7') {
+            } else if (line[y] == '7') {
                 tile.isTurnLeft = true;
                 tile.isEmpty = true;
             } else {
-                tile.isEmpty = (line[x] == '0');
-                tile.isMonsterPath = (line[x] == '1');
-                tile.isTowerEmplacement = (line[x] == '4');
-                tile.isDecoration = (line[x] == '5');
+                tile.isEmpty = (line[y] == '0');
+                tile.isMonsterPath = (line[y] == '1');
+                tile.isTowerEmplacement = (line[y] == '4');
+                tile.isDecoration = (line[y] == '5');
             }
             
             // Définir le type de tuile dans la grille

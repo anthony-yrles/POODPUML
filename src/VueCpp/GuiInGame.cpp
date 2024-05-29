@@ -38,25 +38,26 @@ bool GuiInGame::drawInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool c
 }
 
 void GuiInGame::drawMap(const string& filename, SDL_Renderer* gameRenderer, int width, int height, int fileHeight, int fileWidth, Draw* draw) {
+
     MapController mapController;
     Map map(width, height, fileHeight, fileWidth, filename);
-    map.searchFileWidthHeight(filename);
     vector<vector<Tile>> tiles = mapController.createAndReturnMap(filename, &map);
-
 
     for (long long unsigned int i = 0; i < tiles.size(); ++i) {
         for (long long unsigned int j = 0; j < tiles[i].size(); ++j) {
 
             if (tiles[i][j].isEmpty) {
                 draw->drawRect(gameRenderer, j * 32, i * 32, 32, 32, 0, 255, 0, 255);
-            } else if (tiles[i][j].isMonsterPath) {
-                draw->drawRect(gameRenderer, j * 32, i * 32, 32, 32, 0, 0, 255, 255);
             } else if (tiles[i][j].isMonsterBegin || tiles[i][j].isMonsterEnd) {
                 draw->drawRect(gameRenderer, j * 32, i * 32, 32, 32, 255, 0, 0, 255);
+            } else if (tiles[i][j].isMonsterPath) {
+                draw->drawRect(gameRenderer, j * 32, i * 32, 32, 32, 255, 0, 255, 255);
             } else if (tiles[i][j].isTowerEmplacement) {
                 draw->drawRect(gameRenderer, j * 32, i * 32, 32, 32, 0, 0, 255, 255);
             } else if (tiles[i][j].isDecoration) {
                 draw->drawRect(gameRenderer, j * 32, i * 32, 32, 32, 255, 255, 0, 255);
+            } else {
+                draw->drawRect(gameRenderer, j * 32, i * 32, 32, 32, 255, 255, 255, 255);
             }
         }
     }
