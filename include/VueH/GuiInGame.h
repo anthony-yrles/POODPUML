@@ -8,7 +8,7 @@ class GuiInGame {
         GuiInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool clicked, bool running, SDL_Event evenement);
     
         bool drawInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool clicked, bool running, SDL_Event evenement);
-        void drawMap(const string& filename, SDL_Renderer* gameRenderer, int x, int y, Draw* draw);
+        void drawMap(const string& filename, SDL_Renderer* gameRenderer, int x, int y, int fileHeight, int fileWidth, Draw* draw);
 
     private:
         int WIDTH, HEIGHT;

@@ -20,7 +20,7 @@ struct Tile {
 
 class Map {
 public:
-    Map(int width, int height);
+    Map(int width, int height, int fileWidth, int fileHeight, const string& filename);
     ~Map();
 
     void setTileType(int x, int y, bool isEmpty, bool isMonsterPath, bool isMonsterBegin, bool isMonsterEnd, bool isTowerEmplacement, bool isDecoration, bool isTurnRight, bool isTurnLeft);
@@ -28,10 +28,18 @@ public:
     vector<vector<Tile>> getTiles() const;
     int getWidth() const;
     int getHeight() const;
+    int getFileWidth() const;
+    int getFileHeight() const;
+    void setFileWidth(int fileWidth);
+    void setFileHeight(int fileHeight);
+    void searchFileWidthHeight(const string& filename);
     void createMap(const string& filename);
 
 private:
     int width;
     int height;
-    std::vector<std::vector<Tile>> tiles;
+    int fileWidth;
+    int fileHeight;
+    const string filename;
+    vector<vector<Tile>> tiles;
 };

@@ -1,7 +1,22 @@
 #include "./ModelH/Map.h"
 
-Map::Map(int width, int height) : width(width), height(height) {
-    tiles = vector<vector<Tile>>(width, vector<Tile>(height));
+Map::Map(int width, int height, int fileWidth, int fileHeight, const string& filename) : width(width), height(height), fileWidth(fileWidth), fileHeight(fileHeight) {
+    // Ouvrir le fichier map.txt
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cout << "Error: could not open file " << filename << endl;
+        return;
+    }
+
+    // Déterminer les dimensions du fichier map.txt
+    string line;
+    while (getline(file, line)) {
+        fileWidth = line.size(); // La largeur correspond à la taille de la ligne
+        fileHeight++; // Compter le nombre de lignes pour la hauteur
+    }
+
+    // Initialiser le vecteur tiles avec les dimensions obtenues
+    tiles = vector<vector<Tile>>(fileHeight, vector<Tile>(fileWidth));
 }
 
 Map::~Map() {}
@@ -17,14 +32,27 @@ void Map::setTileType(int x, int y, bool isEmpty, bool isMonsterPath, bool isMon
     tiles[x][y].isTurnLeft = isTurnLeft;
 }
 
+
 Tile Map::getTile(int x, int y) const {
     return tiles[x][y];
 }
 
 vector<vector<Tile>> Map::getTiles() const {
+    // for (size_t i = 0; i < tiles.size(); ++i) {
+    //     for (size_t j = 0; j < tiles[i].size(); ++j) {
+
+    //         cout << "Tile at position (" << i << ", " << j << "):" << endl;
+    //         cout << "isEmpty: " << tiles[i][j].isEmpty << endl;
+    //         cout << "isMonsterPath: " << tiles[i][j].isMonsterPath << endl;
+    //         cout << "isMonsterBegin: " << tiles[i][j].isMonsterBegin << endl;
+    //         cout << "isMonsterEnd: " << tiles[i][j].isMonsterEnd << endl;
+    //         cout << "isTowerEmplacement: " << tiles[i][j].isTowerEmplacement << endl;
+    //         cout << "isDecoration: " << tiles[i][j].isDecoration << endl;
+    //         cout << endl;
+    //     }
+    // }
     return tiles;
 }
-
 
 int Map::getWidth() const {
     return width;
@@ -34,7 +62,23 @@ int Map::getHeight() const {
     return height;
 }
 
-void Map::createMap(const string& filename) {
+int Map::getFileWidth() const {
+    return fileWidth;
+}
+
+int Map::getFileHeight() const {
+    return fileHeight;
+}
+
+void Map::setFileWidth(int fileWidth) {
+    this->fileWidth = fileWidth;
+}
+
+void Map::setFileHeight(int fileHeight) {
+    this->fileHeight = fileHeight;
+}
+
+void Map::searchFileWidthHeight(const string& filename) {
     ifstream file(filename);
     if (!file.is_open()) {
         cout << "Error: could not open file " << filename << endl;
@@ -42,12 +86,29 @@ void Map::createMap(const string& filename) {
     }
 
     string line;
-    int y = 0;
     while (getline(file, line)) {
-        for (long long unsigned int x = 0; x < line.size(); ++x) {
+        fileWidth = line.size();
+        fileHeight++;
+        cout<<fileWidth<<endl;
+        cout<<fileHeight<<endl;
+    }
+    setFileHeight(fileHeight);
+    setFileWidth(fileWidth);
+}
+
+void Map::createMap(const string& filename) {
+
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cout << "Error: could not open file " << filename << endl;
+        return;
+    }
+
+    string line;
+    for (int y = 0; y < fileHeight; ++y) {
+        for (int x = 0; x < fileWidth; ++x) {
             // Créer une instance temporaire de Tile
             Tile tile;
-            
             // Décoder les types de tuiles à partir du fichier
             if (line[x] == '2') {
                 tile.isMonsterBegin = true;
@@ -69,8 +130,8 @@ void Map::createMap(const string& filename) {
             }
             
             // Définir le type de tuile dans la grille
+            cout << "Setting tile at position (" << x << ", " << y << ")" << endl;
             setTileType(x, y, tile.isEmpty, tile.isMonsterPath, tile.isMonsterBegin, tile.isMonsterEnd, tile.isTowerEmplacement, tile.isDecoration, tile.isTurnRight, tile.isTurnLeft);
         }
-        y++;
     }
 }

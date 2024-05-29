@@ -7,5 +7,5 @@ public:
     MapController();
     ~MapController();
 
-    std::vector<std::vector<Tile>> createAndReturnMap(const std::string& filename, int width, int height, Map* map);  // Changez 'vector' en 'std::vector<std::vector<Tile>>'
+    vector<vector<Tile>> createAndReturnMap(const std::string& filename, Map* map);
 };

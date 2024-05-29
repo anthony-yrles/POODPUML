@@ -15,7 +15,6 @@ bool GuiInGame::drawInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool c
     Draw draw(clicked);
     gameWindow = draw.createWindow(WIDTH, HEIGHT, "Game", gameWindow);
     gameRenderer = draw.createRenderer(gameWindow, gameRenderer);
-    drawMap("./assets/map/map.txt", gameRenderer, WIDTH -300, HEIGHT, &draw);
 
     // Game loop
     while (!running) {
@@ -32,34 +31,32 @@ bool GuiInGame::drawInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool c
             }
         }
 
-    // Clear the renderer
-    SDL_RenderClear(gameRenderer);
-
+    drawMap("./assets/map/map.txt", gameRenderer, WIDTH -300, HEIGHT, 0, 0, &draw);
+    SDL_RenderPresent(gameRenderer);
     }
     return running;
 }
 
-void GuiInGame::drawMap(const string& filename, SDL_Renderer* gameRenderer, int width, int height, Draw* draw) {
-    // Créez le contrôleur de la carte et obtenez toutes les tuiles
+void GuiInGame::drawMap(const string& filename, SDL_Renderer* gameRenderer, int width, int height, int fileHeight, int fileWidth, Draw* draw) {
     MapController mapController;
-    Map map(width, height);
-    std::vector<std::vector<Tile>> tiles = mapController.createAndReturnMap(filename, width, height, &map);
+    Map map(width, height, fileHeight, fileWidth, filename);
+    map.searchFileWidthHeight(filename);
+    vector<vector<Tile>> tiles = mapController.createAndReturnMap(filename, &map);
 
-    // Parcourez les tuiles et dessinez-les
+
     for (long long unsigned int i = 0; i < tiles.size(); ++i) {
         for (long long unsigned int j = 0; j < tiles[i].size(); ++j) {
+
             if (tiles[i][j].isEmpty) {
-                draw->drawRect(gameRenderer, i * 32, j * 32, 32, 32, 0, 255, 0, 255);
+                draw->drawRect(gameRenderer, j * 32, i * 32, 32, 32, 0, 255, 0, 255);
             } else if (tiles[i][j].isMonsterPath) {
-                draw->drawRect(gameRenderer, i * 32, j * 32, 32, 32, 0, 0, 255, 255);
-            } else if (tiles[i][j].isMonsterBegin) {
-                draw->drawRect(gameRenderer, i * 32, j * 32, 32, 32, 255, 0, 0, 255);
-            } else if (tiles[i][j].isMonsterEnd) {
-                draw->drawRect(gameRenderer, i * 32, j * 32, 32, 32, 255, 0, 0, 255);
+                draw->drawRect(gameRenderer, j * 32, i * 32, 32, 32, 0, 0, 255, 255);
+            } else if (tiles[i][j].isMonsterBegin || tiles[i][j].isMonsterEnd) {
+                draw->drawRect(gameRenderer, j * 32, i * 32, 32, 32, 255, 0, 0, 255);
             } else if (tiles[i][j].isTowerEmplacement) {
-                draw->drawRect(gameRenderer, i * 32, j * 32, 32, 32, 0, 0, 255, 255);
+                draw->drawRect(gameRenderer, j * 32, i * 32, 32, 32, 0, 0, 255, 255);
             } else if (tiles[i][j].isDecoration) {
-                draw->drawRect(gameRenderer, i * 32, j * 32, 32, 32, 255, 255, 0, 255);
+                draw->drawRect(gameRenderer, j * 32, i * 32, 32, 32, 255, 255, 0, 255);
             }
         }
     }
