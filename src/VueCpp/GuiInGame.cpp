@@ -10,11 +10,14 @@ GuiInGame::GuiInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool clicked
 }
 
 bool GuiInGame::drawInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool clicked, bool running, SDL_Event evenement) {
-
     // Create a Draw object
     Draw draw(clicked);
     gameWindow = draw.createWindow(WIDTH, HEIGHT, "Game", gameWindow);
     gameRenderer = draw.createRenderer(gameWindow, gameRenderer);
+
+    MapController mapController;
+    const string filename = "./assets/map/map.txt";
+    Map map(WIDTH - 300, HEIGHT, 0, 0, filename);
 
     // Game loop
     while (!running) {
@@ -30,13 +33,14 @@ bool GuiInGame::drawInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool c
                 clicked = false;
             }
         }
-    drawMap("./assets/map/map.txt", gameRenderer, WIDTH -300, HEIGHT, 0, 0, &draw);
-    SDL_RenderPresent(gameRenderer);
+        drawMap(filename, &map, &draw, WIDTH - 300, HEIGHT, gameRenderer, &mapController);
+        drawEnemy(&map, &mapController, &draw, filename, 10, WIDTH - 300, HEIGHT, gameRenderer);
+        SDL_RenderPresent(gameRenderer);
     }
     return running;
 }
 
-void GuiInGame::tileSize (int WIDTH, int HEIGHT, int filewidth, int fileheight) {
+void GuiInGame::tileSize(int WIDTH, int HEIGHT, int filewidth, int fileheight) {
     if (filewidth > fileheight) {
         tileWidth = WIDTH / filewidth;
         tileHeight = tileWidth;
@@ -48,19 +52,18 @@ void GuiInGame::tileSize (int WIDTH, int HEIGHT, int filewidth, int fileheight) 
     }
 }
 
-void GuiInGame::drawMap(const string& filename, SDL_Renderer* gameRenderer, int width, int height, int fileHeight, int fileWidth, Draw* draw) {
-
-    MapController mapController;
-    Map map(width, height, fileHeight, fileWidth, filename);
-    vector<vector<Tile>> tiles = mapController.createAndReturnMap(filename, &map);
-    tileSize(width, height, map.getFileWidth(), map.getFileHeight());
+void GuiInGame::drawMap(const string& filename, Map* map, Draw* draw, int width, int height, SDL_Renderer* gameRenderer, MapController* mapController) {
+    
+    vector<vector<Tile>> tiles = mapController->createAndReturnMap(filename, map);
+    tileSize(width, height, map->getFileWidth(), map->getFileHeight());
 
     for (long long unsigned int i = 0; i < tiles.size(); ++i) {
         for (long long unsigned int j = 0; j < tiles[i].size(); ++j) {
-
             if (tiles[i][j].isEmpty) {
                 draw->drawRect(gameRenderer, beginX + j * tileWidth, beginY + i * tileHeight, tileWidth, tileHeight, 0, 255, 0, 255);
-            } else if (tiles[i][j].isMonsterBegin || tiles[i][j].isMonsterEnd) {
+            } else if (tiles[i][j].isMonsterBegin) {
+                draw->drawRect(gameRenderer, beginX + j * tileWidth, beginY + i * tileHeight, tileWidth, tileHeight, 255, 0, 0, 255);
+            } else if (tiles[i][j].isMonsterEnd) {
                 draw->drawRect(gameRenderer, beginX + j * tileWidth, beginY + i * tileHeight, tileWidth, tileHeight, 255, 0, 0, 255);
             } else if (tiles[i][j].isMonsterPath) {
                 draw->drawRect(gameRenderer, beginX + j * tileWidth, beginY + i * tileHeight, tileWidth, tileHeight, 255, 0, 255, 255);
@@ -68,6 +71,24 @@ void GuiInGame::drawMap(const string& filename, SDL_Renderer* gameRenderer, int 
                 draw->drawRect(gameRenderer, beginX + j * tileWidth, beginY + i * tileHeight, tileWidth, tileHeight, 0, 0, 255, 255);
             } else if (tiles[i][j].isDecoration) {
                 draw->drawRect(gameRenderer, beginX + j * tileWidth, beginY + i * tileHeight, tileWidth, tileHeight, 255, 255, 0, 255);
+            }
+        }
+    }
+}
+
+void GuiInGame::drawEnemy(Map* map, MapController* mapController, Draw* draw, const string& filename, int enemyNumber, int width, int height, SDL_Renderer* gameRenderer) {
+
+    vector<vector<Tile>> tiles = mapController->createAndReturnMap(filename, map);
+    tileSize(width, height, map->getFileWidth(), map->getFileHeight());
+
+    if (mapController->spawnTime()) {
+        for (size_t i = 0; i < tiles.size() && enemySpawned <= enemyNumber; ++i) {
+            for (size_t j = 0; j < tiles[i].size() && enemySpawned <= enemyNumber; ++j) {
+                if (tiles[i][j].isMonsterBegin) {
+                    cout << enemySpawned << enemyNumber << endl;
+                    draw->drawRect(gameRenderer, beginX + j * tileWidth, beginY + i * tileHeight, tileWidth, tileHeight, 255, 255, 255, 255);
+                    ++enemySpawned;
+                }
             }
         }
     }

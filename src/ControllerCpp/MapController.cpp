@@ -2,37 +2,32 @@
 
 MapController::MapController() {}
 
-MapController::~MapController() {}
-
-void MapController::createEnemy(int life, int speed, int startX, int startY) {
-    Enemy enemy(life, speed, startX, startY);
-}
-
-void MapController::addEnemyToList(Enemy* enemy, int enemyNumber, int life, int speed, int startX, int startY) {
-    for (int i = 0; i < enemyNumber; i++) {
-        createEnemy(life, speed, startX, startY);
-        enemies.push_back(enemy);
+MapController::~MapController() {
+    for (auto enemy : enemies) {
+        delete enemy;
     }
 }
 
-void MapController::enemySpawn(Map* map, long long int spawnCountDown, vector<Enemy*> enemies) {
-    int timer = 0;
-    int enemySpawned = 0;
-    while (enemies.size() > 0) {
-        if (timer == spawnCountDown) {
-            enemies.pop_back();
-            timer = 0;
+void MapController::createEnemy(int life, int speed, int startX, int startY, int numberEnemy) {
+    if (!allEnemiesCreated) {
+        for (int i = 0; i < numberEnemy; ++i) {
+            Enemy* enemy = new Enemy(life, speed, startX, startY);
+            enemies.push_back(enemy);
         }
-        timer++;
+        allEnemiesCreated = true;
     }
 }
 
-vector<vector<Tile>> MapController::createAndReturnMap(const std::string& filename, Map* map) {
+bool MapController::spawnTime() {
+    long long int currentTime = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+    if (currentTime - lastSpawnTime >= spawnInterval) {
+        lastSpawnTime = currentTime;
+        return true;
+    }
+    return false;
+}
 
+vector<vector<Tile>> MapController::createAndReturnMap(const string& filename, Map* map) {
     map->createMap(filename);
-
-    // Retournez toutes les tuiles de la carte
-    vector<vector<Tile>> tiles = map->getTiles();
-
-    return tiles;
+    return map->getTiles();
 }
