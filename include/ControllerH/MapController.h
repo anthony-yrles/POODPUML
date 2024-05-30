@@ -15,6 +15,7 @@ public:
 
     void createEnemy(int life, int speed, int startX, int startY, int numberEnemy);
     bool spawnTime();
+    void enemiesMovement(const string& filename, Map* map, int beginX, int beginY, int tileWidth, int tileHeight);
     vector<vector<Tile>> createAndReturnMap(const std::string& filename, Map* map);
 
 private:

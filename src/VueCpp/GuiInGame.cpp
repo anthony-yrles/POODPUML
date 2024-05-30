@@ -50,6 +50,8 @@ void GuiInGame::tileSize(int WIDTH, int HEIGHT, int filewidth, int fileheight) {
         tileWidth = tileHeight;
         beginX = (WIDTH - (tileWidth * filewidth)) / 2;
     }
+    startX = beginX + j * tileWidth + tileWidth / 2;
+    startY = beginY + i * tileHeight + tileHeight / 2;
 }
 
 void GuiInGame::drawMap(const string& filename, Map* map, Draw* draw, int width, int height, SDL_Renderer* gameRenderer, MapController* mapController) {
@@ -85,7 +87,7 @@ void GuiInGame::drawEnemy(Map* map, MapController* mapController, Draw* draw, co
         for (size_t i = 0; i < tiles.size() && enemySpawned <= enemyNumber; ++i) {
             for (size_t j = 0; j < tiles[i].size() && enemySpawned <= enemyNumber; ++j) {
                 if (tiles[i][j].isMonsterBegin) {
-                    cout << enemySpawned << enemyNumber << endl;
+                    mapController->createEnemy(100, 1, startX, startY, enemyNumber);
                     draw->drawRect(gameRenderer, beginX + j * tileWidth, beginY + i * tileHeight, tileWidth, tileHeight, 255, 255, 255, 255);
                     ++enemySpawned;
                 }

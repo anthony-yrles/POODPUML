@@ -26,6 +26,14 @@ void Enemy::setPosition(int x, int y) {
     position = {x, y};
 }
 
+pair<int, int> Enemy::getMovement() const {
+    return movement;
+}
+
+void Enemy::setMovement(int x, int y) {
+    movement = {x, y};
+}
+
 void Enemy::takeDamage(int damage) {
     int previousLifePoints = lifePoints;
     lifePoints -= damage;
@@ -39,4 +47,5 @@ void Enemy::move(int deltaX, int deltaY) {
     int newX = position[0] + deltaX * speed;
     int newY = position[1] + deltaY * speed;
     setPosition(newX, newY);
+    setMovement(deltaX, deltaY);
 }

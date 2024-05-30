@@ -18,6 +18,7 @@ private:
     int mouseX, mouseY;
     int tileWidth, tileHeight;
     int beginX, beginY;
+    int startX, startY;
     int enemySpawned = 0;
     bool clicked;
     bool running;

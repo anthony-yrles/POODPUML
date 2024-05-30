@@ -16,11 +16,15 @@ public:
     vector<int> getPosition() const;
     void setPosition(int x, int y);
 
+    pair<int, int> getMovement() const;
+    void setMovement(int x, int y);
+
     void takeDamage(int damage);
     void move(int x, int y);
     
 private:
     int lifePoints;
     int speed;
+    pair<int, int> movement;
     vector<int> position;
 };
