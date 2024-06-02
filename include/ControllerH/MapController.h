@@ -14,6 +14,7 @@ public:
     ~MapController();
 
     void createEnemy(int life, int speed, int startX, int startY, int numberEnemy, SDL_Renderer* renderer, int x, int y, int width, int height, const char* image);
+    Enemy *getEnemy(size_t index);
     bool spawnTime();
     void enemiesMovement(const string& filename, Map* map, int beginX, int beginY, int tileWidth, int tileHeight);
     vector<vector<Tile>> createAndReturnMap(const std::string& filename, Map* map);

@@ -18,6 +18,13 @@ void MapController::createEnemy(int life, int speed, int startX, int startY, int
     }
 }
 
+Enemy* MapController::getEnemy(size_t index) {
+    if (index < enemies.size()) {
+        return enemies[index];
+    }
+    return nullptr;
+}
+
 bool MapController::spawnTime() {
     using namespace chrono;
     long long currentTime = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
@@ -30,8 +37,8 @@ bool MapController::spawnTime() {
 
 void MapController::enemiesMovement(const string& filename, Map* map, int beginX, int beginY, int tileWidth, int tileHeight) {
     auto tiles = createAndReturnMap(filename, map);
-    for (size_t i = 0; i < tiles.size(); ++i) {
-        for (size_t j = 0; j < tiles[i].size(); ++j) {
+    for (int i = 0; i < tiles.size(); ++i) {
+        for (int j = 0; j < tiles[i].size(); ++j) {
             for (auto enemy : enemies) {
                 auto enemyPosition = enemy->getPosition();
                 auto enemySpeed = enemy->getSpeed();
