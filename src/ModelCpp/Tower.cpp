@@ -31,7 +31,7 @@ void Tower::setNumberofFire(int numberOfFire) {
     this->numberOfFire = numberOfFire;
 }
 
-vector<int> Tower::getPosition() const {
+pair<int, int> Tower::getPosition() const {
     return position;
 }
 void Tower::setPosition(int x, int y) {
@@ -40,8 +40,8 @@ void Tower::setPosition(int x, int y) {
 
 void Tower::fire(vector<Enemy>& enemies) {
     for (size_t i = 0; i < enemies.size(); i++) {
-        vector<int> enemyPosition = enemies[i].getPosition();
-        int distance = abs(enemyPosition[0] - position[0]) + abs(enemyPosition[1] - position[1]);
+        pair<int, int> enemyPosition = enemies[i].getPosition();
+        int distance = abs(enemyPosition.first - position.first) + abs(enemyPosition.second - position.second);
         if (distance <= range) {
             enemies[i].takeDamage(damage);
             ++numberOfFire;
@@ -61,8 +61,8 @@ void Tower::upgrade() {
 
 void Tower::fireCount(vector<Enemy>& enemies) {
     for (size_t i = 0; i < enemies.size(); ++i) {
-        std::vector<int> enemyPosition = enemies[i].getPosition();
-        int distance = std::abs(enemyPosition[0] - position[0]) + std::abs(enemyPosition[1] - position[1]);
+        pair<int, int> enemyPosition = enemies[i].getPosition();
+        int distance = abs(enemyPosition.first - position.first) + abs(enemyPosition.second - position.second);
         if (distance <= range) {
             enemies[i].takeDamage(damage);
         }

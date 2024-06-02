@@ -18,7 +18,7 @@ public:
     int getNumberofFire() const;
     void setNumberofFire(int numberOfFire);
 
-    vector<int> getPosition() const;
+    pair<int, int> getPosition() const;
     void setPosition(int x, int y);
 
     void fire(vector<Enemy>& enemies);
@@ -30,6 +30,6 @@ private:
     int range;
     int fireSpeed;
     int numberOfFire;
-    vector<int> position;
+    pair<int, int> position;
 
 };
