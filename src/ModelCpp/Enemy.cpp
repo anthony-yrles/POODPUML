@@ -1,6 +1,8 @@
 #include "./ModelH/Enemy.h"
 
-Enemy::Enemy(int life, int speed, int startX, int startY) : lifePoints(life), speed(speed), position(startX, startY) {}
+Enemy::Enemy(int life, int speed, int startX, int startY, SDL_Renderer* renderer, int x, int y, int width, int height, const char* image) :
+    Entity(renderer, x, y, width, height, image) , lifePoints(life), speed(speed), startX(startX), startY(startY), 
+    movement(0, 0), position(x, y) {}
 
 int Enemy::getLifePoints() const {
     return lifePoints;
@@ -18,7 +20,7 @@ void Enemy::setSpeed(int spd) {
     speed = spd;
 }
 
-vector<int> Enemy::getPosition() const {
+pair<int, int> Enemy::getPosition() const {
     return position;
 }
 
@@ -44,8 +46,8 @@ void Enemy::takeDamage(int damage) {
 }
 
 void Enemy::move(int deltaX, int deltaY) {
-    int newX = position[0] + deltaX * speed;
-    int newY = position[1] + deltaY * speed;
+    int newX = position.first + deltaX * speed;
+    int newY = position.second + deltaY * speed;
     setPosition(newX, newY);
     setMovement(deltaX, deltaY);
 }
