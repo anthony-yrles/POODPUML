@@ -20,6 +20,22 @@ void Enemy::setSpeed(int spd) {
     speed = spd;
 }
 
+int Enemy::getStartX() const {
+    return startX;
+}
+
+void Enemy::setStartX(int x) {
+    startX = x;
+}
+
+int Enemy::getStartY() const {
+    return startY;
+}
+
+void Enemy::setStartY(int y) {
+    startY = y;
+}
+
 pair<int, int> Enemy::getPosition() const {
     return position;
 }

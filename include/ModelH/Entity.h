@@ -7,24 +7,25 @@ class Entity {
 public:
     Entity(SDL_Renderer* renderer, int x, int y, int width, int height, const char* image);
 
-    int getEntiryX() const;
+    int getEntityX() const;
     void setEntityX(int x);
+
     int getEntityY() const;
     void setEntityY(int y);
-    int getEntiryWidth() const;
+
+    int getEntityWidth() const;
     void setEntityWidth(int width);
-    int getEntiryHeight() const;
+
+    int getEntityHeight() const;
     void setEntityHeight(int height);
-    const char* getEntiryImage() const;
+
+    const char* getEntityImage() const;
     void setEntityImage(const char* image);
 
     void drawEntity(Draw* draw);
 
-private:
+protected:
     SDL_Renderer* renderer;
-    int x;
-    int y;
-    int width;
-    int height;
+    int x, y, width, height;
     const char* image;
 };

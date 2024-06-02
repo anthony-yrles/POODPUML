@@ -3,7 +3,7 @@
 Entity::Entity(SDL_Renderer* renderer, int x, int y, int width, int height, const char* image) : 
     renderer(renderer), x(x), y(y), width(width), height(height), image(image) {}
 
-int Entity::getEntiryX() const {
+int Entity::getEntityX() const {
     return x;
 }
 
@@ -19,7 +19,7 @@ void Entity::setEntityY(int y) {
     this->y = y;
 }
 
-int Entity::getEntiryWidth() const {
+int Entity::getEntityWidth() const {
     return width;
 }
 
@@ -27,7 +27,7 @@ void Entity::setEntityWidth(int width) {
     this->width = width;
 }
 
-int Entity::getEntiryHeight() const {
+int Entity::getEntityHeight() const {
     return height;
 }
 
@@ -35,7 +35,7 @@ void Entity::setEntityHeight(int height) {
     this->height = height;
 }
 
-const char* Entity::getEntiryImage() const {
+const char* Entity::getEntityImage() const {
     return image;
 }
 
