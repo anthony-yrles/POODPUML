@@ -35,6 +35,7 @@ bool GuiInGame::drawInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool c
         }
         drawMap(filename, &map, &draw, WIDTH - 300, HEIGHT, gameRenderer, &mapController);
         drawEnemy(&map, &mapController, &draw, filename, 10, WIDTH - 300, HEIGHT, gameRenderer);
+        mapController.enemiesMovement(filename, &map, beginX, beginY, tileWidth, tileHeight);
         SDL_RenderPresent(gameRenderer);
     }
     return running;
@@ -50,8 +51,6 @@ void GuiInGame::tileSize(int WIDTH, int HEIGHT, int filewidth, int fileheight) {
         tileWidth = tileHeight;
         beginX = (WIDTH - (tileWidth * filewidth)) / 2;
     }
-    // startX = beginX + j * tileWidth + tileWidth / 2;
-    // startY = beginY + i * tileHeight + tileHeight / 2;
 }
 
 void GuiInGame::drawMap(const string& filename, Map* map, Draw* draw, int width, int height, SDL_Renderer* gameRenderer, MapController* mapController) {
@@ -83,12 +82,20 @@ void GuiInGame::drawEnemy(Map* map, MapController* mapController, Draw* draw, co
     vector<vector<Tile>> tiles = mapController->createAndReturnMap(filename, map);
     tileSize(width, height, map->getFileWidth(), map->getFileHeight());
 
+    mapController->createEnemy(100, 1, 0, 0, 5, gameRenderer, 0, 0, 0, 0, "assets/images/gobelin.png");
+
     if (mapController->spawnTime()) {
         for (size_t i = 0; i < tiles.size() && enemySpawned <= enemyNumber; ++i) {
             for (size_t j = 0; j < tiles[i].size() && enemySpawned <= enemyNumber; ++j) {
                 if (tiles[i][j].isMonsterBegin) {
-                    // mapController->createEnemy(100, 1, startX, startY, enemyNumber, gameRenderer, beginX + j * tileWidth, beginY + i * tileHeight, tileWidth, tileHeight, "./assets/enemy/enemy.png");
-                    draw->drawRect(gameRenderer, beginX + j * tileWidth, beginY + i * tileHeight, tileWidth, tileHeight, 255, 255, 255, 255);
+                    auto enemy = mapController->getEnemy(enemySpawned); 
+                    enemy->setStartX(beginX + j * tileWidth + tileWidth / 2);
+                    enemy->setStartY(beginY + i * tileHeight + tileHeight / 2);
+                    enemy->setEntityX(beginX + j * tileWidth);
+                    enemy->setEntityY(beginY + i * tileHeight);
+                    enemy->setEntityWidth(tileWidth);
+                    enemy->setEntityHeight(tileHeight);
+                    enemy->drawEntity(draw);
                     ++enemySpawned;
                 }
             }
