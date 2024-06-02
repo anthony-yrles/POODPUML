@@ -1,6 +1,6 @@
 #include "./ControllerH/MapController.h"
 
-MapController::MapController() {}
+MapController::MapController() : allEnemiesCreated(false), lastSpawnTime(0), spawnInterval(1000) {}
 
 MapController::~MapController() {
     for (auto enemy : enemies) {
@@ -8,10 +8,10 @@ MapController::~MapController() {
     }
 }
 
-void MapController::createEnemy(int life, int speed, int startX, int startY, int numberEnemy) {
+void MapController::createEnemy(int life, int speed, int startX, int startY, int numberEnemy, SDL_Renderer* renderer, int x, int y, int width, int height, const char* image) {
     if (!allEnemiesCreated) {
         for (int i = 0; i < numberEnemy; ++i) {
-            Enemy* enemy = new Enemy(life, speed, startX, startY);
+            Enemy* enemy = new Enemy(life, speed, startX, startY, renderer, x, y, width, height, image);
             enemies.push_back(enemy);
         }
         allEnemiesCreated = true;
@@ -19,7 +19,8 @@ void MapController::createEnemy(int life, int speed, int startX, int startY, int
 }
 
 bool MapController::spawnTime() {
-    long long int currentTime = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+    using namespace chrono;
+    long long currentTime = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
     if (currentTime - lastSpawnTime >= spawnInterval) {
         lastSpawnTime = currentTime;
         return true;
@@ -28,34 +29,38 @@ bool MapController::spawnTime() {
 }
 
 void MapController::enemiesMovement(const string& filename, Map* map, int beginX, int beginY, int tileWidth, int tileHeight) {
-    
-    vector<vector<Tile>> tiles = createAndReturnMap(filename, map);
-    for (size_t i = 0; i < tiles.size(); i++) {
-        for (size_t j = 0; j < tiles[i].size(); j++) {
+    auto tiles = createAndReturnMap(filename, map);
+    for (size_t i = 0; i < tiles.size(); ++i) {
+        for (size_t j = 0; j < tiles[i].size(); ++j) {
             for (auto enemy : enemies) {
-                if (enemy->getPosition()[0] + enemy->getSpeed() == beginX + (j + 1) * tileWidth || enemy->getPosition()[1] + enemy->getSpeed() == beginY + (i + 1) * tileHeight) {
+                auto enemyPosition = enemy->getPosition();
+                auto enemySpeed = enemy->getSpeed();
+                if (enemyPosition.first + enemySpeed == beginX + (j + 1) * tileWidth || 
+                    enemyPosition.second + enemySpeed == beginY + (i + 1) * tileHeight) {
+                    
+                    auto movement = enemy->getMovement();
                     if (tiles[i][j].isTurnRight) {
-                        if (enemy->getMovement() == make_pair(0, 1)) {
+                        if (movement == std::make_pair(0, 1)) {
                             enemy->move(1, 0);
-                        } else if (enemy->getMovement() == make_pair(-1, 0)) {
+                        } else if (movement == std::make_pair(-1, 0)) {
                             enemy->move(0, 1);
-                        } else if (enemy->getMovement() == make_pair(0, -1)) {
+                        } else if (movement == std::make_pair(0, -1)) {
                             enemy->move(-1, 0);
-                        } else if (enemy->getMovement() == make_pair(1, 0)) {
+                        } else if (movement == std::make_pair(1, 0)) {
                             enemy->move(0, -1);
                         }
                     } else if (tiles[i][j].isTurnLeft) {
-                        if (enemy->getMovement() == make_pair(0, 1)) {
+                        if (movement == std::make_pair(0, 1)) {
                             enemy->move(-1, 0);
-                        } else if (enemy->getMovement() == make_pair(-1, 0)) {
+                        } else if (movement == std::make_pair(-1, 0)) {
                             enemy->move(0, -1);
-                        } else if (enemy->getMovement() == make_pair(0, -1)) {
+                        } else if (movement == std::make_pair(0, -1)) {
                             enemy->move(1, 0);
-                        } else if (enemy->getMovement() == make_pair(1, 0)) {
+                        } else if (movement == std::make_pair(1, 0)) {
                             enemy->move(0, 1);
                         }
                     } else {
-                        enemy->move(enemy->getMovement().first, enemy->getMovement().second);
+                        enemy->move(movement.first, movement.second);
                     }
                 }
             }
