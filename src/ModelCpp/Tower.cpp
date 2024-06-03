@@ -38,20 +38,20 @@ void Tower::setPosition(int x, int y) {
     position = {x, y};
 }
 
-void Tower::fire(vector<Enemy>& enemies) {
-    for (size_t i = 0; i < enemies.size(); i++) {
-        pair<int, int> enemyPosition = enemies[i].getPosition();
-        int distance = abs(enemyPosition.first - position.first) + abs(enemyPosition.second - position.second);
-        if (distance <= range) {
-            enemies[i].takeDamage(damage);
-            ++numberOfFire;
-            if (numberOfFire == 5) {
-                fireCount(enemies);
-                notifyObservers();
-            }
-        }
-    }  
-}
+// void Tower::fire(vector<Enemy>& enemies) {
+//     for (size_t i = 0; i < enemies.size(); i++) {
+//         pair<int, int> enemyPosition = enemies[i].getPosition();
+//         int distance = abs(enemyPosition.first - position.first) + abs(enemyPosition.second - position.second);
+//         if (distance <= range) {
+//             enemies[i].takeDamage(damage);
+//             ++numberOfFire;
+//             if (numberOfFire == 5) {
+//                 fireCount(enemies);
+//                 notifyObservers();
+//             }
+//         }
+//     }  
+// }
 
 void Tower::upgrade() {
     damage += 10;
@@ -59,13 +59,13 @@ void Tower::upgrade() {
     fireSpeed += 10;
 }
 
-void Tower::fireCount(vector<Enemy>& enemies) {
-    for (size_t i = 0; i < enemies.size(); ++i) {
-        pair<int, int> enemyPosition = enemies[i].getPosition();
-        int distance = abs(enemyPosition.first - position.first) + abs(enemyPosition.second - position.second);
-        if (distance <= range) {
-            enemies[i].takeDamage(damage);
-        }
-    }
-    numberOfFire = 0;
-}
+// void Tower::fireCount(vector<Enemy>& enemies) {
+//     for (size_t i = 0; i < enemies.size(); ++i) {
+//         pair<int, int> enemyPosition = enemies[i].getPosition();
+//         int distance = abs(enemyPosition.first - position.first) + abs(enemyPosition.second - position.second);
+//         if (distance <= range) {
+//             enemies[i].takeDamage(damage);
+//         }
+//     }
+//     numberOfFire = 0;
+// }

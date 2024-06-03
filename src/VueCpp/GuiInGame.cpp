@@ -38,7 +38,6 @@ bool GuiInGame::drawInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool c
         drawMap(filename, &map, &draw, WIDTH - 300, HEIGHT, gameRenderer, &mapController);
         if (enemiesDrawn.size() > 0) {
             for (auto enemy : enemiesDrawn) {
-                mapController.enemiesMovement(filename, &map, &draw, beginX, beginY, tileWidth, tileHeight);
                 enemy->drawEntity(&draw);
             }
         }
@@ -88,15 +87,13 @@ void GuiInGame::drawEnemy(Map* map, MapController* mapController, Draw* draw, co
     vector<vector<Tile>> tiles = mapController->createAndReturnMap(filename, map);
     tileSize(width, height, map->getFileWidth(), map->getFileHeight());
 
-    mapController->createEnemy(100, 1, 0, 0, enemyNumber, gameRenderer, beginX, beginY, tileWidth, tileHeight, "./assets/images/gobelin.png");
+    mapController->createEnemy(100, 1, enemyNumber, gameRenderer, beginX, beginY, tileWidth, tileHeight, "./assets/images/gobelin.png");
 
     if (mapController->spawnTime()) {
         for (size_t i = 0; i < tiles.size() && enemySpawned <= enemyNumber; ++i) {
             for (size_t j = 0; j < tiles[i].size() && enemySpawned <= enemyNumber; ++j) {
                 if (tiles[i][j].isMonsterBegin) {
                     auto enemy = mapController->getEnemy(enemySpawned); 
-                    enemy->setStartX(beginX + j * tileWidth + tileWidth / 2);
-                    enemy->setStartY(beginY + i * tileHeight + tileHeight / 2);
                     enemy->setEntityX(beginX + j * tileWidth);
                     enemy->setEntityY(beginY + i * tileHeight);
                     enemy->setEntityWidth(tileWidth);

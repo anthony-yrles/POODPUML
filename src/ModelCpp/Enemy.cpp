@@ -1,8 +1,7 @@
 #include "./ModelH/Enemy.h"
 
-Enemy::Enemy(int life, int speed, int startX, int startY, SDL_Renderer* renderer, int x, int y, int width, int height, const char* image) :
-    Entity(renderer, x, y, width, height, image) , lifePoints(life), speed(speed), startX(startX), startY(startY), 
-    movement(0, 0), position(x, y) {}
+Enemy::Enemy(int life, int speed, SDL_Renderer* renderer, int x, int y, int width, int height, const char* image) :
+    Entity(renderer, x, y, width, height, image) , lifePoints(life), speed(speed) {}
 
 int Enemy::getLifePoints() const {
     return lifePoints;
@@ -20,36 +19,32 @@ void Enemy::setSpeed(int spd) {
     speed = spd;
 }
 
-int Enemy::getStartX() const {
-    return startX;
+pair<int, int> Enemy::getEnemyTile(int tileWidth, int tileHeight) {
+    int enemyTileX = getEntityX() / tileWidth;
+    int enemyTileY = getEntityY() / tileHeight;
+    return {enemyTileX, enemyTileY};
 }
 
-void Enemy::setStartX(int x) {
-    startX = x;
-}
+void Enemy::updatePosition(int tileWidth, int tileHeight, const vector<pair<int, int>>& wayPoints) {
+    if (currentWaypoint >= wayPoints.size()) return;
 
-int Enemy::getStartY() const {
-    return startY;
-}
+    int targetX = wayPoints[currentWaypoint].first * tileWidth;
+    int targetY = wayPoints[currentWaypoint].second * tileHeight;
 
-void Enemy::setStartY(int y) {
-    startY = y;
-}
+    int dx = targetX - x;
+    int dy = targetY - y;
+    float distance = sqrt(dx * dx + dy * dy);
 
-pair<int, int> Enemy::getPosition() const {
-    return position;
-}
-
-void Enemy::setPosition(int x, int y) {
-    position = {x, y};
-}
-
-pair<int, int> Enemy::getMovement() const {
-    return movement;
-}
-
-void Enemy::setMovement(int x, int y) {
-    movement = {x, y};
+    if (distance < speed) {
+        x = targetX;
+        y = targetY;
+        currentWaypoint++;
+    } else {
+        float directionX = dx / distance;
+        float directionY = dy / distance;
+        x += speed * directionX;
+        y += speed * directionY;
+    }
 }
 
 void Enemy::takeDamage(int damage) {
@@ -59,11 +54,4 @@ void Enemy::takeDamage(int damage) {
         setLifePoints(lifePoints);
         notifyObservers();
     }
-}
-
-void Enemy::move(int deltaX, int deltaY) {
-    int newX = position.first + deltaX * speed;
-    int newY = position.second + deltaY * speed;
-    setPosition(newX, newY);
-    setMovement(deltaX, deltaY);
 }

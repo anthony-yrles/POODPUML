@@ -4,9 +4,8 @@
 #include "./ModelH/Entity.h"
 
 class Enemy : public Observable, public Entity {
-
 public:
-    Enemy(int life, int speed, int startX, int startY, SDL_Renderer* renderer, int x, int y, int width, int height, const char* image);
+    Enemy(int life, int speed, SDL_Renderer* renderer, int x, int y, int width, int height, const char* image);
 
     int getLifePoints() const;
     void setLifePoints(int lp);
@@ -14,26 +13,15 @@ public:
     int getSpeed() const;
     void setSpeed(int spd);
 
-    int getStartX() const;
-    void setStartX(int x);
-
-    int getStartY() const;
-    void setStartY(int y);
-
-    pair<int, int> getPosition() const;
-    void setPosition(int x, int y);
-
-    pair<int, int> getMovement() const;
-    void setMovement(int x, int y);
-
     void takeDamage(int damage);
-    void move(int x, int y);
+
+    void updatePosition(int tileWidth, int tileHeight, const vector<pair<int, int>>& wayPoints);
     
+    pair<int, int> getEnemyTile(int tileWidth, int tileHeight);
+
 private:
     int lifePoints;
     int speed;
-    int startX;
-    int startY;
-    pair<int, int> movement;
-    pair<int, int> position;
+    vector<pair<int, int>> waypoints;
+    int currentWaypoint;
 };

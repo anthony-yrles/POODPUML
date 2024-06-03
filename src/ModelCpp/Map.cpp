@@ -123,3 +123,17 @@ void Map::createMap(const string& filename) {
         }
     }
 }
+
+void Map::searchForWayPoints() {
+    int numRows = tiles.size();
+    if (numRows == 0) return;
+    int numCols = tiles[0].size();
+
+    for (int i = 0; i < numRows; ++i) {
+        for (int j = 0; j < numCols; ++j) {
+            if (tiles[i][j].isMonsterPath || tiles[i][j].isMonsterEnd) {
+                wayPoints.emplace_back(i, j); // Ajouter les coordonnées du waypoint
+            }
+        }
+    }
+}
