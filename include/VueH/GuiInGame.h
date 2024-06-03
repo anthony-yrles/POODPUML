@@ -23,6 +23,7 @@ private:
     bool clicked;
     bool running;
     vector<vector<Tile>> tiles;
+    vector<Enemy*> enemiesDrawn;
 
     SDL_Event evenement;
     SDL_Window* gameWindow;

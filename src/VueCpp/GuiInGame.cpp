@@ -18,6 +18,8 @@ bool GuiInGame::drawInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool c
     MapController mapController;
     const string filename = "./assets/map/map.txt";
     Map map(WIDTH - 300, HEIGHT, 0, 0, filename);
+    
+    drawEnemy(&map, &mapController, &draw, filename, 10, WIDTH - 300, HEIGHT, gameRenderer);
 
     // Game loop
     while (!running) {
@@ -34,8 +36,12 @@ bool GuiInGame::drawInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool c
             }
         }
         drawMap(filename, &map, &draw, WIDTH - 300, HEIGHT, gameRenderer, &mapController);
-        drawEnemy(&map, &mapController, &draw, filename, 10, WIDTH - 300, HEIGHT, gameRenderer);
-        mapController.enemiesMovement(filename, &map, beginX, beginY, tileWidth, tileHeight);
+        if (enemiesDrawn.size() > 0) {
+            for (auto enemy : enemiesDrawn) {
+                mapController.enemiesMovement(filename, &map, &draw, beginX, beginY, tileWidth, tileHeight);
+                enemy->drawEntity(&draw);
+            }
+        }
         SDL_RenderPresent(gameRenderer);
     }
     return running;
@@ -82,7 +88,7 @@ void GuiInGame::drawEnemy(Map* map, MapController* mapController, Draw* draw, co
     vector<vector<Tile>> tiles = mapController->createAndReturnMap(filename, map);
     tileSize(width, height, map->getFileWidth(), map->getFileHeight());
 
-    mapController->createEnemy(100, 1, 0, 0, 5, gameRenderer, 0, 0, 0, 0, "assets/images/gobelin.png");
+    mapController->createEnemy(100, 1, 0, 0, enemyNumber, gameRenderer, beginX, beginY, tileWidth, tileHeight, "./assets/images/gobelin.png");
 
     if (mapController->spawnTime()) {
         for (size_t i = 0; i < tiles.size() && enemySpawned <= enemyNumber; ++i) {
@@ -95,6 +101,7 @@ void GuiInGame::drawEnemy(Map* map, MapController* mapController, Draw* draw, co
                     enemy->setEntityY(beginY + i * tileHeight);
                     enemy->setEntityWidth(tileWidth);
                     enemy->setEntityHeight(tileHeight);
+                    enemiesDrawn.push_back(enemy);
                     enemy->drawEntity(draw);
                     ++enemySpawned;
                 }
