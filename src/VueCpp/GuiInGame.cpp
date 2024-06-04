@@ -36,72 +36,59 @@ bool GuiInGame::drawInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool c
             }
         }
         drawMap(filename, &map, &draw, WIDTH - 300, HEIGHT, gameRenderer, &mapController);
-        if (enemiesDrawn.size() > 0) {
-            for (auto enemy : enemiesDrawn) {
-                enemy->drawEntity(&draw);
-            }
-        }
+        // if (enemiesDrawn.size() > 0) {
+        //     for (auto enemy : enemiesDrawn) {
+
+        //         enemy->drawEntity(&draw);
+        //     }
+        // }
+        drawEnemy(&map, &mapController, &draw, filename, 10, WIDTH - 300, HEIGHT, gameRenderer);
         SDL_RenderPresent(gameRenderer);
     }
     return running;
 }
 
-void GuiInGame::tileSize(int WIDTH, int HEIGHT, int filewidth, int fileheight) {
-    if (filewidth > fileheight) {
-        tileWidth = WIDTH / filewidth;
-        tileHeight = tileWidth;
-        beginY = (HEIGHT - (tileHeight * fileheight)) / 2;
-    } else {
-        tileHeight = HEIGHT / fileheight;
-        tileWidth = tileHeight;
-        beginX = (WIDTH - (tileWidth * filewidth)) / 2;
-    }
-}
-
 void GuiInGame::drawMap(const string& filename, Map* map, Draw* draw, int width, int height, SDL_Renderer* gameRenderer, MapController* mapController) {
     
     vector<vector<Tile>> tiles = mapController->createAndReturnMap(filename, map);
-    tileSize(width, height, map->getFileWidth(), map->getFileHeight());
+    mapController->tileSize(width, height, map->getFileWidth(), map->getFileHeight());
 
     for (long long unsigned int i = 0; i < tiles.size(); ++i) {
         for (long long unsigned int j = 0; j < tiles[i].size(); ++j) {
             if (tiles[i][j].isEmpty) {
-                draw->drawRect(gameRenderer, beginX + j * tileWidth, beginY + i * tileHeight, tileWidth, tileHeight, 0, 255, 0, 255);
+                draw->drawRect(gameRenderer, mapController->getBeginX() + j * mapController-> getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight(), mapController-> getTileWidth(), mapController->getTileHeight(), 0, 255, 0, 255);
             } else if (tiles[i][j].isMonsterBegin) {
-                draw->drawRect(gameRenderer, beginX + j * tileWidth, beginY + i * tileHeight, tileWidth, tileHeight, 255, 0, 0, 255);
+                draw->drawRect(gameRenderer, mapController->getBeginX() + j * mapController-> getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight(), mapController-> getTileWidth(), mapController->getTileHeight(), 255, 0, 0, 255);
             } else if (tiles[i][j].isMonsterEnd) {
-                draw->drawRect(gameRenderer, beginX + j * tileWidth, beginY + i * tileHeight, tileWidth, tileHeight, 255, 0, 0, 255);
+                draw->drawRect(gameRenderer, mapController->getBeginX() + j * mapController-> getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight(), mapController-> getTileWidth(), mapController->getTileHeight(), 255, 0, 0, 255);
             } else if (tiles[i][j].isMonsterPath) {
-                draw->drawRect(gameRenderer, beginX + j * tileWidth, beginY + i * tileHeight, tileWidth, tileHeight, 255, 0, 255, 255);
+                draw->drawRect(gameRenderer, mapController->getBeginX() + j * mapController-> getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight(), mapController-> getTileWidth(), mapController->getTileHeight(), 255, 0, 255, 255);
             } else if (tiles[i][j].isTowerEmplacement) {
-                draw->drawRect(gameRenderer, beginX + j * tileWidth, beginY + i * tileHeight, tileWidth, tileHeight, 0, 0, 255, 255);
+                draw->drawRect(gameRenderer, mapController->getBeginX() + j * mapController-> getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight(), mapController-> getTileWidth(), mapController->getTileHeight(), 0, 0, 255, 255);
             } else if (tiles[i][j].isDecoration) {
-                draw->drawRect(gameRenderer, beginX + j * tileWidth, beginY + i * tileHeight, tileWidth, tileHeight, 255, 255, 0, 255);
+                draw->drawRect(gameRenderer, mapController->getBeginX() + j * mapController-> getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight(), mapController-> getTileWidth(), mapController->getTileHeight(), 255, 255, 0, 255);
             }
         }
     }
 }
 
 void GuiInGame::drawEnemy(Map* map, MapController* mapController, Draw* draw, const string& filename, int enemyNumber, int width, int height, SDL_Renderer* gameRenderer) {
+    // Assurez-vous que les ennemis sont créés une seule fois
+    mapController->createEnemy(100, 1, enemyNumber, gameRenderer, 0, 0, 0, 0, "./assets/images/gobelin.png");
 
-    vector<vector<Tile>> tiles = mapController->createAndReturnMap(filename, map);
-    tileSize(width, height, map->getFileWidth(), map->getFileHeight());
+    // Positionnez les ennemis
+    mapController->setEnemiesPositions(map, filename, enemyNumber, width, height);
 
-    mapController->createEnemy(100, 1, enemyNumber, gameRenderer, beginX, beginY, tileWidth, tileHeight, "./assets/images/gobelin.png");
-
-    if (mapController->spawnTime()) {
-        for (size_t i = 0; i < tiles.size() && enemySpawned <= enemyNumber; ++i) {
-            for (size_t j = 0; j < tiles[i].size() && enemySpawned <= enemyNumber; ++j) {
-                if (tiles[i][j].isMonsterBegin) {
-                    auto enemy = mapController->getEnemy(enemySpawned); 
-                    enemy->setEntityX(beginX + j * tileWidth);
-                    enemy->setEntityY(beginY + i * tileHeight);
-                    enemy->setEntityWidth(tileWidth);
-                    enemy->setEntityHeight(tileHeight);
+    // Dessinez les ennemis
+    if (enemySpawned < enemyNumber) {
+        for (int k = 0; k < enemyNumber; ++k) {
+            if (mapController->spawnTime()) {
+                auto enemy = mapController->getEnemy(k);
+                if (enemy) {
                     enemiesDrawn.push_back(enemy);
                     enemy->drawEntity(draw);
-                    ++enemySpawned;
                 }
+                enemySpawned++;
             }
         }
     }
