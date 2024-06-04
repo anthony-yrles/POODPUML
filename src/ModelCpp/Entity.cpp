@@ -1,21 +1,21 @@
 #include "./ModelH/Entity.h"
 
-Entity::Entity(SDL_Renderer* renderer, int x, int y, int width, int height, const char* image) : 
+Entity::Entity(SDL_Renderer* renderer, float x, float y, int width, int height, const char* image) : 
     renderer(renderer), x(x), y(y), width(width), height(height), image(image) {}
 
-int Entity::getEntityX() const {
+float Entity::getEntityX() const {
     return x;
 }
 
-void Entity::setEntityX(int x) {
+void Entity::setEntityX(float x) {
     this->x = x;
 }
 
-int Entity::getEntityY() const {
+float Entity::getEntityY() const {
     return y;
 }
 
-void Entity::setEntityY(int y) {
+void Entity::setEntityY(float y) {
     this->y = y;
 }
 

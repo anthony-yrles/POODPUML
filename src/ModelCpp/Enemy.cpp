@@ -1,6 +1,6 @@
 #include "./ModelH/Enemy.h"
 
-Enemy::Enemy(int life, int speed, SDL_Renderer* renderer, int x, int y, int width, int height, const char* image) :
+Enemy::Enemy(int life, int speed, SDL_Renderer* renderer, float x, float y, int width, int height, const char* image) :
     Entity(renderer, x, y, width, height, image) , lifePoints(life), speed(speed) {}
 
 int Enemy::getLifePoints() const {
@@ -19,14 +19,14 @@ void Enemy::setSpeed(int spd) {
     speed = spd;
 }
 
-void Enemy::updatePosition(int tileWidth, int tileHeight, const vector<pair<int, int>>& wayPoints) {
+void Enemy::updatePosition(int tileWidth, int tileHeight, const vector<pair<int, int>>& wayPoints, int beginX, int beginY) {
     if (currentWaypoint >= wayPoints.size()) return;
 
-    int targetX = wayPoints[currentWaypoint].first * tileWidth;
-    int targetY = wayPoints[currentWaypoint].second * tileHeight;
+    float targetX = beginX + wayPoints[currentWaypoint].first * tileWidth;
+    float targetY = beginY + wayPoints[currentWaypoint].second * tileHeight;
 
-    int dx = targetX - x;
-    int dy = targetY - y;
+    float dx = targetX - x;
+    float dy = targetY - y;
     float distance = sqrt(dx * dx + dy * dy);
 
     if (distance < speed) {

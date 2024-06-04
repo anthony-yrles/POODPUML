@@ -21,15 +21,11 @@ Map::Map(int width, int height, int fileWidth, int fileHeight, const string& fil
 
 Map::~Map() {}
 
-void Map::setTileType(int x, int y, bool isEmpty, bool isMonsterPath, bool isMonsterBegin, bool isMonsterEnd, bool isTowerEmplacement, bool isDecoration, bool isTurnRight, bool isTurnLeft) {
-    tiles[x][y].isEmpty = isEmpty;
+void Map::setTileType(int x, int y, bool isMonsterPath, bool isMonsterBegin, bool isMonsterEnd, bool isTowerEmplacement) {
     tiles[x][y].isMonsterPath = isMonsterPath;
     tiles[x][y].isMonsterBegin = isMonsterBegin;
     tiles[x][y].isMonsterEnd = isMonsterEnd;
     tiles[x][y].isTowerEmplacement = isTowerEmplacement;
-    tiles[x][y].isDecoration = isDecoration;
-    tiles[x][y].isTurnRight = isTurnRight;
-    tiles[x][y].isTurnLeft = isTurnLeft;
 }
 
 
@@ -99,27 +95,14 @@ void Map::createMap(const string& filename) {
             // Créer une instance temporaire de Tile
             Tile tile;
             // Décoder les types de tuiles à partir du fichier
-            if (line[y] == '2') {
-                tile.isMonsterBegin = true;
-                tile.isMonsterPath = true;
-            } else if (line[y] == '3') {
-                tile.isMonsterEnd = true;
-                tile.isMonsterPath = true;
-            } else if (line[y] == '6') {
-                tile.isTurnRight = true;
-                tile.isEmpty = true;
-            } else if (line[y] == '7') {
-                tile.isTurnLeft = true;
-                tile.isEmpty = true;
-            } else {
-                tile.isEmpty = (line[y] == '0');
-                tile.isMonsterPath = (line[y] == '1');
-                tile.isTowerEmplacement = (line[y] == '4');
-                tile.isDecoration = (line[y] == '5');
-            }
+            
+            tile.isMonsterPath = (line[y] == '1');
+            tile.isMonsterBegin = (line[y] == '2');
+            tile.isMonsterEnd = (line[y] == '3');
+            tile.isTowerEmplacement = (line[y] == '4');
             
             // Définir le type de tuile dans la grille
-            setTileType(x, y, tile.isEmpty, tile.isMonsterPath, tile.isMonsterBegin, tile.isMonsterEnd, tile.isTowerEmplacement, tile.isDecoration, tile.isTurnRight, tile.isTurnLeft);
+            setTileType(x, y, tile.isMonsterPath, tile.isMonsterBegin, tile.isMonsterEnd, tile.isTowerEmplacement);
         }
     }
 }

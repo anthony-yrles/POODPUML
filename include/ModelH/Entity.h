@@ -5,13 +5,13 @@
 
 class Entity {
 public:
-    Entity(SDL_Renderer* renderer, int x, int y, int width, int height, const char* image);
+    Entity(SDL_Renderer* renderer, float x, float y, int width, int height, const char* image);
 
-    int getEntityX() const;
-    void setEntityX(int x);
+    float getEntityX() const;
+    void setEntityX(float x);
 
-    int getEntityY() const;
-    void setEntityY(int y);
+    float getEntityY() const;
+    void setEntityY(float y);
 
     int getEntityWidth() const;
     void setEntityWidth(int width);
@@ -26,6 +26,7 @@ public:
 
 protected:
     SDL_Renderer* renderer;
-    int x, y, width, height;
+    float x, y;
+    int width, height;
     const char* image;
 };

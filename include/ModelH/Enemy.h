@@ -5,7 +5,7 @@
 
 class Enemy : public Observable, public Entity {
 public:
-    Enemy(int life, int speed, SDL_Renderer* renderer, int x, int y, int width, int height, const char* image);
+    Enemy(int life, int speed, SDL_Renderer* renderer, float x, float y, int width, int height, const char* image);
 
     int getLifePoints() const;
     void setLifePoints(int lp);
@@ -15,7 +15,7 @@ public:
 
     void takeDamage(int damage);
 
-    void updatePosition(int tileWidth, int tileHeight, const vector<pair<int, int>>& wayPoints);
+    void updatePosition(int tileWidth, int tileHeight, const vector<pair<int, int>>& wayPoints, int beginX, int beginY);
 
 private:
     int lifePoints;

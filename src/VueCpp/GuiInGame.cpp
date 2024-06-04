@@ -19,7 +19,7 @@ bool GuiInGame::drawInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool c
     const string filename = "./assets/map/map.txt";
     Map map(WIDTH - 300, HEIGHT, 0, 0, filename);
     
-    drawEnemy(&map, &mapController, &draw, filename, 10, WIDTH - 300, HEIGHT, gameRenderer);
+    // drawEnemy(&map, &mapController, &draw, filename, 1, WIDTH - 300, HEIGHT, gameRenderer);
 
     // Game loop
     while (!running) {
@@ -39,14 +39,9 @@ bool GuiInGame::drawInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool c
 
         drawMap(filename, &map, &draw, WIDTH - 300, HEIGHT, gameRenderer, &mapController);
         
-        if (enemiesDrawn.size() > 0) {
-            for (auto enemy : enemiesDrawn) {
-                enemy->drawEntity(&draw);
-            }
-        }
-        
         drawEnemy(&map, &mapController, &draw, filename, 10, WIDTH - 300, HEIGHT, gameRenderer);
-        mapController.moveEnemies(mapController.searchForWayPoints(&map), mapController.getTileWidth(), mapController.getTileHeight());
+
+        mapController.moveEnemies(enemiesDrawn, mapController.searchForWayPoints(&map), &draw);
         
         SDL_RenderPresent(gameRenderer);
     }
@@ -58,28 +53,12 @@ void GuiInGame::drawMap(const string& filename, Map* map, Draw* draw, int width,
     vector<vector<Tile>> tiles = mapController->createAndReturnMap(filename, map);
     mapController->tileSize(width, height, map->getFileWidth(), map->getFileHeight());
 
-    for (long long unsigned int i = 0; i < tiles.size(); ++i) {
-        for (long long unsigned int j = 0; j < tiles[i].size(); ++j) {
-            if (tiles[i][j].isEmpty) {
-                draw->drawRect(gameRenderer, mapController->getBeginX() + j * mapController-> getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight(), mapController-> getTileWidth(), mapController->getTileHeight(), 0, 255, 0, 255);
-            } else if (tiles[i][j].isMonsterBegin) {
-                draw->drawRect(gameRenderer, mapController->getBeginX() + j * mapController-> getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight(), mapController-> getTileWidth(), mapController->getTileHeight(), 255, 0, 0, 255);
-            } else if (tiles[i][j].isMonsterEnd) {
-                draw->drawRect(gameRenderer, mapController->getBeginX() + j * mapController-> getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight(), mapController-> getTileWidth(), mapController->getTileHeight(), 255, 0, 0, 255);
-            } else if (tiles[i][j].isMonsterPath) {
-                draw->drawRect(gameRenderer, mapController->getBeginX() + j * mapController-> getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight(), mapController-> getTileWidth(), mapController->getTileHeight(), 255, 0, 255, 255);
-            } else if (tiles[i][j].isTowerEmplacement) {
-                draw->drawRect(gameRenderer, mapController->getBeginX() + j * mapController-> getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight(), mapController-> getTileWidth(), mapController->getTileHeight(), 0, 0, 255, 255);
-            } else if (tiles[i][j].isDecoration) {
-                draw->drawRect(gameRenderer, mapController->getBeginX() + j * mapController-> getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight(), mapController-> getTileWidth(), mapController->getTileHeight(), 255, 255, 0, 255);
-            }
-        }
-    }
+    draw->drawImage(gameRenderer, 300, mapController->getBeginY(), width, height - mapController->getBeginY() * 2, "./assets/map/map.png");
 }
 
 void GuiInGame::drawEnemy(Map* map, MapController* mapController, Draw* draw, const string& filename, int enemyNumber, int width, int height, SDL_Renderer* gameRenderer) {
     // Assurez-vous que les ennemis sont créés une seule fois
-    mapController->createEnemy(100, 1, enemyNumber, gameRenderer, 0, 0, 0, 0, "./assets/images/gobelin.png");
+    mapController->createEnemy(100, 3, enemyNumber, gameRenderer, 0, 0, 0, 0, "./assets/images/gobelin.png");
 
     // Positionnez les ennemis
     mapController->setEnemiesPositions(map, filename, enemyNumber, width, height);

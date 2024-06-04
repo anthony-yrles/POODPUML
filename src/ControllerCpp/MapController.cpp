@@ -27,6 +27,7 @@ Enemy* MapController::getEnemy(size_t index) {
 
 
 void MapController::setEnemiesPositions(Map* map, const string& filename, int enemyNumber, int width, int height) {
+
     vector<vector<Tile>> tiles = createAndReturnMap(filename, map);
     tileSize(width, height, map->getFileWidth(), map->getFileHeight());
 
@@ -67,10 +68,12 @@ void MapController::tileSize(int WIDTH, int HEIGHT, int filewidth, int fileheigh
         tileWidth = WIDTH / filewidth;
         tileHeight = tileWidth;
         beginY = (HEIGHT - (tileHeight * fileheight)) / 2;
+        beginX = 300;
     } else {
         tileHeight = HEIGHT / fileheight;
         tileWidth = tileHeight;
         beginX = (WIDTH - (tileWidth * filewidth)) / 2;
+        beginY = 0;
     }
 }
 
@@ -78,8 +81,9 @@ vector<pair<int, int>> MapController::searchForWayPoints(Map* map) {
     return map->searchForWayPoints();
 }
 
-void MapController::moveEnemies(vector<pair<int, int>> wayPoints, int tileWidth, int tileHeight) {
-    for (auto enemy : enemies) {
-        enemy->updatePosition(tileWidth, tileHeight, wayPoints);
+void MapController::moveEnemies(vector<Enemy*>& enemiesDrawn, vector<pair<int, int>> wayPoints, Draw* draw) {
+    for (auto enemy : enemiesDrawn) {
+        enemy->updatePosition(tileWidth, tileHeight, wayPoints, beginX, beginY);
+        enemy->drawEntity(draw);
     }
 }
