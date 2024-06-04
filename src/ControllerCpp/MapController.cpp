@@ -74,8 +74,8 @@ void MapController::tileSize(int WIDTH, int HEIGHT, int filewidth, int fileheigh
     }
 }
 
-void MapController::searchForWayPoints(Map* map) {
-    map->searchForWayPoints();
+vector<pair<int, int>> MapController::searchForWayPoints(Map* map) {
+    return map->searchForWayPoints();
 }
 
 void MapController::moveEnemies(vector<pair<int, int>> wayPoints, int tileWidth, int tileHeight) {

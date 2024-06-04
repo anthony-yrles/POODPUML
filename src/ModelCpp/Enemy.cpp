@@ -19,12 +19,6 @@ void Enemy::setSpeed(int spd) {
     speed = spd;
 }
 
-pair<int, int> Enemy::getEnemyTile(int tileWidth, int tileHeight) {
-    int enemyTileX = getEntityX() / tileWidth;
-    int enemyTileY = getEntityY() / tileHeight;
-    return {enemyTileX, enemyTileY};
-}
-
 void Enemy::updatePosition(int tileWidth, int tileHeight, const vector<pair<int, int>>& wayPoints) {
     if (currentWaypoint >= wayPoints.size()) return;
 

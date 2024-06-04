@@ -16,8 +16,6 @@ public:
     void takeDamage(int damage);
 
     void updatePosition(int tileWidth, int tileHeight, const vector<pair<int, int>>& wayPoints);
-    
-    pair<int, int> getEnemyTile(int tileWidth, int tileHeight);
 
 private:
     int lifePoints;

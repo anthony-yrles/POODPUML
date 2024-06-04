@@ -34,7 +34,7 @@ public:
     void setFileHeight(int fileHeight);
     void searchFileWidthHeight(const string& filename);
     void createMap(const string& filename);
-    void searchForWayPoints();
+    vector<pair<int, int>> searchForWayPoints();
 
 private:
     int width;

@@ -35,14 +35,19 @@ bool GuiInGame::drawInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool c
                 clicked = false;
             }
         }
-        drawMap(filename, &map, &draw, WIDTH - 300, HEIGHT, gameRenderer, &mapController);
-        // if (enemiesDrawn.size() > 0) {
-        //     for (auto enemy : enemiesDrawn) {
+        // SDL_RenderClear(gameRenderer);
 
-        //         enemy->drawEntity(&draw);
-        //     }
-        // }
+        drawMap(filename, &map, &draw, WIDTH - 300, HEIGHT, gameRenderer, &mapController);
+        
+        if (enemiesDrawn.size() > 0) {
+            for (auto enemy : enemiesDrawn) {
+                enemy->drawEntity(&draw);
+            }
+        }
+        
         drawEnemy(&map, &mapController, &draw, filename, 10, WIDTH - 300, HEIGHT, gameRenderer);
+        mapController.moveEnemies(mapController.searchForWayPoints(&map), mapController.getTileWidth(), mapController.getTileHeight());
+        
         SDL_RenderPresent(gameRenderer);
     }
     return running;
