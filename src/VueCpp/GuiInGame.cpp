@@ -45,7 +45,7 @@ bool GuiInGame::drawInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool c
             }
         }
 
-        drawEnemy(&map, &mapController, &draw, filename, 2, WIDTH - 300, HEIGHT, gameRenderer);
+        drawEnemy(&map, &mapController, &draw, filename, 10, WIDTH - 300, HEIGHT, gameRenderer);
 
         SDL_RenderPresent(gameRenderer);
     }
@@ -62,7 +62,7 @@ void GuiInGame::drawMap(const string& filename, Map* map, Draw* draw, int width,
 
 void GuiInGame::drawEnemy(Map* map, MapController* mapController, Draw* draw, const string& filename, int enemyNumber, int width, int height, SDL_Renderer* gameRenderer) {
     // Assurez-vous que les ennemis sont créés une seule fois
-    mapController->createEnemy(100, 3, enemyNumber, gameRenderer, 0, 0, 0, 0, "./assets/images/gobelin.png");
+    mapController->createEnemy(100, 1, enemyNumber, gameRenderer, 0, 0, 0, 0, "./assets/images/gobelin.png");
 
     // Positionnez les ennemis
     mapController->setEnemiesPositions(map, filename, enemyNumber, width, height);

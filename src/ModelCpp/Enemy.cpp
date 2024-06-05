@@ -34,10 +34,8 @@ void Enemy::updatePosition(int tileWidth, int tileHeight, const vector<pair<int,
         y = targetY;
         currentWaypoint++;
     } else {
-
         float directionX = dx / distance;
         float directionY = dy / distance;
-
         x += speed * directionX;
         y += speed * directionY;
     }

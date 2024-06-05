@@ -53,6 +53,7 @@ private:
     int beginX, beginY;
     int tileWidth, tileHeight;
     bool allEnemiesCreated = false;
+    bool allPositionsSet = false;
     long long int lastSpawnTime = 0;
-    long long int spawnInterval = 2000;
+    long long int spawnInterval = 10000;
 };

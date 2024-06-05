@@ -1,6 +1,6 @@
 #include "./ControllerH/MapController.h"
 
-MapController::MapController() : allEnemiesCreated(false), lastSpawnTime(0), spawnInterval(1000) {}
+MapController::MapController() {}
 
 MapController::~MapController() {
     for (auto enemy : enemies) {
@@ -31,20 +31,23 @@ void MapController::setEnemiesPositions(Map* map, const string& filename, int en
     vector<vector<Tile>> tiles = createAndReturnMap(filename, map);
     tileSize(width, height, map->getFileWidth(), map->getFileHeight());
 
-    for (size_t i = 0; i < tiles.size(); ++i) {
-        for (size_t j = 0; j < tiles[i].size(); ++j) {
-            if (tiles[i][j].isMonsterBegin) {
-                for (int k = 0; k < enemyNumber; ++k) {
-                    auto enemy = getEnemy(k);
-                    if (enemy) {
-                        enemy->setEntityX(beginX + j * tileWidth);
-                        enemy->setEntityY(beginY + i * tileHeight);
-                        enemy->setEntityWidth(tileWidth);
-                        enemy->setEntityHeight(tileHeight);
+    if(!allPositionsSet) {
+        for (size_t i = 0; i < tiles.size(); ++i) {
+            for (size_t j = 0; j < tiles[i].size(); ++j) {
+                if (tiles[i][j].isMonsterBegin) {
+                    for (int k = 0; k < enemyNumber; ++k) {
+                        auto enemy = getEnemy(k);
+                        if (enemy) {
+                            enemy->setEntityX(beginX + j * tileWidth);
+                            enemy->setEntityY(beginY + i * tileHeight);
+                            enemy->setEntityWidth(tileWidth);
+                            enemy->setEntityHeight(tileHeight);
+                        }
                     }
                 }
             }
         }
+        allPositionsSet = true;
     }
 }
 
