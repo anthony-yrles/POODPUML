@@ -46,7 +46,7 @@ public:
     vector<vector<Tile>> createAndReturnMap(const string& filename, Map* map);
     void tileSize(int WIDTH, int HEIGHT, int filewidth, int fileheight);
     vector<pair<int, int>> searchForWayPoints(Map* map);
-    void moveEnemies(vector<Enemy*>& enemiesDrawn, vector<pair<int, int>> wayPoints, Draw* draw);
+    void moveEnemies(vector<pair<int, int>> wayPoints, Draw* draw, Enemy* enemy);
 
 private:
     vector<Enemy*> enemies;

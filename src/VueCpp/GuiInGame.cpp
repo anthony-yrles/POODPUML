@@ -39,10 +39,14 @@ bool GuiInGame::drawInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool c
 
         drawMap(filename, &map, &draw, WIDTH - 300, HEIGHT, gameRenderer, &mapController);
         
-        drawEnemy(&map, &mapController, &draw, filename, 10, WIDTH - 300, HEIGHT, gameRenderer);
+        if (enemiesDrawn.size() > 0) {
+            for (auto enemy : enemiesDrawn) {
+                mapController.moveEnemies(mapController.searchForWayPoints(&map), &draw, enemy);    
+            }
+        }
 
-        mapController.moveEnemies(enemiesDrawn, mapController.searchForWayPoints(&map), &draw);
-        
+        drawEnemy(&map, &mapController, &draw, filename, 2, WIDTH - 300, HEIGHT, gameRenderer);
+
         SDL_RenderPresent(gameRenderer);
     }
     return running;

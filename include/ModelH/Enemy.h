@@ -21,5 +21,5 @@ private:
     int lifePoints;
     int speed;
     vector<pair<int, int>> waypoints;
-    int currentWaypoint;
+    int currentWaypoint = 0;
 };

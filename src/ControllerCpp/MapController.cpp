@@ -81,9 +81,7 @@ vector<pair<int, int>> MapController::searchForWayPoints(Map* map) {
     return map->searchForWayPoints();
 }
 
-void MapController::moveEnemies(vector<Enemy*>& enemiesDrawn, vector<pair<int, int>> wayPoints, Draw* draw) {
-    for (auto enemy : enemiesDrawn) {
-        enemy->updatePosition(tileWidth, tileHeight, wayPoints, beginX, beginY);
-        enemy->drawEntity(draw);
-    }
+void MapController::moveEnemies(vector<pair<int, int>> wayPoints, Draw* draw, Enemy* enemy) {
+    enemy->updatePosition(tileWidth, tileHeight, wayPoints, beginX, beginY);
+    enemy->drawEntity(draw);
 }
