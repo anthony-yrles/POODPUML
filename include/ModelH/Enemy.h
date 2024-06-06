@@ -3,7 +3,7 @@
 #include "./ModelH/Observable.h"
 #include "./ModelH/Entity.h"
 
-class Enemy : public Observable, public Entity {
+class Enemy : public Entity {
 public:
     Enemy(int life, int speed, SDL_Renderer* renderer, float x, float y, int width, int height, const char* image);
 
@@ -13,9 +13,9 @@ public:
     int getSpeed() const;
     void setSpeed(int spd);
 
-    void takeDamage(int damage);
-
     void updatePosition(int tileWidth, int tileHeight, const vector<pair<int, int>>& wayPoints, int beginX, int beginY);
+    void lifePointsRect(SDL_Renderer* renderer, int x, int y, int width, int height, int life, Draw* draw);
+
 
 private:
     int lifePoints;

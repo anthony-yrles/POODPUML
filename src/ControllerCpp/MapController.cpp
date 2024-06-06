@@ -8,6 +8,39 @@ MapController::~MapController() {
     }
 }
 
+vector<vector<Tile>> MapController::createAndReturnMap(const string& filename, Map* map) {
+    map->createMap(filename);
+    return map->getTiles();
+}
+
+void MapController::tileSize(int WIDTH, int HEIGHT, int filewidth, int fileheight) {
+    if (filewidth > fileheight) {
+        tileWidth = WIDTH / filewidth;
+        tileHeight = tileWidth;
+        beginY = (HEIGHT - (tileHeight * fileheight)) / 2;
+        beginX = 300;
+    } else {
+        tileHeight = HEIGHT / fileheight;
+        tileWidth = tileHeight;
+        beginX = (WIDTH - (tileWidth * filewidth)) / 2;
+        beginY = 0;
+    }
+}
+
+bool MapController::spawnTime() {
+    using namespace chrono;
+    long long currentTime = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+    if (currentTime - lastSpawnTime >= spawnInterval) {
+        lastSpawnTime = currentTime;
+        return true;
+    }
+    return false;
+}
+
+vector<pair<int, int>> MapController::searchForWayPoints(Map* map) {
+    return map->searchForWayPoints();
+}
+
 void MapController::spawnAndMoveEnemy(Map *map, const string& filename, int width, int height, int numberEnemy, int life, int speed, SDL_Renderer* renderer, const char* image, Draw* draw) {
 
     vector<vector<Tile>> tiles = createAndReturnMap(filename, map);
@@ -32,39 +65,6 @@ void MapController::spawnAndMoveEnemy(Map *map, const string& filename, int widt
     for (auto enemy : enemies) {
         enemy->updatePosition(tileWidth, tileHeight, searchForWayPoints(map), beginX, beginY);
         enemy->drawEntity(draw);
+        enemy->lifePointsRect(renderer, enemy->getEntityX(), enemy->getEntityY() - 10, enemy->getEntityWidth(), 5, enemy->getLifePoints(), draw);
     }
-}
-
-
-bool MapController::spawnTime() {
-    using namespace chrono;
-    long long currentTime = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
-    if (currentTime - lastSpawnTime >= spawnInterval) {
-        lastSpawnTime = currentTime;
-        return true;
-    }
-    return false;
-}
-
-vector<vector<Tile>> MapController::createAndReturnMap(const string& filename, Map* map) {
-    map->createMap(filename);
-    return map->getTiles();
-}
-
-void MapController::tileSize(int WIDTH, int HEIGHT, int filewidth, int fileheight) {
-    if (filewidth > fileheight) {
-        tileWidth = WIDTH / filewidth;
-        tileHeight = tileWidth;
-        beginY = (HEIGHT - (tileHeight * fileheight)) / 2;
-        beginX = 300;
-    } else {
-        tileHeight = HEIGHT / fileheight;
-        tileWidth = tileHeight;
-        beginX = (WIDTH - (tileWidth * filewidth)) / 2;
-        beginY = 0;
-    }
-}
-
-vector<pair<int, int>> MapController::searchForWayPoints(Map* map) {
-    return map->searchForWayPoints();
 }

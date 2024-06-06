@@ -18,8 +18,6 @@ bool GuiInGame::drawInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool c
     MapController mapController;
     const string filename = "./assets/map/map.txt";
     Map map(WIDTH - 300, HEIGHT, 0, 0, filename);
-    
-    // drawEnemy(&map, &mapController, &draw, filename, 1, WIDTH - 300, HEIGHT, gameRenderer);
 
     // Game loop
     while (!running) {

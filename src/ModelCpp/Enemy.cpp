@@ -41,11 +41,12 @@ void Enemy::updatePosition(int tileWidth, int tileHeight, const vector<pair<int,
     }
 }
 
-void Enemy::takeDamage(int damage) {
-    int previousLifePoints = lifePoints;
-    lifePoints -= damage;
-    if (previousLifePoints != lifePoints) {
-        setLifePoints(lifePoints);
-        notifyObservers();
-    }
+void Enemy::lifePointsRect(SDL_Renderer* renderer, int x, int y, int width, int height, int life, Draw* draw) {
+    draw->drawRect(renderer, x, y, width, height, 0, 0, 0, 255);
+
+    float lifePercentage = static_cast<float>(life) / 100.0f;
+    int red = static_cast<int>((1.0f - lifePercentage) * 255);
+    int green = static_cast<int>(lifePercentage * 255);
+
+    draw->drawRect(renderer, x, y, static_cast<int>(width * lifePercentage), height, red, green, 0, 255);
 }

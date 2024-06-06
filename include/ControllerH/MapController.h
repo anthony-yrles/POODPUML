@@ -8,7 +8,7 @@
 
 using namespace std::chrono;
 
-class MapController : public Observable {
+class MapController {
 public:
     MapController();
     ~MapController();
@@ -39,11 +39,11 @@ public:
         this->tileHeight = tileHeight;
     }
 
-    bool spawnTime();
-    void spawnAndMoveEnemy(Map *map, const string& filename, int width, int height, int numberEnemy, int life, int speed, SDL_Renderer* renderer, const char* image, Draw* draw);
     vector<vector<Tile>> createAndReturnMap(const string& filename, Map* map);
     void tileSize(int WIDTH, int HEIGHT, int filewidth, int fileheight);
+    bool spawnTime();
     vector<pair<int, int>> searchForWayPoints(Map* map);
+    void spawnAndMoveEnemy(Map *map, const string& filename, int width, int height, int numberEnemy, int life, int speed, SDL_Renderer* renderer, const char* image, Draw* draw);
 
 private:
     vector<Enemy*> enemies;
