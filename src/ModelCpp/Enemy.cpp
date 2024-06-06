@@ -20,7 +20,10 @@ void Enemy::setSpeed(int spd) {
 }
 
 void Enemy::updatePosition(int tileWidth, int tileHeight, const vector<pair<int, int>>& wayPoints, int beginX, int beginY) {
-    if (currentWaypoint >= wayPoints.size()) return;
+    if (currentWaypoint >= wayPoints.size()) {
+        reachedEnd = true;
+        return;
+    }
 
     float targetX = beginX + wayPoints[currentWaypoint].first * tileWidth;
     float targetY = beginY + wayPoints[currentWaypoint].second * tileHeight;
@@ -49,4 +52,8 @@ void Enemy::lifePointsRect(SDL_Renderer* renderer, int x, int y, int width, int 
     int green = static_cast<int>(lifePercentage * 255);
 
     draw->drawRect(renderer, x, y, static_cast<int>(width * lifePercentage), height, red, green, 0, 255);
+}
+
+bool Enemy::hasReachedEnd() const {
+    return reachedEnd;
 }

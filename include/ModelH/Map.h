@@ -40,4 +40,5 @@ private:
     const string filename;
     vector<vector<Tile>> tiles;
     vector<pair<int, int>> wayPoints; 
+    bool wayPointFound = false;
 };

@@ -62,9 +62,17 @@ void MapController::spawnAndMoveEnemy(Map *map, const string& filename, int widt
             }
         }
     }
-    for (auto enemy : enemies) {
+    for (auto it = enemies.begin(); it != enemies.end(); ) {
+        Enemy* enemy = *it;
         enemy->updatePosition(tileWidth, tileHeight, searchForWayPoints(map), beginX, beginY);
         enemy->drawEntity(draw);
         enemy->lifePointsRect(renderer, enemy->getEntityX(), enemy->getEntityY() - 10, enemy->getEntityWidth(), 5, enemy->getLifePoints(), draw);
+
+        if (enemy->hasReachedEnd()) {
+            it = enemies.erase(it);
+            delete enemy;
+        } else {
+            ++it;
+        }
     }
 }
