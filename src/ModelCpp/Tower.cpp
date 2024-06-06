@@ -41,8 +41,6 @@ void Tower::setPosition(float newX, float newY) {
 void Tower::fire(vector<Enemy*> enemies) {
     for (auto enemy : enemies) {
         pair<float, float> enemyPosition = make_pair(enemy->getEntityX(), enemy->getEntityY());
-        cout << "Enemy position: " << enemyPosition.first << " " << enemyPosition.second << endl;
-        cout << "Tower position: " << position.first << " " << position.second << endl;
         float distance = abs(enemyPosition.first - position.first) + abs(enemyPosition.second - position.second);
         if (distance <= range) {
             enemy->setLifePoints(enemy->getLifePoints() - damage);
