@@ -1,7 +1,7 @@
 #include "./ModelH/Tower.h"
 
-Tower::Tower(int damage, int range, int firespeed, int numberOfFire, int positionX, int positionY) 
-    : damage(damage), range(range), fireSpeed(firespeed), numberOfFire(numberOfFire), position(positionX,positionY) {}
+Tower::Tower(int damage, int range, int fireSpeed, int numberOfFire, SDL_Renderer* renderer, float x, float y, int width, int height, const char* image) :
+    Entity(renderer, x, y, width, height, image), damage(damage), range(range), fireSpeed(fireSpeed), numberOfFire(numberOfFire), position{x, y} {}
 
 int Tower::getDamage() const {
     return damage;
@@ -31,27 +31,25 @@ void Tower::setNumberofFire(int numberOfFire) {
     this->numberOfFire = numberOfFire;
 }
 
-pair<int, int> Tower::getPosition() const {
+pair<float, float> Tower::getPosition() const {
     return position;
 }
-void Tower::setPosition(int x, int y) {
+void Tower::setPosition(float newX, float newY) {
     position = {x, y};
 }
 
-// void Tower::fire(vector<Enemy>& enemies) {
-//     for (size_t i = 0; i < enemies.size(); i++) {
-//         pair<int, int> enemyPosition = enemies[i].getPosition();
-//         int distance = abs(enemyPosition.first - position.first) + abs(enemyPosition.second - position.second);
-//         if (distance <= range) {
-//             enemies[i].takeDamage(damage);
-//             ++numberOfFire;
-//             if (numberOfFire == 5) {
-//                 fireCount(enemies);
-//                 notifyObservers();
-//             }
-//         }
-//     }  
-// }
+void Tower::fire(vector<Enemy*> enemies) {
+    for (auto enemy : enemies) {
+        pair<float, float> enemyPosition = make_pair(enemy->getEntityX(), enemy->getEntityY());
+        cout << "Enemy position: " << enemyPosition.first << " " << enemyPosition.second << endl;
+        cout << "Tower position: " << position.first << " " << position.second << endl;
+        float distance = abs(enemyPosition.first - position.first) + abs(enemyPosition.second - position.second);
+        if (distance <= range) {
+            enemy->setLifePoints(enemy->getLifePoints() - damage);
+            ++numberOfFire;
+        }
+    }  
+}
 
 void Tower::upgrade() {
     damage += 10;

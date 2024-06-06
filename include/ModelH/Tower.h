@@ -1,10 +1,11 @@
 #pragma once
 #include "./ModelH/Observable.h"
 #include "./ModelH/Enemy.h"
+#include "./ModelH/Entity.h"
 
-class Tower : public Observable {
+class Tower : public Entity {
 public:
-    Tower(int damage, int range, int firespeed, int numberOfFire, int positionX, int positionY);
+    Tower(int damage, int range, int fireSpeed, int numberOfFire, SDL_Renderer* renderer, float x, float y, int width, int height, const char* image);
 
     int getDamage() const;
     void setDamage(int damage);
@@ -18,12 +19,11 @@ public:
     int getNumberofFire() const;
     void setNumberofFire(int numberOfFire);
 
-    pair<int, int> getPosition() const;
-    void setPosition(int x, int y);
+    pair<float, float> getPosition() const;
+    void setPosition(float newX, float newY);
 
-    void fire(vector<Enemy>& enemies);
+    void fire(vector<Enemy*> enemies);
     void upgrade();
-    void fireCount(vector<Enemy>& enemies);
 
 private:
     int damage;

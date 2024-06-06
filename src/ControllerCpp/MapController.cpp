@@ -76,3 +76,23 @@ void MapController::spawnAndMoveEnemy(Map *map, const string& filename, int widt
         }
     }
 }
+
+vector<Enemy*> MapController::getEnemies() const {
+    return enemies;
+}
+
+void MapController::spawnTower(int damage, int range, int fireSpeed, int numberOfFire, SDL_Renderer* renderer, float x, float y, int width, int height, const char* image, Draw* draw) {
+    Tower* tower = new Tower(damage, range, fireSpeed, numberOfFire, renderer, x, y, width, height, image);
+    towers.push_back(tower);
+    tower->drawEntity(draw);
+}
+
+void MapController::fireTowers(vector<Enemy*> enemies) {
+    for (auto tower : towers) {
+        tower->fire(enemies);
+    }
+}
+
+vector<Tower*> MapController::getTowers() const {
+    return towers;
+}
