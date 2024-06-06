@@ -49,6 +49,8 @@ void GuiInGame::drawMap(const string& filename, Map* map, Draw* draw, int width,
     vector<vector<Tile>> tiles = mapController->createAndReturnMap(filename, map);
     mapController->tileSize(width, height, map->getFileWidth(), map->getFileHeight());
 
+    draw->drawImage(gameRenderer, 0, 0, width + 300, height, "./assets/images/bcgMap.png");
+
     draw->drawImage(gameRenderer, 300, mapController->getBeginY(), width, height - mapController->getBeginY() * 2, "./assets/map/map.png");
 
     for (size_t i = 0; i < tiles.size(); ++i) {
