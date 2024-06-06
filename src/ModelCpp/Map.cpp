@@ -114,7 +114,7 @@ vector<pair<int, int>> Map::searchForWayPoints() {
 
     for (int i = 0; i < numRows; ++i) {
         for (int j = 0; j < numCols; ++j) {
-            if (tiles[i][j].isMonsterPath || tiles[i][j].isMonsterEnd) {
+            if (tiles[i][j].isMonsterBegin || tiles[i][j].isMonsterPath || tiles[i][j].isMonsterEnd) {
                 wayPoints.emplace_back(j, i);
             }
         }

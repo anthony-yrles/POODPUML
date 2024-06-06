@@ -35,17 +35,11 @@ bool GuiInGame::drawInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool c
                 clicked = false;
             }
         }
-        // SDL_RenderClear(gameRenderer);
+        SDL_RenderClear(gameRenderer);
 
         drawMap(filename, &map, &draw, WIDTH - 300, HEIGHT, gameRenderer, &mapController);
         
-        if (enemiesDrawn.size() > 0) {
-            for (auto enemy : enemiesDrawn) {
-                mapController.moveEnemies(mapController.searchForWayPoints(&map), &draw, enemy);    
-            }
-        }
-
-        drawEnemy(&map, &mapController, &draw, filename, 10, WIDTH - 300, HEIGHT, gameRenderer);
+        mapController.spawnAndMoveEnemy(&map, filename, WIDTH - 300, HEIGHT, 5, 100, 1, gameRenderer, "./assets/images/gobelin.png", &draw);
 
         SDL_RenderPresent(gameRenderer);
     }
@@ -58,26 +52,4 @@ void GuiInGame::drawMap(const string& filename, Map* map, Draw* draw, int width,
     mapController->tileSize(width, height, map->getFileWidth(), map->getFileHeight());
 
     draw->drawImage(gameRenderer, 300, mapController->getBeginY(), width, height - mapController->getBeginY() * 2, "./assets/map/map.png");
-}
-
-void GuiInGame::drawEnemy(Map* map, MapController* mapController, Draw* draw, const string& filename, int enemyNumber, int width, int height, SDL_Renderer* gameRenderer) {
-    // Assurez-vous que les ennemis sont créés une seule fois
-    mapController->createEnemy(100, 1, enemyNumber, gameRenderer, 0, 0, 0, 0, "./assets/images/gobelin.png");
-
-    // Positionnez les ennemis
-    mapController->setEnemiesPositions(map, filename, enemyNumber, width, height);
-
-    // Dessinez les ennemis
-    if (enemySpawned < enemyNumber) {
-        for (int k = 0; k < enemyNumber; ++k) {
-            if (mapController->spawnTime()) {
-                auto enemy = mapController->getEnemy(k);
-                if (enemy) {
-                    enemiesDrawn.push_back(enemy);
-                    enemy->drawEntity(draw);
-                }
-                enemySpawned++;
-            }
-        }
-    }
 }

@@ -8,48 +8,33 @@ MapController::~MapController() {
     }
 }
 
-void MapController::createEnemy(int life, int speed, int numberEnemy, SDL_Renderer* renderer, int x, int y, int width, int height, const char* image) {
-    if (!allEnemiesCreated) {
-        for (int i = 0; i < numberEnemy; ++i) {
-            Enemy* enemy = new Enemy(life, speed, renderer, x, y, width, height, image);
-            enemies.push_back(enemy);
-        }
-        allEnemiesCreated = true;
-    }
-}
-
-Enemy* MapController::getEnemy(size_t index) {
-    if (index < enemies.size()) {
-        return enemies[index];
-    }
-    return nullptr;
-}
-
-
-void MapController::setEnemiesPositions(Map* map, const string& filename, int enemyNumber, int width, int height) {
+void MapController::spawnAndMoveEnemy(Map *map, const string& filename, int width, int height, int numberEnemy, int life, int speed, SDL_Renderer* renderer, const char* image, Draw* draw) {
 
     vector<vector<Tile>> tiles = createAndReturnMap(filename, map);
     tileSize(width, height, map->getFileWidth(), map->getFileHeight());
 
-    if(!allPositionsSet) {
-        for (size_t i = 0; i < tiles.size(); ++i) {
-            for (size_t j = 0; j < tiles[i].size(); ++j) {
-                if (tiles[i][j].isMonsterBegin) {
-                    for (int k = 0; k < enemyNumber; ++k) {
-                        auto enemy = getEnemy(k);
-                        if (enemy) {
-                            enemy->setEntityX(beginX + j * tileWidth);
-                            enemy->setEntityY(beginY + i * tileHeight);
-                            enemy->setEntityWidth(tileWidth);
-                            enemy->setEntityHeight(tileHeight);
-                        }
+    int enemyCreated = 0;
+
+    if (!allEnemiesCreated && enemyCreated < numberEnemy) {
+        if (spawnTime()) { 
+            for (size_t i = 0; i < tiles.size(); ++i) {
+                for (size_t j = 0; j < tiles[i].size(); ++j) {
+                    if (tiles[i][j].isMonsterBegin) {
+                        Enemy* enemy = new Enemy(life, speed, renderer, beginX + j * tileWidth, beginY + i * tileHeight, tileWidth, tileHeight, image);
+                        enemyCreated++;
+                        enemies.push_back(enemy);
+                        enemy->drawEntity(draw);
                     }
                 }
             }
         }
-        allPositionsSet = true;
+    }
+    for (auto enemy : enemies) {
+        enemy->updatePosition(tileWidth, tileHeight, searchForWayPoints(map), beginX, beginY);
+        enemy->drawEntity(draw);
     }
 }
+
 
 bool MapController::spawnTime() {
     using namespace chrono;
@@ -82,9 +67,4 @@ void MapController::tileSize(int WIDTH, int HEIGHT, int filewidth, int fileheigh
 
 vector<pair<int, int>> MapController::searchForWayPoints(Map* map) {
     return map->searchForWayPoints();
-}
-
-void MapController::moveEnemies(vector<pair<int, int>> wayPoints, Draw* draw, Enemy* enemy) {
-    enemy->updatePosition(tileWidth, tileHeight, wayPoints, beginX, beginY);
-    enemy->drawEntity(draw);
 }
