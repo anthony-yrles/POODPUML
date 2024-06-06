@@ -49,7 +49,7 @@ void GuiInGame::drawMap(const string& filename, Map* map, Draw* draw, int width,
     vector<vector<Tile>> tiles = mapController->createAndReturnMap(filename, map);
     mapController->tileSize(width, height, map->getFileWidth(), map->getFileHeight());
 
-    draw->drawImage(gameRenderer, 0, 0, width + 300, height, "./assets/images/bcgMap.png");
+    drawMenuInGame(draw, gameRenderer, width, height, "Game", "Total enemies: 5", "Enemies left: 5", "Gold: 0", "Cost: 250", mouseX, mouseY, clicked);
 
     draw->drawImage(gameRenderer, 300, mapController->getBeginY(), width, height - mapController->getBeginY() * 2, "./assets/map/map.png");
 
@@ -79,4 +79,23 @@ void GuiInGame::drawMap(const string& filename, Map* map, Draw* draw, int width,
     for (auto tower : mapController->getTowers()) {
         tower->drawEntity(draw);
     }
+}
+
+void GuiInGame::drawMenuInGame(Draw* draw, SDL_Renderer* gameRenderer, int width, int height, const char* textTitre, const char* textTotalEnemies, const char* textEnemiesLeft, const char* goldEarn, const char* towerCost, int mouseX, int mouseY, bool clicked) {
+    draw->drawImage(gameRenderer, 0, 0, width + 300, height, "./assets/images/bcgMap.png");
+    draw->drawImage(gameRenderer, 25, 35, 240, 40, "./assets/images/playButton.png");
+    draw->drawText(gameRenderer, 90, 32, textTitre, 0, 0, 0, 255, 40);
+    draw->drawImage(gameRenderer, 25, 100, 240, 40, "./assets/images/playButton.png");
+    draw->drawText(gameRenderer, 27, 102, textTotalEnemies, 0, 0, 0, 0, 30);
+    draw->drawImage(gameRenderer, 25, 150, 240, 40, "./assets/images/playButton.png");
+    draw->drawText(gameRenderer, 27, 152, textEnemiesLeft, 0, 0, 0, 255, 30);
+    draw->drawImage(gameRenderer, 25, 200, 240, 40, "./assets/images/playButton.png");
+    draw->drawText(gameRenderer, 27, 202, goldEarn, 0, 0, 0, 255, 30);
+    draw->drawImage(gameRenderer, 25, 250, 240, 60, "./assets/images/playButton.png");
+    draw->drawImage(gameRenderer, 30, 255, 50, 50, "./assets/images/tower.png");
+    draw->drawText(gameRenderer, 110, 263, towerCost, 0, 0, 0, 255, 30);
+    draw->createButton(gameRenderer, 25, 490, 240, 50, "./assets/images/optionButton.png", mouseX, mouseY, clicked, [&](){
+        cout << "Game begins" << endl;
+    });
+    draw->drawText(gameRenderer, 35, 490, "Begin Game", 0, 0, 0, 255, 40);
 }

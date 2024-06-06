@@ -43,9 +43,9 @@ bool GuiMenu::drawMenu(SDL_Renderer* renderer, int mouseX, int mouseY, SDL_Windo
     });
 
     // Using of the drawText method from the Draw class to draw the text of the buttons
-    draw.drawText(renderer, 550, 230, "Jouer", 0, 0, 0, 0);
-    draw.drawText(renderer, 530, 370, "Options", 0, 0, 0, 0);
-    draw.drawText(renderer, 490, 510, "Hall of Fame", 0, 0, 0, 0);
+    draw.drawText(renderer, 550, 230, "Jouer", 0, 0, 0, 0, 40);
+    draw.drawText(renderer, 530, 370, "Options", 0, 0, 0, 0, 40);
+    draw.drawText(renderer, 490, 510, "Hall of Fame", 0, 0, 0, 0, 40);
 
     return running;
 }

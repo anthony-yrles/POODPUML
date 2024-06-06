@@ -20,7 +20,7 @@ public:
     SDL_Renderer* createRenderer(SDL_Window* name, SDL_Renderer* rendererName);
     void drawRect(SDL_Renderer* renderer, int x, int y, int width, int height, int r, int g, int b, int a);
     void drawImage(SDL_Renderer* renderer, int x, int y, int width, int height, const char* image);
-    void drawText(SDL_Renderer* renderer, int x, int y, const char* text, int r, int g, int b, int a);
+    void drawText(SDL_Renderer* renderer, int x, int y, const char* text, int r, int g, int b, int a, int size);
     void createButton(SDL_Renderer* renderer, int x, int y, int width, int height, const char* image, int mouseX, int mouseY, bool clicked, std::function<void()> onClick);
 
 private:

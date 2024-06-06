@@ -60,7 +60,7 @@ void Draw::drawImage(SDL_Renderer* renderer, int x, int y, int width, int height
     SDL_DestroyTexture(texture);
 }
 
-void Draw::drawText(SDL_Renderer* renderer, int x, int y, const char *text, int r, int g, int b, int a) {
+void Draw::drawText(SDL_Renderer* renderer, int x, int y, const char *text, int r, int g, int b, int a, int size) {
 
     // Clamp the values, so they are between 0 and 255
     Uint8 red = clamp(r, 0, 255);
@@ -69,7 +69,7 @@ void Draw::drawText(SDL_Renderer* renderer, int x, int y, const char *text, int 
     Uint8 alpha = clamp(a, 0, 255);
 
     // Load the font once
-    TTF_Font* font = TTF_OpenFont("arial.ttf", 40);
+    TTF_Font* font = TTF_OpenFont("arial.ttf", size);
     if (!font) {
         std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;
         return;
