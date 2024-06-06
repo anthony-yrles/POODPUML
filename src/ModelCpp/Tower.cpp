@@ -43,8 +43,12 @@ void Tower::fire(vector<Enemy*> enemies) {
         pair<float, float> enemyPosition = make_pair(enemy->getEntityX(), enemy->getEntityY());
         float distance = abs(enemyPosition.first - position.first) + abs(enemyPosition.second - position.second);
         if (distance <= range) {
-            enemy->setLifePoints(enemy->getLifePoints() - damage);
-            ++numberOfFire;
+            if (enemy->getLifePoints() - damage <= 0) {
+                enemy->setLifePoints(0);
+            } else {
+                enemy->setLifePoints(enemy->getLifePoints() - damage);
+                numberOfFire++;
+            }
         }
     }  
 }

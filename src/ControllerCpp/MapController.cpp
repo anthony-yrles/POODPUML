@@ -68,7 +68,7 @@ void MapController::spawnAndMoveEnemy(Map *map, const string& filename, int widt
         enemy->drawEntity(draw);
         enemy->lifePointsRect(renderer, enemy->getEntityX(), enemy->getEntityY() - 10, enemy->getEntityWidth(), 5, enemy->getLifePoints(), draw);
 
-        if (enemy->hasReachedEnd()) {
+        if (enemy->hasReachedEnd() || enemy->getLifePoints() <= 0){
             it = enemies.erase(it);
             delete enemy;
         } else {
