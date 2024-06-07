@@ -69,6 +69,7 @@ void MapController::spawnAndMoveEnemy(Map *map, const string& filename, int widt
         if (enemy->hasReachedEnd() || enemy->getLifePoints() <= 0){
             if (enemy->getLifePoints() <= 0) {
                 totalEnemiesKilled++;
+                goldGames += enemyGoldEarnedGames;
             } else {
                 gameLifePointsGames--;
             }
