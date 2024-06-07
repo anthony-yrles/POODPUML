@@ -14,7 +14,7 @@ public:
     void setSpeed(int spd);
 
     void updatePosition(int tileWidth, int tileHeight, const vector<pair<int, int>>& wayPoints, int beginX, int beginY);
-    void lifePointsRect(SDL_Renderer* renderer, int x, int y, int width, int height, int life, Draw* draw);
+    void lifePointsRect(SDL_Renderer* renderer, int x, int y, int width, int height, int life, int maxLife, Draw* draw);
     bool hasReachedEnd() const;
 
 

@@ -63,8 +63,11 @@ void Game::attributesChangedByLevelAndDifficulty() {
         float inverseMultiplier = 1 / multiplier;
         
         totalEnemies *= multiplier * (level / 10 + 1);
-        gold = gold * inverseMultiplier + 200;
+        gold *= inverseMultiplier;
         cost *= multiplier;
-        enemyGoldEarned *= multiplier;
+        enemyGoldEarned *= inverseMultiplier;
+        if (gold < cost) {
+            gold = cost;
+        }
     }
 }

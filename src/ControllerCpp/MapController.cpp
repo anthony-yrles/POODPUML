@@ -51,7 +51,7 @@ vector<pair<int, int>> MapController::searchForWayPoints(Map* map) {
     return map->searchForWayPoints();
 }
 
-void MapController::spawnAndMoveEnemy(Map *map, const string& filename, int width, int height, int life, int speed, SDL_Renderer* renderer, const char* image, Draw* draw) {
+void MapController::spawnAndMoveEnemy(Map *map, const string& filename, int width, int height, int life, int maxlife, int speed, SDL_Renderer* renderer, const char* image, Draw* draw) {
 
     vector<vector<Tile>> tiles = createAndReturnMap(filename, map);
     tileSize(width, height, map->getFileWidth(), map->getFileHeight());
@@ -74,7 +74,7 @@ void MapController::spawnAndMoveEnemy(Map *map, const string& filename, int widt
         Enemy* enemy = *it;
         enemy->updatePosition(tileWidth, tileHeight, searchForWayPoints(map), beginX, beginY);
         enemy->drawEntity(draw);
-        enemy->lifePointsRect(renderer, enemy->getEntityX(), enemy->getEntityY() - 10, enemy->getEntityWidth(), 5, enemy->getLifePoints(), draw);
+        enemy->lifePointsRect(renderer, enemy->getEntityX(), enemy->getEntityY() - 10, enemy->getEntityWidth(), 5, enemy->getLifePoints(), maxlife, draw);
 
         if (enemy->hasReachedEnd() || enemy->getLifePoints() <= 0){
             if (enemy->getLifePoints() <= 0) {
@@ -101,14 +101,12 @@ void MapController::spawnTower(int damage, int range, int fireSpeed, int numberO
     tower->drawEntity(draw);
 }
 
-bool MapController::fireTowers(vector<Enemy*> enemies) {
+void MapController::fireTowers(vector<Enemy*> enemies) {
     if(fireTime()) {
         for (auto tower : towers) {
             tower->fire(enemies);
-            return true
         }
     }
-    return false;
 }
 
 vector<Tower*> MapController::getTowers() const {

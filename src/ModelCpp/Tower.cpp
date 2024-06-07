@@ -35,7 +35,7 @@ pair<float, float> Tower::getPosition() const {
     return position;
 }
 void Tower::setPosition(float newX, float newY) {
-    position = {x, y};
+    position = {newX, newY};
 }
 
 void Tower::fire(vector<Enemy*> enemies) {

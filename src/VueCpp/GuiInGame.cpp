@@ -37,7 +37,7 @@ bool GuiInGame::drawInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool c
 
         drawMap(filename, &map, &draw, WIDTH - 300, HEIGHT, gameRenderer, &mapController, mouseX, mouseY, clicked);
         if (gameDebut) {
-            mapController.spawnAndMoveEnemy(&map, filename, WIDTH - 300, HEIGHT, 100, 1, gameRenderer, "./assets/images/gobelin.png", &draw);
+            mapController.spawnAndMoveEnemy(&map, filename, WIDTH - 300, HEIGHT, 20, 20, 1, gameRenderer, "./assets/images/gobelin.png", &draw);
         }
 
         SDL_RenderPresent(gameRenderer);
@@ -50,7 +50,7 @@ void GuiInGame::drawMap(const string& filename, Map* map, Draw* draw, int width,
     vector<vector<Tile>> tiles = mapController->createAndReturnMap(filename, map);
     mapController->tileSize(width, height, map->getFileWidth(), map->getFileHeight());
 
-    drawMenuInGame(draw, mapController, gameRenderer, width, height, mouseX, mouseY, clicked, 1, 9);
+    drawMenuInGame(draw, mapController, gameRenderer, width, height, mouseX, mouseY, clicked, 1, 1);
 
     if (!victory && !defeat) {
         draw->drawImage(gameRenderer, 300, mapController->getBeginY(), width, height - mapController->getBeginY() * 2, "./assets/map/map.png");
@@ -72,15 +72,13 @@ void GuiInGame::drawMap(const string& filename, Map* map, Draw* draw, int width,
                         draw->createButton(gameRenderer, mapController->getBeginX() + j * mapController->getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight(), mapController->getTileWidth(), mapController->getTileHeight(), "./assets/images/+.png", mouseX, mouseY, clicked, [&](){
                             if (mapController->getGoldGames() >= mapController->getCostGames()) {
                                 mapController->setGoldGames(mapController->getGoldGames() - mapController->getCostGames());
-                                mapController->spawnTower(1, 250, 1, 1, gameRenderer, mapController->getBeginX() + j * mapController->getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight(), mapController->getTileWidth(), mapController->getTileHeight(), "./assets/images/tower.png", draw);
+                                mapController->spawnTower(10, 250, 1, 1, gameRenderer, mapController->getBeginX() + j * mapController->getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight(), mapController->getTileWidth(), mapController->getTileHeight(), "./assets/images/tower.png", draw);
                             } else {
                                 draw->drawText(gameRenderer, 50, 420, "Not enough gold", 255, 0, 0, 255, 25);
                             }
                         });
                     }
-                    if (mapController->fireTowers(mapController->getEnemies())){
-                        
-                    };
+                    mapController->fireTowers(mapController->getEnemies());
                 }
             }
         }
@@ -98,12 +96,12 @@ void GuiInGame::drawMap(const string& filename, Map* map, Draw* draw, int width,
 
 void GuiInGame::drawMenuInGame(Draw* draw, MapController* mapcontroller, SDL_Renderer* gameRenderer, int width, int height, int mouseX, int mouseY, bool clicked, int level, int difficulty) {
 
+
     if (!attributesChanged) {
         mapcontroller->setGamesAttributes(level, difficulty);
         attributesChanged = true;
     }
-
-    string titre = "Level " + to_string(mapcontroller->getLevelGame() +1);
+    string titre = "Level " + to_string(level);
     const char* textTitre = titre.c_str();
     string totalEnemies = "Total enemies : " + to_string(mapcontroller->getTotalEnemiesGame());
     const char* textTotalEnemies = totalEnemies.c_str();
@@ -140,7 +138,7 @@ void GuiInGame::drawMenuInGame(Draw* draw, MapController* mapcontroller, SDL_Ren
     });
     draw->drawText(gameRenderer, 35, 490, "Begin Game", 0, 0, 0, 255, 40);
 
-    if (mapcontroller->getTotalEnemiesKilled() == mapcontroller->getEnemyCreated() && mapcontroller->getTotalEnemiesKilled() != 0){
+    if (mapcontroller->getTotalEnemiesKilled() == mapcontroller->getTotalEnemiesGame() && mapcontroller->getTotalEnemiesKilled() != 0){
         victory = true;
     } else if (mapcontroller->getGameLifePointsGames() == 0) {
         defeat = true;

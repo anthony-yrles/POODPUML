@@ -47,9 +47,9 @@ public:
     bool spawnTime();
     bool fireTime();
     vector<pair<int, int>> searchForWayPoints(Map* map);
-    void spawnAndMoveEnemy(Map *map, const string& filename, int width, int height, int life, int speed, SDL_Renderer* renderer, const char* image, Draw* draw);
+    void spawnAndMoveEnemy(Map *map, const string& filename, int width, int height, int life, int maxLife, int speed, SDL_Renderer* renderer, const char* image, Draw* draw);
     void spawnTower(int damage, int range, int fireSpeed, int numberOfFire, SDL_Renderer* renderer, float x, float y, int width, int height, const char* image, Draw* draw);
-    bool fireTowers(vector<Enemy*> enemies);
+    void fireTowers(vector<Enemy*> enemies);
     vector<Tower*> getTowers() const;
     vector<Enemy*> getEnemies() const;
     void setGamesAttributes(int level, int difficulty);
@@ -81,7 +81,7 @@ private:
     int levelGame, difficultyGame, totalEnemiesGame, totalEnemiesKilled, goldGames, costGames, gameLifePointsGames, enemyGoldEarnedGames;
     bool allEnemiesCreated = false;
     long long int lastSpawnTime = 0;
-    long long int spawnInterval = 1000;
+    long long int spawnInterval = 3000;
     long long int lastFireTime = 0;
     long long int fireInterval = 1000;
 };

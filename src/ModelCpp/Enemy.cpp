@@ -44,10 +44,10 @@ void Enemy::updatePosition(int tileWidth, int tileHeight, const vector<pair<int,
     }
 }
 
-void Enemy::lifePointsRect(SDL_Renderer* renderer, int x, int y, int width, int height, int life, Draw* draw) {
+void Enemy::lifePointsRect(SDL_Renderer* renderer, int x, int y, int width, int height, int life, int maxLife, Draw* draw) {
     draw->drawRect(renderer, x, y, width, height, 0, 0, 0, 255);
 
-    float lifePercentage = static_cast<float>(life) / 100.0f;
+    float lifePercentage = static_cast<float>(life) / static_cast<float>(maxLife);
     int red = static_cast<int>((1.0f - lifePercentage) * 255);
     int green = static_cast<int>(lifePercentage * 255);
 
