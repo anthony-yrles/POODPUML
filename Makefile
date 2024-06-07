@@ -17,7 +17,7 @@ SRCS_RAW := main.cpp \
             VueCpp/GuiInGame.cpp \
             VueCpp/GuiMenu.cpp \
             VueCpp/GuiOptions.cpp \
-			ModelCpp/Castle.cpp \
+			ModelCpp/Game.cpp \
 			ModelCpp/Enemy.cpp \
 			ModelCpp/Entity.cpp \
 			ModelCpp/Map.cpp \

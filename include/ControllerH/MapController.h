@@ -6,6 +6,8 @@
 #include "./ModelH/Map.h"
 #include "./ModelH/Enemy.h"
 #include "./ModelH/Tower.h"
+#include "./ModelH/Game.h"
+#include "./VueH/Draw.h"
 
 using namespace std::chrono;
 
@@ -49,12 +51,28 @@ public:
     void fireTowers(vector<Enemy*> enemies);
     vector<Tower*> getTowers() const;
     vector<Enemy*> getEnemies() const;
+    void setGamesAttributes();
+    int getLevelGame() const;
+    void setLevelGame(int levelGame);
+    int getDifficultyGame() const;
+    void setDifficultyGame(int difficultyGame);
+    int getTotalEnemiesGame() const;
+    void setTotalEnemiesGame(int totalEnemiesGame);
+    int getGoldGames() const;
+    void setGoldGames(int goldGames);
+    int getCostGames() const;
+    void setCostGames(int costGames);
+    int getGameLifePointsGames() const;
+    void setGameLifePointsGames(int gameLifePointsGames);
+    int getEnemyGoldEarnedGames() const;
+    void setEnemyGoldEarnedGames(int enemyGoldEarnedGames);
 
 private:
     vector<Enemy*> enemies;
     vector<Tower*> towers;
     int beginX, beginY;
     int tileWidth, tileHeight;
+    int levelGame, difficultyGame, totalEnemiesGame, goldGames, costGames, gameLifePointsGames, enemyGoldEarnedGames;
     bool allEnemiesCreated = false;
     long long int lastSpawnTime = 0;
     long long int spawnInterval = 10000;

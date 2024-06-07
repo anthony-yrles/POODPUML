@@ -50,7 +50,7 @@ void GuiInGame::drawMap(const string& filename, Map* map, Draw* draw, int width,
     vector<vector<Tile>> tiles = mapController->createAndReturnMap(filename, map);
     mapController->tileSize(width, height, map->getFileWidth(), map->getFileHeight());
 
-    drawMenuInGame(draw, gameRenderer, width, height, "Game", "Total enemies: 5", "Enemies left: 5", "Gold: 0", "Cost: 250", mouseX, mouseY, clicked, 1);
+    drawMenuInGame(draw, mapController, gameRenderer, width, height, mouseX, mouseY, clicked, 1);
 
     draw->drawImage(gameRenderer, 300, mapController->getBeginY(), width, height - mapController->getBeginY() * 2, "./assets/map/map.png");
 
@@ -82,27 +82,40 @@ void GuiInGame::drawMap(const string& filename, Map* map, Draw* draw, int width,
     }
 }
 
-void GuiInGame::drawMenuInGame(Draw* draw, SDL_Renderer* gameRenderer, int width, int height, const char* textTitre, const char* textTotalEnemies, const char* textEnemiesLeft, const char* goldEarn, const char* towerCost, int mouseX, int mouseY, bool clicked, int difficulty) {
+void GuiInGame::drawMenuInGame(Draw* draw, MapController* mapcontroller, SDL_Renderer* gameRenderer, int width, int height, int mouseX, int mouseY, bool clicked, int difficulty) {
+
+    mapcontroller->setGamesAttributes();
+    string titre = "Level " + to_string(mapcontroller->getLevelGame() +1);
+    const char* textTitre = titre.c_str();
+    string totalEnemies = "Total enemies : " + to_string(mapcontroller->getTotalEnemiesGame());
+    const char* textTotalEnemies = totalEnemies.c_str();
+    string enemiesLeft = "Enemies left : " + to_string(mapcontroller->getEnemies().size());
+    const char* textEnemiesLeft = enemiesLeft.c_str();
+    string gold = "Gold earned : " + to_string(mapcontroller->getGoldGames());
+    const char* goldEarn = gold.c_str();
+    string tower = "Cost : " + to_string(mapcontroller->getCostGames());
+    const char* towerCost = tower.c_str();
+    int lifePoints = mapcontroller->getGameLifePointsGames();
+
     draw->drawImage(gameRenderer, 0, 0, width + 300, height, "./assets/images/bcgMap.png");
     draw->drawImage(gameRenderer, 25, 35, 240, 40, "./assets/images/playButton.png");
     draw->drawText(gameRenderer, 90, 32, textTitre, 0, 0, 0, 255, 40);
     draw->drawImage(gameRenderer, 25, 100, 240, 40, "./assets/images/playButton.png");
-    draw->drawText(gameRenderer, 27, 102, textTotalEnemies, 0, 0, 0, 0, 30);
+    draw->drawText(gameRenderer, 27, 106, textTotalEnemies, 0, 0, 0, 0, 25);
     draw->drawImage(gameRenderer, 25, 150, 240, 40, "./assets/images/playButton.png");
-    draw->drawText(gameRenderer, 27, 152, textEnemiesLeft, 0, 0, 0, 255, 30);
+    draw->drawText(gameRenderer, 27, 156, textEnemiesLeft, 0, 0, 0, 255, 25);
     draw->drawImage(gameRenderer, 25, 200, 240, 40, "./assets/images/playButton.png");
-    draw->drawText(gameRenderer, 27, 202, goldEarn, 0, 0, 0, 255, 30);
+    draw->drawText(gameRenderer, 27, 206, goldEarn, 0, 0, 0, 255, 25);
     draw->drawImage(gameRenderer, 25, 250, 240, 60, "./assets/images/playButton.png");
     draw->drawImage(gameRenderer, 30, 255, 50, 50, "./assets/images/tower.png");
-    draw->drawText(gameRenderer, 110, 263, towerCost, 0, 0, 0, 255, 30);
+    draw->drawText(gameRenderer, 90, 267, towerCost, 0, 0, 0, 255, 25);
     draw->drawImage(gameRenderer, 25, 330, 240, 40, "./assets/images/playButton.png");
-    draw->drawText(gameRenderer, 27, 332, "Difficulty :", 0, 0, 0, 255, 30);
+    draw->drawText(gameRenderer, 27, 335, "Difficulty :", 0, 0, 0, 255, 25);
     string difficultyValue = to_string(difficulty);
     const char* difficultyValueChar = difficultyValue.c_str();
-    draw->drawText(gameRenderer, 165, 332, difficultyValueChar, 0, 0, 0, 255, 30);
-    int lifePoints = 10- difficulty;
+    draw->drawText(gameRenderer, 150, 335, difficultyValueChar, 0, 0, 0, 255, 25);
     for (int i = 0; i < lifePoints; i++) {
-        draw->drawImage(gameRenderer, 30 + i * 25, 380, 25, 25, "./assets/images/heart.png");
+        draw->drawImage(gameRenderer, 20 + i * 25, 380, 25, 25, "./assets/images/heart.png");
     }
     draw->createButton(gameRenderer, 25, 490, 240, 50, "./assets/images/optionButton.png", mouseX, mouseY, clicked, [&](){
         gameDebut = true;

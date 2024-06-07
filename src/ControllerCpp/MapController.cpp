@@ -96,3 +96,56 @@ void MapController::fireTowers(vector<Enemy*> enemies) {
 vector<Tower*> MapController::getTowers() const {
     return towers;
 }
+
+void MapController::setGamesAttributes() {
+    Game game;
+    game.attributesChangedByLevelAndDifficulty();
+    totalEnemiesGame = game.getTotalEnemies();
+    goldGames = game.getGold();
+    costGames = game.getCost();
+    gameLifePointsGames = game.getGameLifePoints();
+    enemyGoldEarnedGames = game.getEnemyGoldEarned();
+}
+
+int MapController::getLevelGame() const {
+    return levelGame;
+}
+void MapController::setLevelGame(int levelGame) {
+    this->levelGame = levelGame;
+}
+int MapController::getDifficultyGame() const {
+    return difficultyGame;
+}
+void MapController::setDifficultyGame(int difficultyGame) {
+    this->difficultyGame = difficultyGame;
+}
+int MapController::getTotalEnemiesGame() const {
+    return totalEnemiesGame;
+}
+void MapController::setTotalEnemiesGame(int totalEnemiesGame) {
+    this->totalEnemiesGame = totalEnemiesGame;
+}
+int MapController::getGoldGames() const {
+    return goldGames;
+}
+void MapController::setGoldGames(int goldGames) {
+    this->goldGames = goldGames;
+}
+int MapController::getCostGames() const {
+    return costGames;
+}
+void MapController::setCostGames(int costGames) {
+    this->costGames = costGames;
+}
+int MapController::getGameLifePointsGames() const {
+    return gameLifePointsGames;
+}
+void MapController::setGameLifePointsGames(int gameLifePointsGames) {
+    this->gameLifePointsGames = gameLifePointsGames;
+}
+int MapController::getEnemyGoldEarnedGames() const {
+    return enemyGoldEarnedGames;
+}
+void MapController::setEnemyGoldEarnedGames(int enemyGoldEarnedGames) {
+    this->enemyGoldEarnedGames = enemyGoldEarnedGames;
+}
