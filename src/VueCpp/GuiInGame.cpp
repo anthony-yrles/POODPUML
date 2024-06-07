@@ -50,7 +50,7 @@ void GuiInGame::drawMap(const string& filename, Map* map, Draw* draw, int width,
     vector<vector<Tile>> tiles = mapController->createAndReturnMap(filename, map);
     mapController->tileSize(width, height, map->getFileWidth(), map->getFileHeight());
 
-    drawMenuInGame(draw, mapController, gameRenderer, width, height, mouseX, mouseY, clicked, 1, 1);
+    drawMenuInGame(draw, mapController, gameRenderer, width, height, mouseX, mouseY, clicked, mapController->getLevelGame(), mapController->getDifficultyGame());
 
     if (!victory && !defeat) {
         draw->drawImage(gameRenderer, 300, mapController->getBeginY(), width, height - mapController->getBeginY() * 2, "./assets/map/map.png");
@@ -88,15 +88,13 @@ void GuiInGame::drawMap(const string& filename, Map* map, Draw* draw, int width,
         }
         
     } else if (victory) {
-        drawVictory(gameRenderer, draw, width, height);
+        drawVictory(gameRenderer, draw, width, height, mouseX, mouseY, clicked, mapController);
     } else if (defeat) {
-        drawDefeat(gameRenderer, draw, width, height);
+        drawDefeat(gameRenderer, draw, width, height, mouseX, mouseY, clicked);
     }
 }
 
 void GuiInGame::drawMenuInGame(Draw* draw, MapController* mapcontroller, SDL_Renderer* gameRenderer, int width, int height, int mouseX, int mouseY, bool clicked, int level, int difficulty) {
-
-
     if (!attributesChanged) {
         mapcontroller->setGamesAttributes(level, difficulty);
         attributesChanged = true;
@@ -145,13 +143,18 @@ void GuiInGame::drawMenuInGame(Draw* draw, MapController* mapcontroller, SDL_Ren
     }
 }
 
-void GuiInGame::drawVictory(SDL_Renderer* gameRenderer, Draw* draw, int width, int height) {
-    draw->drawImage(gameRenderer, 0, 0, width, height, "./assets/images/win.png");
-    gameDebut = false;
-    attributesChanged = false;
+void GuiInGame::drawVictory(SDL_Renderer* gameRenderer, Draw* draw, int width, int height, int mouseX, int mouseY, bool clicked, MapController* mapController) {
+    draw->drawImage(gameRenderer, width / 2, 0, width - 300, height / 3, "./assets/images/win.png");
+    draw->createButton(gameRenderer, 450, 350, 600, 100, "./assets/images/optionButton.png", mouseX, mouseY, clicked, [&](){
+        mapController->setLevelGame(mapController->getLevelGame() + 1);
+        victory = false;
+        attributesChanged = false;
+        gameDebut = false;
+    });
+    draw->drawText(gameRenderer, 650, 370, "Next Level", 0, 0, 0, 255, 50);
 }
 
-void GuiInGame::drawDefeat(SDL_Renderer* gameRenderer, Draw* draw, int width, int height) {
+void GuiInGame::drawDefeat(SDL_Renderer* gameRenderer, Draw* draw, int width, int height, int mouseX, int mouseY, bool clicked) {
     draw->drawImage(gameRenderer, 0, 0, width, height, "./assets/images/lose.png");
     gameDebut = false;
     attributesChanged = false;

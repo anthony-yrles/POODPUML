@@ -78,7 +78,9 @@ private:
     int beginX, beginY;
     int tileWidth, tileHeight;
     int enemyCreated = 0;
-    int levelGame, difficultyGame, totalEnemiesGame, totalEnemiesKilled, goldGames, costGames, gameLifePointsGames, enemyGoldEarnedGames;
+    int levelGame = 1; 
+    int difficultyGame = 5; 
+    int totalEnemiesGame, totalEnemiesKilled, goldGames, costGames, gameLifePointsGames, enemyGoldEarnedGames;
     bool allEnemiesCreated = false;
     long long int lastSpawnTime = 0;
     long long int spawnInterval = 3000;
