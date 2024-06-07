@@ -78,7 +78,9 @@ void GuiInGame::drawMap(const string& filename, Map* map, Draw* draw, int width,
                             }
                         });
                     }
-                    mapController->fireTowers(mapController->getEnemies());
+                    if (mapController->fireTowers(mapController->getEnemies())){
+                        
+                    };
                 }
             }
         }

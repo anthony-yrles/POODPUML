@@ -37,6 +37,16 @@ bool MapController::spawnTime() {
     return false;
 }
 
+bool MapController::fireTime() {
+    using namespace chrono;
+    long long currentTime = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+    if (currentTime - lastFireTime >= fireInterval) {
+        lastFireTime = currentTime;
+        return true;
+    }
+    return false;
+}
+
 vector<pair<int, int>> MapController::searchForWayPoints(Map* map) {
     return map->searchForWayPoints();
 }
@@ -91,10 +101,14 @@ void MapController::spawnTower(int damage, int range, int fireSpeed, int numberO
     tower->drawEntity(draw);
 }
 
-void MapController::fireTowers(vector<Enemy*> enemies) {
-    for (auto tower : towers) {
-        tower->fire(enemies);
+bool MapController::fireTowers(vector<Enemy*> enemies) {
+    if(fireTime()) {
+        for (auto tower : towers) {
+            tower->fire(enemies);
+            return true
+        }
     }
+    return false;
 }
 
 vector<Tower*> MapController::getTowers() const {

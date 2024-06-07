@@ -39,19 +39,35 @@ void Tower::setPosition(float newX, float newY) {
 }
 
 void Tower::fire(vector<Enemy*> enemies) {
+    if (enemies.empty()) return;
+    
+    vector<pair<float, Enemy*>> distances;
+
     for (auto enemy : enemies) {
-        pair<float, float> enemyPosition = make_pair(enemy->getEntityX(), enemy->getEntityY());
-        float distance = abs(enemyPosition.first - position.first) + abs(enemyPosition.second - position.second);
+        float enemyX = enemy->getEntityX();
+        float enemyY = enemy->getEntityY();
+        float distance = abs(enemyX - position.first) + abs(enemyY - position.second);
         if (distance <= range) {
-            if (enemy->getLifePoints() - damage <= 0) {
-                enemy->setLifePoints(0);
+            distances.push_back(make_pair(distance, enemy));
+        }
+    }
+
+    if (!distances.empty()) {
+        sort(distances.begin(), distances.end());
+        Enemy* target = distances.front().second;
+        float targetDistance = distances.front().first;
+
+        if (targetDistance <= range) {
+            if (target->getLifePoints() - damage <= 0) {
+                target->setLifePoints(0);
             } else {
-                enemy->setLifePoints(enemy->getLifePoints() - damage);
+                target->setLifePoints(target->getLifePoints() - damage);
                 numberOfFire++;
             }
         }
-    }  
+    }
 }
+
 
 void Tower::upgrade() {
     damage += 10;
