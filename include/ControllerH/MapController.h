@@ -68,12 +68,15 @@ public:
     void setGameLifePointsGames(int gameLifePointsGames);
     int getEnemyGoldEarnedGames() const;
     void setEnemyGoldEarnedGames(int enemyGoldEarnedGames);
+    int getEnemyCreated() const;
+    void setEnemyCreated(int enemyCreated);
 
 private:
     vector<Enemy*> enemies;
     vector<Tower*> towers;
     int beginX, beginY;
     int tileWidth, tileHeight;
+    int enemyCreated = 0;
     int levelGame, difficultyGame, totalEnemiesGame, totalEnemiesKilled, goldGames, costGames, gameLifePointsGames, enemyGoldEarnedGames;
     bool allEnemiesCreated = false;
     long long int lastSpawnTime = 0;

@@ -41,14 +41,12 @@ vector<pair<int, int>> MapController::searchForWayPoints(Map* map) {
     return map->searchForWayPoints();
 }
 
-void MapController::spawnAndMoveEnemy(Map *map, const string& filename, int width, int height, int numberEnemy, int life, int speed, SDL_Renderer* renderer, const char* image, Draw* draw) {
+void MapController::spawnAndMoveEnemy(Map *map, const string& filename, int width, int height, int life, int speed, SDL_Renderer* renderer, const char* image, Draw* draw) {
 
     vector<vector<Tile>> tiles = createAndReturnMap(filename, map);
     tileSize(width, height, map->getFileWidth(), map->getFileHeight());
 
-    int enemyCreated = 0;
-
-    if (!allEnemiesCreated && enemyCreated < numberEnemy) {
+    if (!allEnemiesCreated && enemyCreated < totalEnemiesGame) {
         if (spawnTime()) { 
             for (size_t i = 0; i < tiles.size(); ++i) {
                 for (size_t j = 0; j < tiles[i].size(); ++j) {
@@ -160,4 +158,10 @@ int MapController::getEnemyGoldEarnedGames() const {
 }
 void MapController::setEnemyGoldEarnedGames(int enemyGoldEarnedGames) {
     this->enemyGoldEarnedGames = enemyGoldEarnedGames;
+}
+int MapController::getEnemyCreated() const {
+    return enemyCreated;
+}
+void MapController::setEnemyCreated(int enemyCreated) {
+    this->enemyCreated = enemyCreated;
 }

@@ -130,4 +130,22 @@ void GuiInGame::drawMenuInGame(Draw* draw, MapController* mapcontroller, SDL_Ren
         gameDebut = true;
     });
     draw->drawText(gameRenderer, 35, 490, "Begin Game", 0, 0, 0, 255, 40);
+
+    if (mapcontroller->getTotalEnemiesKilled() == mapcontroller->getEnemyCreated() && mapcontroller->getTotalEnemiesKilled() != 0){
+        drawVictory(gameRenderer, draw, width, height);
+    } else if (mapcontroller->getGameLifePointsGames() == 0) {
+        drawDefeat(gameRenderer, draw, width, height);
+    }
+}
+
+void GuiInGame::drawVictory(SDL_Renderer* gameRenderer, Draw* draw, int width, int height) {
+    draw->drawImage(gameRenderer, 0, 0, width, height, "./assets/images/victory.png");
+    gameDebut = false;
+    attributesChanged = false;
+}
+
+void GuiInGame::drawDefeat(SDL_Renderer* gameRenderer, Draw* draw, int width, int height) {
+    draw->drawImage(gameRenderer, 0, 0, width, height, "./assets/images/defeat.png");
+    gameDebut = false;
+    attributesChanged = false;
 }
