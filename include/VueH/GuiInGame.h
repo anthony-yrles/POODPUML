@@ -21,6 +21,8 @@ private:
     bool running;
     bool gameDebut = false;
     bool attributesChanged = false;
+    bool victory = false;
+    bool defeat = false;
 
     SDL_Event evenement;
     SDL_Window* gameWindow;

@@ -37,7 +37,7 @@ bool GuiInGame::drawInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool c
 
         drawMap(filename, &map, &draw, WIDTH - 300, HEIGHT, gameRenderer, &mapController, mouseX, mouseY, clicked);
         if (gameDebut) {
-            mapController.spawnAndMoveEnemy(&map, filename, WIDTH - 300, HEIGHT, 5, 100, 1, gameRenderer, "./assets/images/gobelin.png", &draw);
+            mapController.spawnAndMoveEnemy(&map, filename, WIDTH - 300, HEIGHT, 100, 1, gameRenderer, "./assets/images/gobelin.png", &draw);
         }
 
         SDL_RenderPresent(gameRenderer);
@@ -52,38 +52,45 @@ void GuiInGame::drawMap(const string& filename, Map* map, Draw* draw, int width,
 
     drawMenuInGame(draw, mapController, gameRenderer, width, height, mouseX, mouseY, clicked, 1, 9);
 
-    draw->drawImage(gameRenderer, 300, mapController->getBeginY(), width, height - mapController->getBeginY() * 2, "./assets/map/map.png");
+    if (!victory && !defeat) {
+        draw->drawImage(gameRenderer, 300, mapController->getBeginY(), width, height - mapController->getBeginY() * 2, "./assets/map/map.png");
 
-    for (size_t i = 0; i < tiles.size(); ++i) {
-        for(size_t j = 0; j < tiles[i].size(); ++j) {
-            if (tiles[i][j].isTowerEmplacement) {
-                bool towerPlaced = false;
-                
-                for (auto tower : mapController->getTowers()) {
-                    if (tower->getEntityX() == mapController->getBeginX() + j * mapController->getTileWidth() &&
-                        tower->getEntityY() == mapController->getBeginY() + i * mapController->getTileHeight()) {
-                        towerPlaced = true;
-                        break;
-                    }
-                }
-
-                if (!towerPlaced) {
-                    draw->createButton(gameRenderer, mapController->getBeginX() + j * mapController->getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight(), mapController->getTileWidth(), mapController->getTileHeight(), "./assets/images/+.png", mouseX, mouseY, clicked, [&](){
-                        if (mapController->getGoldGames() >= mapController->getCostGames()) {
-                            mapController->setGoldGames(mapController->getGoldGames() - mapController->getCostGames());
-                            mapController->spawnTower(1, 250, 1, 1, gameRenderer, mapController->getBeginX() + j * mapController->getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight(), mapController->getTileWidth(), mapController->getTileHeight(), "./assets/images/tower.png", draw);
-                        } else {
-                            draw->drawText(gameRenderer, 50, 420, "Not enough gold", 255, 0, 0, 255, 25);
+        for (size_t i = 0; i < tiles.size(); ++i) {
+            for(size_t j = 0; j < tiles[i].size(); ++j) {
+                if (tiles[i][j].isTowerEmplacement) {
+                    bool towerPlaced = false;
+                    
+                    for (auto tower : mapController->getTowers()) {
+                        if (tower->getEntityX() == mapController->getBeginX() + j * mapController->getTileWidth() &&
+                            tower->getEntityY() == mapController->getBeginY() + i * mapController->getTileHeight()) {
+                            towerPlaced = true;
+                            break;
                         }
-                    });
+                    }
+
+                    if (!towerPlaced) {
+                        draw->createButton(gameRenderer, mapController->getBeginX() + j * mapController->getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight(), mapController->getTileWidth(), mapController->getTileHeight(), "./assets/images/+.png", mouseX, mouseY, clicked, [&](){
+                            if (mapController->getGoldGames() >= mapController->getCostGames()) {
+                                mapController->setGoldGames(mapController->getGoldGames() - mapController->getCostGames());
+                                mapController->spawnTower(1, 250, 1, 1, gameRenderer, mapController->getBeginX() + j * mapController->getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight(), mapController->getTileWidth(), mapController->getTileHeight(), "./assets/images/tower.png", draw);
+                            } else {
+                                draw->drawText(gameRenderer, 50, 420, "Not enough gold", 255, 0, 0, 255, 25);
+                            }
+                        });
+                    }
+                    mapController->fireTowers(mapController->getEnemies());
                 }
-                mapController->fireTowers(mapController->getEnemies());
             }
         }
-    }
 
-    for (auto tower : mapController->getTowers()) {
-        tower->drawEntity(draw);
+        for (auto tower : mapController->getTowers()) {
+            tower->drawEntity(draw);
+        }
+        
+    } else if (victory) {
+        drawVictory(gameRenderer, draw, width, height);
+    } else if (defeat) {
+        drawDefeat(gameRenderer, draw, width, height);
     }
 }
 
@@ -132,20 +139,20 @@ void GuiInGame::drawMenuInGame(Draw* draw, MapController* mapcontroller, SDL_Ren
     draw->drawText(gameRenderer, 35, 490, "Begin Game", 0, 0, 0, 255, 40);
 
     if (mapcontroller->getTotalEnemiesKilled() == mapcontroller->getEnemyCreated() && mapcontroller->getTotalEnemiesKilled() != 0){
-        drawVictory(gameRenderer, draw, width, height);
+        victory = true;
     } else if (mapcontroller->getGameLifePointsGames() == 0) {
-        drawDefeat(gameRenderer, draw, width, height);
+        defeat = true;
     }
 }
 
 void GuiInGame::drawVictory(SDL_Renderer* gameRenderer, Draw* draw, int width, int height) {
-    draw->drawImage(gameRenderer, 0, 0, width, height, "./assets/images/victory.png");
+    draw->drawImage(gameRenderer, 0, 0, width, height, "./assets/images/win.png");
     gameDebut = false;
     attributesChanged = false;
 }
 
 void GuiInGame::drawDefeat(SDL_Renderer* gameRenderer, Draw* draw, int width, int height) {
-    draw->drawImage(gameRenderer, 0, 0, width, height, "./assets/images/defeat.png");
+    draw->drawImage(gameRenderer, 0, 0, width, height, "./assets/images/lose.png");
     gameDebut = false;
     attributesChanged = false;
 }
