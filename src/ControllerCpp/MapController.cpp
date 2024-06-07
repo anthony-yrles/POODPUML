@@ -69,6 +69,11 @@ void MapController::spawnAndMoveEnemy(Map *map, const string& filename, int widt
         enemy->lifePointsRect(renderer, enemy->getEntityX(), enemy->getEntityY() - 10, enemy->getEntityWidth(), 5, enemy->getLifePoints(), draw);
 
         if (enemy->hasReachedEnd() || enemy->getLifePoints() <= 0){
+            if (enemy->getLifePoints() <= 0) {
+                totalEnemiesKilled++;
+            } else {
+                gameLifePointsGames--;
+            }
             it = enemies.erase(it);
             delete enemy;
         } else {
@@ -97,10 +102,11 @@ vector<Tower*> MapController::getTowers() const {
     return towers;
 }
 
-void MapController::setGamesAttributes() {
-    Game game;
+void MapController::setGamesAttributes(int level, int difficulty) {
+    Game game(level, difficulty);
     game.attributesChangedByLevelAndDifficulty();
     totalEnemiesGame = game.getTotalEnemies();
+    totalEnemiesKilled = 0;
     goldGames = game.getGold();
     costGames = game.getCost();
     gameLifePointsGames = game.getGameLifePoints();
@@ -124,6 +130,12 @@ int MapController::getTotalEnemiesGame() const {
 }
 void MapController::setTotalEnemiesGame(int totalEnemiesGame) {
     this->totalEnemiesGame = totalEnemiesGame;
+}
+int MapController::getTotalEnemiesKilled() const {
+    return totalEnemiesKilled;
+}
+void MapController::setTotalEnemiesKilled(int totalEnemiesKilled) {
+    this->totalEnemiesKilled = totalEnemiesKilled;
 }
 int MapController::getGoldGames() const {
     return goldGames;

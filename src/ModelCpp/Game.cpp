@@ -1,6 +1,6 @@
 #include "./ModelH/Game.h"
 
-Game::Game() {}
+Game::Game(int level, int difficulty) : level(level), difficulty(difficulty) {}
 
 Game::~Game() {}
 
@@ -60,10 +60,10 @@ void Game::attributesChangedByLevelAndDifficulty() {
 
     if (difficulty >= 1 && difficulty <= 9) {
         float multiplier = multipliers[difficulty - 1];
+        float inverseMultiplier = 1 / multiplier;
         
         totalEnemies *= multiplier * (level / 10 + 1);
-        gold *= multiplier;
-        cout << "gold: " << gold << endl;
+        gold = gold * inverseMultiplier + 200;
         cost *= multiplier;
         enemyGoldEarned *= multiplier;
     }

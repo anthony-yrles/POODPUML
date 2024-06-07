@@ -50,7 +50,7 @@ void GuiInGame::drawMap(const string& filename, Map* map, Draw* draw, int width,
     vector<vector<Tile>> tiles = mapController->createAndReturnMap(filename, map);
     mapController->tileSize(width, height, map->getFileWidth(), map->getFileHeight());
 
-    drawMenuInGame(draw, mapController, gameRenderer, width, height, mouseX, mouseY, clicked, 1);
+    drawMenuInGame(draw, mapController, gameRenderer, width, height, mouseX, mouseY, clicked, 1, 9);
 
     draw->drawImage(gameRenderer, 300, mapController->getBeginY(), width, height - mapController->getBeginY() * 2, "./assets/map/map.png");
 
@@ -69,7 +69,12 @@ void GuiInGame::drawMap(const string& filename, Map* map, Draw* draw, int width,
 
                 if (!towerPlaced) {
                     draw->createButton(gameRenderer, mapController->getBeginX() + j * mapController->getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight(), mapController->getTileWidth(), mapController->getTileHeight(), "./assets/images/+.png", mouseX, mouseY, clicked, [&](){
-                        mapController->spawnTower(1, 250, 1, 1, gameRenderer, mapController->getBeginX() + j * mapController->getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight(), mapController->getTileWidth(), mapController->getTileHeight(), "./assets/images/tower.png", draw);
+                        if (mapController->getGoldGames() >= mapController->getCostGames()) {
+                            mapController->setGoldGames(mapController->getGoldGames() - mapController->getCostGames());
+                            mapController->spawnTower(1, 250, 1, 1, gameRenderer, mapController->getBeginX() + j * mapController->getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight(), mapController->getTileWidth(), mapController->getTileHeight(), "./assets/images/tower.png", draw);
+                        } else {
+                            draw->drawText(gameRenderer, 50, 420, "Not enough gold", 255, 0, 0, 255, 25);
+                        }
                     });
                 }
                 mapController->fireTowers(mapController->getEnemies());
@@ -82,14 +87,18 @@ void GuiInGame::drawMap(const string& filename, Map* map, Draw* draw, int width,
     }
 }
 
-void GuiInGame::drawMenuInGame(Draw* draw, MapController* mapcontroller, SDL_Renderer* gameRenderer, int width, int height, int mouseX, int mouseY, bool clicked, int difficulty) {
+void GuiInGame::drawMenuInGame(Draw* draw, MapController* mapcontroller, SDL_Renderer* gameRenderer, int width, int height, int mouseX, int mouseY, bool clicked, int level, int difficulty) {
 
-    mapcontroller->setGamesAttributes();
+    if (!attributesChanged) {
+        mapcontroller->setGamesAttributes(level, difficulty);
+        attributesChanged = true;
+    }
+
     string titre = "Level " + to_string(mapcontroller->getLevelGame() +1);
     const char* textTitre = titre.c_str();
     string totalEnemies = "Total enemies : " + to_string(mapcontroller->getTotalEnemiesGame());
     const char* textTotalEnemies = totalEnemies.c_str();
-    string enemiesLeft = "Enemies left : " + to_string(mapcontroller->getEnemies().size());
+    string enemiesLeft = "Enemies left : " + to_string(mapcontroller->getTotalEnemiesKilled());
     const char* textEnemiesLeft = enemiesLeft.c_str();
     string gold = "Gold earned : " + to_string(mapcontroller->getGoldGames());
     const char* goldEarn = gold.c_str();

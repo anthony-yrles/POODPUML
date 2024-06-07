@@ -5,7 +5,7 @@ using namespace std;
 
 class Game {
 public:
-    Game();
+    Game(int level, int difficulty);
     ~Game();
 
     int getLevel() const;
