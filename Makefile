@@ -18,11 +18,13 @@ SRCS_RAW := main.cpp \
             VueCpp/GuiMenu.cpp \
             VueCpp/GuiOptions.cpp \
 			ModelCpp/Game.cpp \
+			ModelCpp/HallOfFame.cpp \
 			ModelCpp/Enemy.cpp \
 			ModelCpp/Entity.cpp \
 			ModelCpp/Map.cpp \
 			ModelCpp/Observable.cpp \
 			ModelCpp/Tower.cpp \
+			ControllerCpp/HofController.cpp \
 			ControllerCpp/MapController.cpp \
             ControllerCpp/Sound.cpp \
 
