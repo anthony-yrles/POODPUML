@@ -10,4 +10,6 @@ public:
     void readTxtFile();
     void writeTxtFile();
     void sortDataByDifficulty(int levelReceived);
+private:
+    HallOfFame hallOfFame;
 };

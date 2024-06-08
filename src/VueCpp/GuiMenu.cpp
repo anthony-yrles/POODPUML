@@ -1,6 +1,7 @@
 #include ".\VueH\GuiMenu.h"
 #include ".\VueH\GuiOptions.h"
 #include ".\VueH\GuiInGame.h"
+#include ".\VueH\GuiHallOfFame.h"
 // #include ".\ControllerH\Sound.h"
 
 
@@ -21,6 +22,7 @@ bool GuiMenu::drawMenu(SDL_Renderer* renderer, int mouseX, int mouseY, SDL_Windo
     Draw draw(clicked);
     GuiOptions options(WIDTH, HEIGHT, mouseX, mouseY, clicked, running);
     GuiInGame game(WIDTH, HEIGHT, mouseX, mouseY, clicked, running, evenement);
+    GuiHallOfFame hof(WIDTH, HEIGHT, mouseX, mouseY, clicked, running, evenement);
 
     // Using of the drawImage method from the Draw class to draw the background
     draw.drawImage(renderer, 0, 0, 1200, 600, "./assets/images/bcgMenu.png");
@@ -38,8 +40,10 @@ bool GuiMenu::drawMenu(SDL_Renderer* renderer, int mouseX, int mouseY, SDL_Windo
         running = options.drawOptions(WIDTH, HEIGHT, mouseX, mouseY, clicked, running, optionWindow, optionRenderer);
         return running;
     });
-    draw.createButton(renderer, 450, 510, 300, 50, "./assets/images/hallOfFame.png", mouseX, mouseY, clicked, [](){
-        cout << "Button clicked" << endl;
+    draw.createButton(renderer, 450, 510, 300, 50, "./assets/images/hallOfFame.png", mouseX, mouseY, clicked, [&](){
+        SDL_DestroyWindow(window);
+        running = hof.drawHallOfFame(WIDTH, HEIGHT, mouseX, mouseY, clicked, running, evenement);
+        return running;
     });
 
     // Using of the drawText method from the Draw class to draw the text of the buttons

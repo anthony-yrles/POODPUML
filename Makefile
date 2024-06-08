@@ -14,6 +14,7 @@ LDFLAGS := -L./lib/
 
 SRCS_RAW := main.cpp \
 			VueCpp/Draw.cpp \
+			VueCpp/GuiHallOfFame.cpp \
             VueCpp/GuiInGame.cpp \
             VueCpp/GuiMenu.cpp \
             VueCpp/GuiOptions.cpp \
