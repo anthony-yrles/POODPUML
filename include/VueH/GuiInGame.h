@@ -13,7 +13,8 @@ public:
     void drawMenuInGame(Draw* draw, MapController* mapcontroller, SDL_Renderer* gameRenderer, int width, int height, int mouseX, int mouseY, bool clicked, int level, int difficulty);
     void drawVictory(SDL_Renderer* gameRenderer, Draw* draw, int width, int height, int mouseX, int mouseY, bool clicked, MapController* mapController);
     void drawDefeat(SDL_Renderer* gameRenderer, Draw* draw, int width, int height, int mouseX, int mouseY, bool clicked, MapController* mapController);
-    void drawKeyboard(SDL_Renderer* gameRenderer, Draw* draw, int mouseX, int mouseY, bool clicked);
+    void drawKeyboard(SDL_Renderer* gameRenderer, Draw* draw, int mouseX, int mouseY, bool clicked, MapController* mapController);
+    void drawOption(SDL_Renderer* gameRenderer, Draw* draw, int mouseX, int mouseY, bool clicked, MapController* mapController);
 private:
     int WIDTH, HEIGHT;
     int mouseX, mouseY;

@@ -35,11 +35,14 @@ bool GuiInGame::drawInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool c
         }
         SDL_RenderClear(gameRenderer);
 
-        drawMap(filename, &map, &draw, WIDTH - 300, HEIGHT, gameRenderer, &mapController, mouseX, mouseY, clicked);
-        if (gameDebut) {
-            mapController.spawnAndMoveEnemy(&map, filename, WIDTH - 300, HEIGHT, 20, 20, 100, gameRenderer, "./assets/images/gobelin.png", &draw);
+        if(!mapController.getOptionValidate()) {
+            drawOption(gameRenderer, &draw, mouseX, mouseY, clicked, &mapController);
+        } else {
+            drawMap(filename, &map, &draw, WIDTH - 300, HEIGHT, gameRenderer, &mapController, mouseX, mouseY, clicked);
+            if (gameDebut) {
+                mapController.spawnAndMoveEnemy(&map, filename, WIDTH - 300, HEIGHT, 20, 20, 100, gameRenderer, "./assets/images/gobelin.png", &draw);
+            }
         }
-
         SDL_RenderPresent(gameRenderer);
     }
     return running;
@@ -159,10 +162,11 @@ void GuiInGame::drawVictory(SDL_Renderer* gameRenderer, Draw* draw, int width, i
 void GuiInGame::drawDefeat(SDL_Renderer* gameRenderer, Draw* draw, int width, int height, int mouseX, int mouseY, bool clicked, MapController* mapController) {
     mapController->clearEnemies();
     mapController->clearTowers();
-    drawKeyboard(gameRenderer, draw, mouseX, mouseY, clicked);
+    drawKeyboard(gameRenderer, draw, mouseX, mouseY, clicked, mapController);
     draw->drawImage(gameRenderer, width / 2, 0, width - 300, height / 4, "./assets/images/lose.png");
     draw->createButton(gameRenderer, 450, 450, 600, 100, "./assets/images/optionButton.png", mouseX, mouseY, clicked, [&](){
         mapController->setLevelGame(1);
+        mapController->setOptionValidate(false);
         defeat = false;
         attributesChanged = false;
         gameDebut = false;
@@ -170,7 +174,7 @@ void GuiInGame::drawDefeat(SDL_Renderer* gameRenderer, Draw* draw, int width, in
     draw->drawText(gameRenderer, 700, 470, "Retry", 0, 0, 0, 255, 50);
 }
 
-void GuiInGame::drawKeyboard(SDL_Renderer* gameRenderer, Draw* draw, int mouseX, int mouseY, bool clicked) {
+void GuiInGame::drawKeyboard(SDL_Renderer* gameRenderer, Draw* draw, int mouseX, int mouseY, bool clicked, MapController* mapController) {
     static string name;
     draw->drawText(gameRenderer, 500, 150, "Voulez vous enregistrer votre score ?", 0, 255, 0, 255, 30);
     std::vector<const char*> letters = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
@@ -194,7 +198,38 @@ void GuiInGame::drawKeyboard(SDL_Renderer* gameRenderer, Draw* draw, int mouseX,
             name.pop_back();
         }
     });
-    draw->createButton(gameRenderer, 900, 250, 30, 30, "./assets/images/validate.png", mouseX, mouseY, clicked, [&](){
+    draw->createButton(gameRenderer, 900, 250, 30, 30, "./assets/images/validate.png", mouseX, mouseY, clicked, [&](){       
         draw->drawText(gameRenderer, 650, 300, "Score enregistre", 0, 255, 0, 255, 30);
+    });
+}
+
+void GuiInGame::drawOption(SDL_Renderer* gameRenderer, Draw* draw, int mouseX, int mouseY, bool clicked, MapController* mapController) {
+    
+    draw->drawImage(gameRenderer, 0, 0, 1200, 600, "./assets/images/bcgOption.png");
+
+    draw->drawText(gameRenderer, 350, 100, "Voulez vous modifier la difficulte?", 255, 0, 0, 255, 30);
+    string difficul = "Sans changement la difficulte sera de " + to_string(mapController->getDifficultyGame());
+    const char* difficulty = difficul.c_str();
+    draw->drawText(gameRenderer, 300, 200, difficulty, 255, 0, 0, 255, 30);
+     
+    vector<string> links;
+
+    for (int i = 1; i < 10; i++) {
+        int x = 80 + i * 100;
+
+        stringstream ss;
+        ss << "./assets/images/" << i << ".png";
+        links.push_back(ss.str());
+
+        draw->createButton(gameRenderer, x, 300, 50, 50, links.back().c_str(), mouseX, mouseY, clicked, [&](){
+            mapController->setDifficultyGame(i);
+            string difficulte = "Difficulte modifiee a " + to_string(i);
+            const char* diff = difficulte.c_str();
+            draw->drawText(gameRenderer, 450, 400, diff, 0, 255, 0, 255, 30);
+        });
+    }
+
+    draw->createButton(gameRenderer, 500, 500, 200, 50, "./assets/images/validate.png", mouseX, mouseY, clicked, [&](){
+        mapController->setOptionValidate(true);
     });
 }

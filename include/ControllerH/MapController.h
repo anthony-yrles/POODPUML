@@ -73,6 +73,8 @@ public:
     void setEnemyGoldEarnedGames(int enemyGoldEarnedGames);
     int getEnemyCreated() const;
     void setEnemyCreated(int enemyCreated);
+    bool getOptionValidate() const;
+    void setOptionValidate(bool optionValidate);
 
 private:
     vector<Enemy*> enemies;
@@ -81,9 +83,10 @@ private:
     int tileWidth, tileHeight;
     int enemyCreated = 0;
     int levelGame = 1; 
-    int difficultyGame = 9; 
+    int difficultyGame = 5; 
     int totalEnemiesGame, totalEnemiesKilled, goldGames, costGames, gameLifePointsGames, enemyGoldEarnedGames;
     bool allEnemiesCreated = false;
+    bool optionValidate = false;
     long long int lastSpawnTime = 0;
     long long int spawnInterval = 3000;
     long long int lastFireTime = 0;

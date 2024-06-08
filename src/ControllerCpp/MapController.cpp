@@ -192,3 +192,10 @@ int MapController::getEnemyCreated() const {
 void MapController::setEnemyCreated(int enemyCreated) {
     this->enemyCreated = enemyCreated;
 }
+
+bool MapController::getOptionValidate() const {
+    return allEnemiesCreated;
+}
+void MapController::setOptionValidate(bool allEnemiesCreated) {
+    this->allEnemiesCreated = allEnemiesCreated;
+}

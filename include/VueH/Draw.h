@@ -5,6 +5,8 @@
 #include <SDL2/SDL_image.h>
 #include <iostream>
 #include <functional>
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 
