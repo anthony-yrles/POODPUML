@@ -2,19 +2,25 @@
 #include "./ControllerH/HofController.h"
 #include "./VueH/Draw.h"
 
-class GuiHallOfFame {
+class GuiHallOfFame : public Observer {
 public:
     GuiHallOfFame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool clicked, bool running, SDL_Event /*evenement*/);
     ~GuiHallOfFame();
 
     bool drawHallOfFame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool clicked, bool running, SDL_Event evenement);
-private:
+    int returnDifficulty(Draw draw, SDL_Renderer* hallOfFameRenderer);
+    void drawData(int difficultyHof, Draw draw, SDL_Renderer* hallOfFameRenderer, HofController hofController);
+    void update() override;
 
-    SDL_Window* hallOfFameWindow;
-    SDL_Renderer* hallOfFameRenderer;
+private:
+    SDL_Window* hallOfFameWindow = nullptr;
+    SDL_Renderer* hallOfFameRenderer = nullptr;
+
     int WIDTH, HEIGHT;
     int mouseX, mouseY;
     bool clicked;
     bool running;
+    int difficultyHof;
+
     HofController hofController;
 }; 

@@ -6,22 +6,33 @@ HallOfFame::~HallOfFame() {}
 
 void HallOfFame::readTxtFile() {
     ifstream file("HallOfFame.txt");
+    if (!file.is_open()) {
+        cerr << "Erreur : impossible d'ouvrir le fichier HallOfFame.txt";
+        return;
+    }
     string line;
-    while (getline(file, line)) {
+    while (std::getline(file, line)) {
         istringstream iss(line);
         string name, difficulty, level;
-        iss >> name >> difficulty >> level;
+        if (!(iss >> name >> difficulty >> level)) {
+            cerr << "Erreur de format dans le fichier HallOfFame.txt";
+            continue;
+        }
         addData(name, difficulty, level);
     }
     file.close();
 }
 
-void HallOfFame::writeTxtFile() {
+void HallOfFame::writeTxtFile(const string& newName, const string& newDifficulty, const string& newLevel) {
     ofstream file("HallOfFame.txt");
-    for (const auto& d : data) {
-        file << d.name << " " << d.difficulty << " " << d.level << endl;
+    if (!file.is_open()) {
+        cerr << "Erreur : impossible d'ouvrir le fichier HallOfFame.txt pour l'écriture";
+        return;
     }
+    file << newName << " " << newDifficulty << " " << newLevel << endl;
+    
     file.close();
+    notifyObservers();
 }
 
 void HallOfFame::addData(const string& name, const string& difficulty, const string& level) {
@@ -38,4 +49,8 @@ void HallOfFame::sortDataByDifficulty(int difficultyReceived) {
             sortedData.push_back(d);
         }
     }
+}
+
+vector<Data> HallOfFame::getSortedData() const {
+    return sortedData;
 }

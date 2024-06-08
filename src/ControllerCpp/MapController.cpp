@@ -52,9 +52,11 @@ vector<pair<int, int>> MapController::searchForWayPoints(Map* map) {
 }
 
 void MapController::spawnAndMoveEnemy(Map *map, const string& filename, int width, int height, int life, int maxlife, int speed, SDL_Renderer* renderer, const char* image, Draw* draw) {
-
+    
     vector<vector<Tile>> tiles = createAndReturnMap(filename, map);
     tileSize(width, height, map->getFileWidth(), map->getFileHeight());
+
+    cout << allEnemiesCreated << " " << enemyCreated << " " << totalEnemiesGame << endl;
 
     if (!allEnemiesCreated && enemyCreated < totalEnemiesGame) {
         if (spawnTime()) { 
@@ -194,8 +196,8 @@ void MapController::setEnemyCreated(int enemyCreated) {
 }
 
 bool MapController::getOptionValidate() const {
-    return allEnemiesCreated;
+    return optionValidate;
 }
-void MapController::setOptionValidate(bool allEnemiesCreated) {
-    this->allEnemiesCreated = allEnemiesCreated;
+void MapController::setOptionValidate(bool optionValidate) {
+    this->optionValidate = optionValidate;
 }

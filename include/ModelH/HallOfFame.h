@@ -1,4 +1,5 @@
 #pragma once
+#include "./ModelH/Observable.h"
 
 #include <iostream>
 #include <fstream>
@@ -7,23 +8,25 @@
 
 using namespace std;
 
-class HallOfFame {
+struct Data {
+    string name;
+    string difficulty;
+    string level;
+};
+
+class HallOfFame : public Observable{
 public:
     HallOfFame();
     ~HallOfFame();
 
     void readTxtFile();
-    void writeTxtFile();
+    void writeTxtFile(const string& newName, const string& newDifficulty, const string& newLevel);
     void addData(const string& name, const string& difficulty, const string& level);
-    void sortDataByDifficulty(int levelReceived);
+    void sortDataByDifficulty(int difficultyReceived);
+    vector<Data> getSortedData() const;
     
 
 private:
-    struct Data {
-        string name;
-        string difficulty;
-        string level;
-    };
     vector<Data> data;
     vector<Data> sortedData;
 };

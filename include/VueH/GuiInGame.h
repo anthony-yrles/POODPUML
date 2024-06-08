@@ -3,6 +3,7 @@
 #include <vector>
 #include "./VueH/Draw.h"
 #include "./ControllerH/MapController.h"
+#include "./ControllerH/HofController.h"
 
 class GuiInGame {
 public:
@@ -28,4 +29,5 @@ private:
     SDL_Event evenement;
     SDL_Window* gameWindow;
     SDL_Renderer* gameRenderer;
+    HofController hofController;
 };

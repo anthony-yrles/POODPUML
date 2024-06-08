@@ -177,7 +177,7 @@ void GuiInGame::drawDefeat(SDL_Renderer* gameRenderer, Draw* draw, int width, in
 void GuiInGame::drawKeyboard(SDL_Renderer* gameRenderer, Draw* draw, int mouseX, int mouseY, bool clicked, MapController* mapController) {
     static string name;
     draw->drawText(gameRenderer, 500, 150, "Voulez vous enregistrer votre score ?", 0, 255, 0, 255, 30);
-    std::vector<const char*> letters = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+    vector<const char*> letters = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
     
     for (int i = 0; i < 26; ++i) {
         draw->createButton(gameRenderer, 285 + i * 35, 200, 35, 35, "./assets/images/letter.png", mouseX, mouseY, clicked, [&, i]() {
@@ -200,6 +200,7 @@ void GuiInGame::drawKeyboard(SDL_Renderer* gameRenderer, Draw* draw, int mouseX,
     });
     draw->createButton(gameRenderer, 900, 250, 30, 30, "./assets/images/validate.png", mouseX, mouseY, clicked, [&](){       
         draw->drawText(gameRenderer, 650, 300, "Score enregistre", 0, 255, 0, 255, 30);
+        hofController.writeTxtFile(name.c_str(), to_string(mapController->getDifficultyGame()).c_str(), to_string(mapController->getLevelGame()).c_str());
     });
 }
 
