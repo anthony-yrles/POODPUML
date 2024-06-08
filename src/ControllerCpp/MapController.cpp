@@ -95,6 +95,13 @@ vector<Enemy*> MapController::getEnemies() const {
     return enemies;
 }
 
+void MapController::clearEnemies() {
+    for (auto enemy : enemies) {
+        delete enemy;
+    }
+    enemies.clear();
+}
+
 void MapController::spawnTower(int damage, int range, int fireSpeed, int numberOfFire, SDL_Renderer* renderer, float x, float y, int width, int height, const char* image, Draw* draw) {
     Tower* tower = new Tower(damage, range, fireSpeed, numberOfFire, renderer, x, y, width, height, image);
     towers.push_back(tower);
@@ -111,6 +118,13 @@ void MapController::fireTowers(vector<Enemy*> enemies) {
 
 vector<Tower*> MapController::getTowers() const {
     return towers;
+}
+
+void MapController::clearTowers() {
+    for (auto tower : towers) {
+        delete tower;
+    }
+    towers.clear();
 }
 
 void MapController::setGamesAttributes(int level, int difficulty) {

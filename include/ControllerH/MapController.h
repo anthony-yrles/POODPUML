@@ -51,7 +51,9 @@ public:
     void spawnTower(int damage, int range, int fireSpeed, int numberOfFire, SDL_Renderer* renderer, float x, float y, int width, int height, const char* image, Draw* draw);
     void fireTowers(vector<Enemy*> enemies);
     vector<Tower*> getTowers() const;
+    void clearTowers();
     vector<Enemy*> getEnemies() const;
+    void clearEnemies();
     void setGamesAttributes(int level, int difficulty);
     int getLevelGame() const;
     void setLevelGame(int levelGame);
@@ -79,7 +81,7 @@ private:
     int tileWidth, tileHeight;
     int enemyCreated = 0;
     int levelGame = 1; 
-    int difficultyGame = 5; 
+    int difficultyGame = 9; 
     int totalEnemiesGame, totalEnemiesKilled, goldGames, costGames, gameLifePointsGames, enemyGoldEarnedGames;
     bool allEnemiesCreated = false;
     long long int lastSpawnTime = 0;

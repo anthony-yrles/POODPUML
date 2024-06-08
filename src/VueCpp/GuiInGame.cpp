@@ -37,7 +37,7 @@ bool GuiInGame::drawInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool c
 
         drawMap(filename, &map, &draw, WIDTH - 300, HEIGHT, gameRenderer, &mapController, mouseX, mouseY, clicked);
         if (gameDebut) {
-            mapController.spawnAndMoveEnemy(&map, filename, WIDTH - 300, HEIGHT, 20, 20, 1, gameRenderer, "./assets/images/gobelin.png", &draw);
+            mapController.spawnAndMoveEnemy(&map, filename, WIDTH - 300, HEIGHT, 20, 20, 100, gameRenderer, "./assets/images/gobelin.png", &draw);
         }
 
         SDL_RenderPresent(gameRenderer);
@@ -90,7 +90,7 @@ void GuiInGame::drawMap(const string& filename, Map* map, Draw* draw, int width,
     } else if (victory) {
         drawVictory(gameRenderer, draw, width, height, mouseX, mouseY, clicked, mapController);
     } else if (defeat) {
-        drawDefeat(gameRenderer, draw, width, height, mouseX, mouseY, clicked);
+        drawDefeat(gameRenderer, draw, width, height, mouseX, mouseY, clicked, mapController);
     }
 }
 
@@ -144,6 +144,8 @@ void GuiInGame::drawMenuInGame(Draw* draw, MapController* mapcontroller, SDL_Ren
 }
 
 void GuiInGame::drawVictory(SDL_Renderer* gameRenderer, Draw* draw, int width, int height, int mouseX, int mouseY, bool clicked, MapController* mapController) {
+    mapController->getEnemies().clear();
+    mapController->getTowers().clear();
     draw->drawImage(gameRenderer, width / 2, 0, width - 300, height / 3, "./assets/images/win.png");
     draw->createButton(gameRenderer, 450, 350, 600, 100, "./assets/images/optionButton.png", mouseX, mouseY, clicked, [&](){
         mapController->setLevelGame(mapController->getLevelGame() + 1);
@@ -154,8 +156,45 @@ void GuiInGame::drawVictory(SDL_Renderer* gameRenderer, Draw* draw, int width, i
     draw->drawText(gameRenderer, 650, 370, "Next Level", 0, 0, 0, 255, 50);
 }
 
-void GuiInGame::drawDefeat(SDL_Renderer* gameRenderer, Draw* draw, int width, int height, int mouseX, int mouseY, bool clicked) {
-    draw->drawImage(gameRenderer, 0, 0, width, height, "./assets/images/lose.png");
-    gameDebut = false;
-    attributesChanged = false;
+void GuiInGame::drawDefeat(SDL_Renderer* gameRenderer, Draw* draw, int width, int height, int mouseX, int mouseY, bool clicked, MapController* mapController) {
+    mapController->clearEnemies();
+    mapController->clearTowers();
+    drawKeyboard(gameRenderer, draw, mouseX, mouseY, clicked);
+    draw->drawImage(gameRenderer, width / 2, 0, width - 300, height / 4, "./assets/images/lose.png");
+    draw->createButton(gameRenderer, 450, 450, 600, 100, "./assets/images/optionButton.png", mouseX, mouseY, clicked, [&](){
+        mapController->setLevelGame(1);
+        defeat = false;
+        attributesChanged = false;
+        gameDebut = false;
+    });
+    draw->drawText(gameRenderer, 700, 470, "Retry", 0, 0, 0, 255, 50);
+}
+
+void GuiInGame::drawKeyboard(SDL_Renderer* gameRenderer, Draw* draw, int mouseX, int mouseY, bool clicked) {
+    static string name;
+    draw->drawText(gameRenderer, 500, 150, "Voulez vous enregistrer votre score ?", 0, 255, 0, 255, 30);
+    std::vector<const char*> letters = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+    
+    for (int i = 0; i < 26; ++i) {
+        draw->createButton(gameRenderer, 285 + i * 35, 200, 35, 35, "./assets/images/letter.png", mouseX, mouseY, clicked, [&, i]() {
+            if (name.size() < 3) {
+                name += letters[i];
+            } else {
+                draw->drawText(gameRenderer, 650, 300, "3 lettres maximum", 255, 0, 0, 255, 30);
+            }
+        });
+        draw->drawText(gameRenderer, 294 + i * 35, 204, letters[i], 0, 0, 0, 255, 25);
+    }
+    draw->drawText(gameRenderer, 610, 250, "Pseudo : ", 0, 255, 0, 255, 30);
+    if (name.size() > 0) {
+        draw->drawText(gameRenderer, 750, 250, name.c_str(), 0, 255, 0, 255, 30);    
+    }
+    draw->createButton(gameRenderer, 850, 250, 30, 30, "./assets/images/-.png", mouseX, mouseY, clicked, [&](){
+        if (name.size() > 0) {
+            name.pop_back();
+        }
+    });
+    draw->createButton(gameRenderer, 900, 250, 30, 30, "./assets/images/validate.png", mouseX, mouseY, clicked, [&](){
+        draw->drawText(gameRenderer, 650, 300, "Score enregistre", 0, 255, 0, 255, 30);
+    });
 }

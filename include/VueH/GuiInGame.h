@@ -12,8 +12,8 @@ public:
     void drawMap(const string& filename, Map* map, Draw* draw, int width, int height, SDL_Renderer* gameRenderer, MapController* mapController, int mouseX, int mouseY, bool clicked);
     void drawMenuInGame(Draw* draw, MapController* mapcontroller, SDL_Renderer* gameRenderer, int width, int height, int mouseX, int mouseY, bool clicked, int level, int difficulty);
     void drawVictory(SDL_Renderer* gameRenderer, Draw* draw, int width, int height, int mouseX, int mouseY, bool clicked, MapController* mapController);
-    void drawDefeat(SDL_Renderer* gameRenderer, Draw* draw, int width, int height, int mouseX, int mouseY, bool clicked);
-
+    void drawDefeat(SDL_Renderer* gameRenderer, Draw* draw, int width, int height, int mouseX, int mouseY, bool clicked, MapController* mapController);
+    void drawKeyboard(SDL_Renderer* gameRenderer, Draw* draw, int mouseX, int mouseY, bool clicked);
 private:
     int WIDTH, HEIGHT;
     int mouseX, mouseY;
