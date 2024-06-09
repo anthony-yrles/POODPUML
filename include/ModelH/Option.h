@@ -26,8 +26,8 @@ private:
     SDL_AudioSpec obtainedSpec;
     Uint8* musicBuffer;
     Uint32 musicLength;
-    int currentVolume;
-    int difficulty;
+    int currentVolume = 132;
+    int difficulty = 5;
     bool musicPaused;
 
     Option();

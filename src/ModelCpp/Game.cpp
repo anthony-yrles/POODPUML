@@ -1,6 +1,6 @@
 #include "./ModelH/Game.h"
 
-Game::Game(int level, int difficulty) : level(level), difficulty(difficulty) {}
+Game::Game(int level) : level(level) {}
 
 Game::~Game() {}
 
@@ -9,13 +9,6 @@ int Game::getLevel() const {
 }
 void Game::setLevel(int level) {
     this->level = level;
-}
-
-int Game::getDifficulty() const {
-    return difficulty;
-}
-void Game::setDifficulty(int difficulty) {
-    this->difficulty = difficulty;
 }
 
 int Game::getTotalEnemies() const {
@@ -53,7 +46,7 @@ void Game::setEnemyGoldEarned(int enemyGoldEarned) {
     this->enemyGoldEarned = enemyGoldEarned;
 }
 
-void Game::attributesChangedByLevelAndDifficulty() {
+void Game::attributesChangedByLevelAndDifficulty(int difficulty) {
     gameLifePoints -= difficulty;
 
     float multipliers[] = {0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4};

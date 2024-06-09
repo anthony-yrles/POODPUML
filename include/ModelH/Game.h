@@ -5,14 +5,11 @@ using namespace std;
 
 class Game {
 public:
-    Game(int level, int difficulty);
+    Game(int level);
     ~Game();
 
     int getLevel() const;
     void setLevel(int level);
-
-    int getDifficulty() const;
-    void setDifficulty(int difficulty);
 
     int getTotalEnemies() const;
     void setTotalEnemies(int totalEnemies);
@@ -30,11 +27,10 @@ public:
     int getEnemyGoldEarned() const;
     void setEnemyGoldEarned(int enemyGoldEarned);
 
-    void attributesChangedByLevelAndDifficulty();
+    void attributesChangedByLevelAndDifficulty(int difficulty);
 
 private:
     int level;
-    int difficulty;
     int totalEnemies = 20;
     int gold = 500;
     int cost = 350;

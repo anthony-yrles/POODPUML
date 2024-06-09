@@ -128,8 +128,8 @@ void MapController::clearTowers() {
 }
 
 void MapController::setGamesAttributes(int level, int difficulty) {
-    Game game(level, difficulty);
-    game.attributesChangedByLevelAndDifficulty();
+    Game game(level);
+    game.attributesChangedByLevelAndDifficulty(difficulty);
     totalEnemiesGame = game.getTotalEnemies();
     totalEnemiesKilled = 0;
     goldGames = game.getGold();
@@ -143,12 +143,6 @@ int MapController::getLevelGame() const {
 }
 void MapController::setLevelGame(int levelGame) {
     this->levelGame = levelGame;
-}
-int MapController::getDifficultyGame() const {
-    return difficultyGame;
-}
-void MapController::setDifficultyGame(int difficultyGame) {
-    this->difficultyGame = difficultyGame;
 }
 int MapController::getTotalEnemiesGame() const {
     return totalEnemiesGame;

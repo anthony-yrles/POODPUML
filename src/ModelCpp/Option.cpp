@@ -12,12 +12,11 @@ Option* Option::getInstance() {
 }
 
 Option::Option() :
-    currentVolume(SDL_MIX_MAXVOLUME),
+    audioDevice(0),
+    obtainedSpec(),
     musicBuffer(nullptr),
     musicLength(0),
-    musicPaused(false),
-    audioDevice(0),
-    obtainedSpec() {
+    musicPaused(false) {
     SDL_Init(SDL_INIT_AUDIO);
     SDL_AudioSpec desiredSpec;
     SDL_zero(desiredSpec);
@@ -66,16 +65,20 @@ void Option::playMusic() {
 
 void Option::decreaseVolume() {
     if (currentVolume > 0) {
-        currentVolume -= SDL_MIX_MAXVOLUME / 10;
-        SDL_ClearQueuedAudio(audioDevice);
-        SDL_MixAudioFormat(nullptr, musicBuffer, obtainedSpec.format, musicLength, currentVolume);
-        playMusic();
+        if (currentVolume < 132 / 10) {
+            currentVolume = 0;
+        } else {
+            currentVolume -= 132 / 10;
+            SDL_ClearQueuedAudio(audioDevice);
+            SDL_MixAudioFormat(nullptr, musicBuffer, obtainedSpec.format, musicLength, currentVolume);
+            playMusic();
+        }
     }
 }
 
 void Option::increaseVolume() {
-    if (currentVolume < SDL_MIX_MAXVOLUME) {
-        currentVolume += SDL_MIX_MAXVOLUME / 10;
+    if (currentVolume < 132) {
+        currentVolume += 132 / 10;
         SDL_ClearQueuedAudio(audioDevice);
         SDL_MixAudioFormat(nullptr, musicBuffer, obtainedSpec.format, musicLength, currentVolume);
         playMusic();
@@ -83,7 +86,6 @@ void Option::increaseVolume() {
 }
 
 int Option::getVolume() {
-    cout << "Volume: " << currentVolume << endl;
     return currentVolume;
 }
 

@@ -40,29 +40,15 @@ bool GuiOptions::drawOptions(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool
 
     draw.createButton(optionRenderer, 250, 200, 50, 50, "./assets/images/-.png", mouseX, mouseY, clicked, [&optionController](){
         optionController->decreaseVolume();
-        cout << optionController->getVolume() << endl;
     });
     draw.createButton(optionRenderer, 1000, 200, 50, 50, "./assets/images/+.png", mouseX, mouseY, clicked, [&optionController](){
         optionController->increaseVolume();
-        cout << optionController->getVolume() << endl;
     });
 
     rectVolume(optionRenderer, 310, 200, 680, 50, optionController->getVolume(), 132, &draw);
 
-    
-    vector<string> links;
+    difficultyChoice(draw, optionRenderer, optionController, mouseX, mouseY, clicked);
 
-    for (int i = 1; i < 10; i++) {
-        int x = 80 + i * 100;
-
-        stringstream ss;
-        ss << "./assets/images/" << i << ".png";
-        links.push_back(ss.str());
-
-        draw.createButton(optionRenderer, x, 400, 50, 50, links.back().c_str(), mouseX, mouseY, clicked, [&](){
-            cout << "Button " + to_string(i) + " clicked";
-        });
-    }
     SDL_RenderPresent(optionRenderer);
     }
 
@@ -84,4 +70,27 @@ void GuiOptions::rectVolume(SDL_Renderer* renderer, int x, int y, int width, int
     float widthPercentage = static_cast<float>(width) * volumePercentage;
 
     draw->drawRect(renderer, x, y, widthPercentage, height, red, green, 0, 255);
+}
+
+void GuiOptions::difficultyChoice(Draw draw, SDL_Renderer* optionRenderer, OptionController* optionController, int mouseX, int mouseY, bool clicked) {
+    vector<string> links;
+
+    for (int i = 1; i < 10; i++) {
+        int x = 80 + i * 100;
+
+        stringstream ss;
+        ss << "./assets/images/" << i << ".png";
+        links.push_back(ss.str());
+
+        draw.createButton(optionRenderer, x, 400, 50, 50, links.back().c_str(), mouseX, mouseY, clicked, [&](){
+            cout << "Difficulte choisie : " << i << endl;
+            optionController->setDifficulty(i);
+        });
+    }
+    // cout << "Difficulte : " << optionController->getDifficulty() << endl;
+    // if (optionController->getDifficulty() != 0) {
+    //     string difficultyString = "Difficulte choisie : " + to_string(optionController->getDifficulty());
+    //     const char* difficultyChoosed = difficultyString.c_str();
+    //     draw.drawText(optionRenderer, 400, 130, difficultyChoosed, 0, 0, 0, 255, 30);
+    // }
 }

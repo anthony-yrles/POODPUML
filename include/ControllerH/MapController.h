@@ -8,6 +8,7 @@
 #include "./ModelH/Tower.h"
 #include "./ModelH/Game.h"
 #include "./VueH/Draw.h"
+#include "./ControllerH/OptionController.h"
 
 using namespace std::chrono;
 
@@ -57,8 +58,6 @@ public:
     void setGamesAttributes(int level, int difficulty);
     int getLevelGame() const;
     void setLevelGame(int levelGame);
-    int getDifficultyGame() const;
-    void setDifficultyGame(int difficultyGame);
     int getTotalEnemiesGame() const;
     void setTotalEnemiesGame(int totalEnemiesGame);
     int getTotalEnemiesKilled() const;
