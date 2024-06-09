@@ -40,7 +40,7 @@ bool GuiInGame::drawInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool c
         } else {
             drawMap(filename, &map, &draw, WIDTH - 300, HEIGHT, gameRenderer, &mapController, mouseX, mouseY, clicked);
             if (gameDebut) {
-                mapController.spawnAndMoveEnemy(&map, filename, WIDTH - 300, HEIGHT, 20, 20, 100, gameRenderer, "./assets/images/gobelin.png", &draw);
+                mapController.spawnAndMoveEnemy(&map, filename, WIDTH - 300, HEIGHT, 20, 20, 5, gameRenderer, "./assets/images/gobelin.png", &draw);
             }
         }
         SDL_RenderPresent(gameRenderer);

@@ -23,6 +23,7 @@ public:
     void writeTxtFile(const string& newName, const string& newDifficulty, const string& newLevel);
     void addData(const string& name, const string& difficulty, const string& level);
     void sortDataByDifficulty(int difficultyReceived);
+    void topThreeSortedData(int difficultyReceived);
     vector<Data> getSortedData() const;
     
 

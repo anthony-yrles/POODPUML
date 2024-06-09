@@ -56,8 +56,6 @@ void MapController::spawnAndMoveEnemy(Map *map, const string& filename, int widt
     vector<vector<Tile>> tiles = createAndReturnMap(filename, map);
     tileSize(width, height, map->getFileWidth(), map->getFileHeight());
 
-    cout << allEnemiesCreated << " " << enemyCreated << " " << totalEnemiesGame << endl;
-
     if (!allEnemiesCreated && enemyCreated < totalEnemiesGame) {
         if (spawnTime()) { 
             for (size_t i = 0; i < tiles.size(); ++i) {

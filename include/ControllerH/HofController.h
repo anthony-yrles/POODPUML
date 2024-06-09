@@ -12,6 +12,7 @@ public:
     void readTxtFile();
     void writeTxtFile(const string& newName, const string& newDifficulty, const string& newLevel);
     void sortDataByDifficulty(int difficultyReceived);
+    void topThreeSortedData(int difficultyReceived);
     vector<Data> getSortedDataFoh() const;
     void update() override;
 

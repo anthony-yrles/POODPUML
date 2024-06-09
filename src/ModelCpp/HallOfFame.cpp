@@ -42,7 +42,6 @@ void HallOfFame::addData(const string& name, const string& difficulty, const str
 }
 
 void HallOfFame::sortDataByDifficulty(int difficultyReceived) {
-
     string difficultyStr = to_string(difficultyReceived);
     sortedData.clear();
 
@@ -50,6 +49,17 @@ void HallOfFame::sortDataByDifficulty(int difficultyReceived) {
         if (d.difficulty == difficultyStr) {
             sortedData.push_back(d);
         }
+    }
+}
+
+void HallOfFame::topThreeSortedData(int difficultyReceived) {
+    sortDataByDifficulty(difficultyReceived);
+    sort(sortedData.begin(), sortedData.end(), [](const Data& a, const Data& b) {
+        return stoi(a.level) > stoi(b.level);
+    });
+
+    if (sortedData.size() > 3) {
+        sortedData.resize(3);
     }
 }
 

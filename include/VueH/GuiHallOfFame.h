@@ -8,7 +8,7 @@ public:
     ~GuiHallOfFame();
 
     bool drawHallOfFame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool clicked, bool running, SDL_Event evenement);
-    int returnDifficulty(Draw draw, SDL_Renderer* hallOfFameRenderer);
+    int returnDifficulty(Draw draw, SDL_Renderer* hallOfFameRenderer, int mouseX, int mouseY, bool clicked);
     void drawData(int difficultyHof, Draw draw, SDL_Renderer* hallOfFameRenderer, HofController hofController);
     void update() override;
 

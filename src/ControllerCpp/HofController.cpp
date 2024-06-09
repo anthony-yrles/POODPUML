@@ -12,11 +12,13 @@ void HofController::readTxtFile() {
     hallOfFame.readTxtFile();
 }
 void HofController::writeTxtFile(const string& newName, const string& newDifficulty, const string& newLevel) {
-    cout << "HofController::writeTxtFile" << endl;
     hallOfFame.writeTxtFile(newName, newDifficulty, newLevel);
 }
 void HofController::sortDataByDifficulty(int difficultyReceived) {
     hallOfFame.sortDataByDifficulty(difficultyReceived);
+}
+void HofController::topThreeSortedData(int difficultyReceived) {
+    hallOfFame.topThreeSortedData(difficultyReceived);
 }
 vector<Data> HofController::getSortedDataFoh() const {
     return hallOfFame.getSortedData();

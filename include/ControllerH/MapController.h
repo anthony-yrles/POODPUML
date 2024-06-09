@@ -90,5 +90,5 @@ private:
     long long int lastSpawnTime = 0;
     long long int spawnInterval = 3000;
     long long int lastFireTime = 0;
-    long long int fireInterval = 1000;
+    long long int fireInterval = 3000;
 };
