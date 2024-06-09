@@ -24,14 +24,16 @@ void HallOfFame::readTxtFile() {
 }
 
 void HallOfFame::writeTxtFile(const string& newName, const string& newDifficulty, const string& newLevel) {
-    ofstream file("HallOfFame.txt");
+    ofstream file("HallOfFame.txt", std::ios::app);
+
     if (!file.is_open()) {
         cerr << "Erreur : impossible d'ouvrir le fichier HallOfFame.txt pour l'écriture";
         return;
     }
+
     file << newName << " " << newDifficulty << " " << newLevel << endl;
-    
     file.close();
+
     notifyObservers();
 }
 

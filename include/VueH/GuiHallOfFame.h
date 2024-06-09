@@ -13,8 +13,8 @@ public:
     void update() override;
 
 private:
-    SDL_Window* hallOfFameWindow = nullptr;
-    SDL_Renderer* hallOfFameRenderer = nullptr;
+    SDL_Window* hallOfFameWindow;
+    SDL_Renderer* hallOfFameRenderer;
 
     int WIDTH, HEIGHT;
     int mouseX, mouseY;

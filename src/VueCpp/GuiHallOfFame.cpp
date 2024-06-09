@@ -7,13 +7,6 @@ GuiHallOfFame::GuiHallOfFame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool
 
 GuiHallOfFame::~GuiHallOfFame() {
     hofController.removeObserver(this);
-    if (hallOfFameRenderer != nullptr) {
-        SDL_DestroyRenderer(hallOfFameRenderer);
-    }
-    if (hallOfFameWindow != nullptr) {
-        SDL_DestroyWindow(hallOfFameWindow);
-    }
-    SDL_Quit();
 }
 
 bool GuiHallOfFame::drawHallOfFame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool clicked, bool running, SDL_Event evenement) {

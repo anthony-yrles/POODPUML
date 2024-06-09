@@ -9,7 +9,8 @@ BIN_FOLDER := .
 
 SDL_INCLUDE := -I./include
 
-CFLAGS := -g -Wall -Wextra -flto -O1 -I$(INCLUDE_FOLDER) -I$(PREREQUISITES_FOLDER) $(SDL_INCLUDE) -MMD
+CFLAGS := -g -Wall -Wextra -flto=8 -O1 -I$(INCLUDE_FOLDER) -I$(PREREQUISITES_FOLDER) $(SDL_INCLUDE) -MMD
+
 LDFLAGS := -L./lib/ 
 
 SRCS_RAW := main.cpp \

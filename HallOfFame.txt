@@ -1,1 +1,5 @@
-ANT 9 1
+ABB 6 1
+ABC 4 1
+ABC 4 1
+ABC 8 1
+DEI 3 1
