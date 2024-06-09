@@ -11,9 +11,11 @@ GuiOptions::GuiOptions(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool click
 
 bool GuiOptions::drawOptions(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool clicked, bool running, SDL_Window* optionWindow, SDL_Renderer* optionRenderer) {
 
+    clicked = false;
     Draw draw(clicked);
     optionWindow = draw.createWindow(WIDTH, HEIGHT, "Options", optionWindow);
     optionRenderer = draw.createRenderer(optionWindow, optionRenderer);
+    OptionController* optionController;
 
     // Option loop
     while (!running) {
@@ -30,33 +32,23 @@ bool GuiOptions::drawOptions(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool
             }
         }
 
-    // Clear the renderer
     SDL_RenderClear(optionRenderer);
 
-    // Using of the drawImage method from the Draw class to draw the background
     draw.drawImage(optionRenderer, 0, 0, 1200, 600, "./assets/images/bcgOption.png");
 
     draw.drawImage(optionRenderer, -100, -50, 1400, 750, "./assets/images/settings.png");
 
-    draw.createButton(optionRenderer, 250, 180, 50, 50, "./assets/images/-.png", mouseX, mouseY, clicked, [](){
-        cout << "Button clicked";
+    draw.createButton(optionRenderer, 250, 200, 50, 50, "./assets/images/-.png", mouseX, mouseY, clicked, [&optionController](){
+        optionController->decreaseVolume();
+        cout << optionController->getVolume() << endl;
     });
-    draw.createButton(optionRenderer, 1000, 180, 50, 50, "./assets/images/+.png", mouseX, mouseY, clicked, [](){
-        cout << "Button clicked";
-    });
-
-    draw.drawRect(optionRenderer, 310, 180, 680, 50, 255, 255, 255, 255);
-    draw.drawRect(optionRenderer, 310, 180, 680, 50, 0, 0, 0, 255);
-
-    draw.createButton(optionRenderer, 250, 245, 50, 50, "./assets/images/-.png", mouseX, mouseY, clicked, [](){
-        cout << "Button clicked";
-    });
-    draw.createButton(optionRenderer, 1000, 245, 50, 50, "./assets/images/+.png", mouseX, mouseY, clicked, [](){
-        cout << "Button clicked";
+    draw.createButton(optionRenderer, 1000, 200, 50, 50, "./assets/images/+.png", mouseX, mouseY, clicked, [&optionController](){
+        optionController->increaseVolume();
+        cout << optionController->getVolume() << endl;
     });
 
-    draw.drawRect(optionRenderer, 310, 245, 680, 50, 255, 255, 255, 255);
-    draw.drawRect(optionRenderer, 310, 245, 680, 50, 0, 0, 0, 255);
+    rectVolume(optionRenderer, 310, 200, 680, 50, optionController->getVolume(), 132, &draw);
+
     
     vector<string> links;
 
@@ -82,4 +74,14 @@ bool GuiOptions::drawOptions(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool
     SDL_Quit();
 
     return running;
+}
+
+void GuiOptions::rectVolume(SDL_Renderer* renderer, int x, int y, int width, int height, int currentVolume, int maxVolume, Draw* draw) {
+
+    float volumePercentage = static_cast<float>(currentVolume) / static_cast<float>(maxVolume);
+    int red = static_cast<int>((1.0f - volumePercentage) * 255);
+    int green = static_cast<int>(volumePercentage * 255);
+    float widthPercentage = static_cast<float>(width) * volumePercentage;
+
+    draw->drawRect(renderer, x, y, widthPercentage, height, red, green, 0, 255);
 }

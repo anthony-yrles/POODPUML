@@ -7,11 +7,8 @@ public:
     OptionController();
     ~OptionController();
     
-    void loadOptionEffect(const string& soundEffect);
-    void playOptionEffect(const string& soundEffect);
     void loadMusic(const string& music);
     void playMusic();
-    void stopMusic();
     void decreaseVolume();
     void increaseVolume();
     int getVolume();

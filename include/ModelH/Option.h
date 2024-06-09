@@ -7,8 +7,6 @@ class Option {
 public:
     static Option* getInstance();
     
-    void loadOptionEffect(const string& soundEffect);
-    void playOptionEffect(const string& soundEffect);
     void loadMusic(const string& music);
     void playMusic();
     void decreaseVolume();

@@ -7,12 +7,6 @@ OptionController::OptionController() {
 
 OptionController::~OptionController() {}
 
-void OptionController::loadOptionEffect(const std::string& soundEffect) {
-    options->loadOptionEffect(soundEffect);
-}
-void OptionController::playOptionEffect(const std::string& soundEffect) {
-    options->playOptionEffect(soundEffect);
-}
 void OptionController::loadMusic(const std::string& music) {
     options->loadMusic(music);
 }

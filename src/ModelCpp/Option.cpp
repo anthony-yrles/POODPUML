@@ -46,28 +46,6 @@ Option::~Option() {
     SDL_Quit();
 }
 
-void Option::loadOptionEffect(const std::string& soundEffect) {
-    SDL_AudioSpec spec;
-    Uint8* buffer;
-    Uint32 length;
-    if (SDL_LoadWAV(soundEffect.c_str(), &spec, &buffer, &length) == nullptr) {
-        cerr << "Failed to load sound effect: " << SDL_GetError();
-        return;
-    }
-    soundEffects[soundEffect] = spec;
-    audioBuffers[soundEffect] = buffer;
-    audioLengths[soundEffect] = length;
-}
-
-void Option::playOptionEffect(const std::string& soundEffect) {
-    auto it = audioBuffers.find(soundEffect);
-    if (it != audioBuffers.end()) {
-        SDL_QueueAudio(audioDevice, it->second, audioLengths[soundEffect]);
-    } else {
-        cerr << "Option effect not found: " << soundEffect;
-    }
-}
-
 void Option::loadMusic(const std::string& music) {
     if (musicBuffer) {
         SDL_FreeWAV(musicBuffer);
