@@ -1,6 +1,7 @@
 #pragma once
 
 #include <.\VueH\Draw.h>
+#include "ControllerH/OptionController.h"
 #include <vector>
 
 class GuiOptions {

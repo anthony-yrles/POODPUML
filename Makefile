@@ -19,16 +19,17 @@ SRCS_RAW := main.cpp \
             VueCpp/GuiInGame.cpp \
             VueCpp/GuiMenu.cpp \
             VueCpp/GuiOptions.cpp \
-			ModelCpp/Game.cpp \
-			ModelCpp/HallOfFame.cpp \
 			ModelCpp/Enemy.cpp \
 			ModelCpp/Entity.cpp \
+			ModelCpp/Game.cpp \
+			ModelCpp/HallOfFame.cpp \
 			ModelCpp/Map.cpp \
 			ModelCpp/Observable.cpp \
+			ModelCpp/Option.cpp \
 			ModelCpp/Tower.cpp \
 			ControllerCpp/HofController.cpp \
 			ControllerCpp/MapController.cpp \
-            ControllerCpp/Sound.cpp \
+			ControllerCpp/OptionController.cpp \
 
 SRCS := $(addprefix $(SRCS_FOLDER)/, $(SRCS_RAW))
 OBJS := $(SRCS:$(SRCS_FOLDER)/%.cpp=$(OBJS_FOLDER)/$(SRCS_FOLDER)/%.o)

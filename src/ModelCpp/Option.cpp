@@ -1,17 +1,17 @@
-#include "./ControllerH/Sound.h"
+#include "./ModelH/Option.h"
 #include <iostream>
 
 // Initialisation de l'instance singleton à nullptr
-Sound* Sound::instance = nullptr;
+Option* Option::instance = nullptr;
 
-Sound* Sound::getInstance() {
+Option* Option::getInstance() {
     if (instance == nullptr) {
-        instance = new Sound();
+        instance = new Option();
     }
     return instance;
 }
 
-Sound::Sound() :
+Option::Option() :
     currentVolume(SDL_MIX_MAXVOLUME),
     musicBuffer(nullptr),
     musicLength(0),
@@ -35,7 +35,7 @@ Sound::Sound() :
     }
 }
 
-Sound::~Sound() {
+Option::~Option() {
     for (auto& pair : audioBuffers) {
         SDL_FreeWAV(pair.second);
     }
@@ -46,7 +46,7 @@ Sound::~Sound() {
     SDL_Quit();
 }
 
-void Sound::loadSoundEffect(const std::string& soundEffect) {
+void Option::loadOptionEffect(const std::string& soundEffect) {
     SDL_AudioSpec spec;
     Uint8* buffer;
     Uint32 length;
@@ -59,16 +59,16 @@ void Sound::loadSoundEffect(const std::string& soundEffect) {
     audioLengths[soundEffect] = length;
 }
 
-void Sound::playSoundEffect(const std::string& soundEffect) {
+void Option::playOptionEffect(const std::string& soundEffect) {
     auto it = audioBuffers.find(soundEffect);
     if (it != audioBuffers.end()) {
         SDL_QueueAudio(audioDevice, it->second, audioLengths[soundEffect]);
     } else {
-        cerr << "Sound effect not found: " << soundEffect;
+        cerr << "Option effect not found: " << soundEffect;
     }
 }
 
-void Sound::loadMusic(const std::string& music) {
+void Option::loadMusic(const std::string& music) {
     if (musicBuffer) {
         SDL_FreeWAV(musicBuffer);
         musicBuffer = nullptr;
@@ -78,7 +78,7 @@ void Sound::loadMusic(const std::string& music) {
     }
 }
 
-void Sound::playMusic() {
+void Option::playMusic() {
     if (musicBuffer) {
         SDL_QueueAudio(audioDevice, musicBuffer, musicLength);
     } else {
@@ -86,21 +86,7 @@ void Sound::playMusic() {
     }
 }
 
-void Sound::stopMusic() {
-    SDL_ClearQueuedAudio(audioDevice);
-}
-
-void Sound::pauseMusic() {
-    SDL_PauseAudioDevice(audioDevice, 1);
-    musicPaused = true;
-}
-
-void Sound::resumeMusic() {
-    SDL_PauseAudioDevice(audioDevice, 0);
-    musicPaused = false;
-}
-
-void Sound::decreaseVolume() {
+void Option::decreaseVolume() {
     if (currentVolume > 0) {
         currentVolume -= SDL_MIX_MAXVOLUME / 10;
         SDL_ClearQueuedAudio(audioDevice);
@@ -109,7 +95,7 @@ void Sound::decreaseVolume() {
     }
 }
 
-void Sound::increaseVolume() {
+void Option::increaseVolume() {
     if (currentVolume < SDL_MIX_MAXVOLUME) {
         currentVolume += SDL_MIX_MAXVOLUME / 10;
         SDL_ClearQueuedAudio(audioDevice);
@@ -118,6 +104,15 @@ void Sound::increaseVolume() {
     }
 }
 
-void Sound::getVolume() {
+int Option::getVolume() {
     cout << "Volume: " << currentVolume << endl;
+    return currentVolume;
+}
+
+int Option::getDifficulty() {
+    return difficulty;
+}
+
+void Option::setDifficulty(int newDifficulty) {
+    difficulty = newDifficulty;
 }

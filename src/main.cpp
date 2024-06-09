@@ -1,6 +1,6 @@
 #include <windows.h>
 #include ".\VueH\GuiMenu.h"
-#include ".\ControllerH\Sound.h"
+#include ".\ControllerH\OptionController.h"
 
 // Constants
 const int WIDTH = 1200;
@@ -47,12 +47,12 @@ int main() {
     // Main loop variables
     bool running = false;
     SDL_Event evenement;
-    Sound* sound = Sound::getInstance();
-    string musicFile = "assets/music/menu.wav";
-    string soundEffectFile = "assets/sound/click.wav";
-    sound->loadMusic(musicFile);
-    sound->loadSoundEffect(soundEffectFile);
-    sound->playMusic();
+    // // Sound* sound = Sound::getInstance();
+    // string musicFile = "assets/music/menu.wav";
+    // string soundEffectFile = "assets/sound/click.wav";
+    // sound->loadMusic(musicFile);
+    // sound->loadSoundEffect(soundEffectFile);
+    // sound->playMusic();
     // sound->getVolume();
 
     // Main loop
@@ -64,7 +64,7 @@ int main() {
             } else if (evenement.type == SDL_MOUSEBUTTONDOWN) {
                 clicked = true;
                 SDL_GetMouseState(&mouseX, &mouseY);
-                sound->playSoundEffect(soundEffectFile);
+                // sound->playSoundEffect(soundEffectFile);
             } else if (evenement.type == SDL_MOUSEBUTTONUP) {
                 clicked = false;
             }

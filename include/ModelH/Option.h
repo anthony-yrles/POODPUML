@@ -1,30 +1,26 @@
 #pragma once
+#include "VueH/Draw.h"
 
-#include <SDL2/SDL.h>
 #include <map>
-#include <string>
 
-using namespace std;
-
-class Sound {
+class Option {
 public:
-    static Sound* getInstance();
+    static Option* getInstance();
     
-    void loadSoundEffect(const string& soundEffect);
-    void playSoundEffect(const string& soundEffect);
+    void loadOptionEffect(const string& soundEffect);
+    void playOptionEffect(const string& soundEffect);
     void loadMusic(const string& music);
     void playMusic();
-    void stopMusic();
-    void pauseMusic();
-    void resumeMusic();
     void decreaseVolume();
     void increaseVolume();
-    void getVolume();
+    int getVolume();
+    int getDifficulty();
+    void setDifficulty(int newDifficulty);
 
-    ~Sound();
+    ~Option(); 
 
 private:
-    static Sound* instance;
+    static Option* instance;
     map<string, SDL_AudioSpec> soundEffects;
     map<string, Uint8*> audioBuffers;
     map<string, Uint32> audioLengths;
@@ -33,7 +29,8 @@ private:
     Uint8* musicBuffer;
     Uint32 musicLength;
     int currentVolume;
+    int difficulty;
     bool musicPaused;
 
-    Sound();
+    Option();
 };
