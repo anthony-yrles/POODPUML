@@ -9,6 +9,7 @@ GuiInGame::GuiInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool clicked
     this->running = running;
 }
 
+
 bool GuiInGame::drawInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool clicked, bool running, SDL_Event evenement) {
     // Create a Draw object
     Draw draw(clicked);

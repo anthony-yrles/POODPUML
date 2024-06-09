@@ -47,13 +47,9 @@ int main() {
     // Main loop variables
     bool running = false;
     SDL_Event evenement;
-    // // Sound* sound = Sound::getInstance();
-    // string musicFile = "assets/music/menu.wav";
-    // string soundEffectFile = "assets/sound/click.wav";
-    // sound->loadMusic(musicFile);
-    // sound->loadSoundEffect(soundEffectFile);
-    // sound->playMusic();
-    // sound->getVolume();
+    OptionController* optionController = new OptionController();
+    optionController->loadMusic("./assets/music/menu.wav");
+    optionController->playMusic();
 
     // Main loop
     while (!running) {
@@ -64,7 +60,6 @@ int main() {
             } else if (evenement.type == SDL_MOUSEBUTTONDOWN) {
                 clicked = true;
                 SDL_GetMouseState(&mouseX, &mouseY);
-                // sound->playSoundEffect(soundEffectFile);
             } else if (evenement.type == SDL_MOUSEBUTTONUP) {
                 clicked = false;
             }

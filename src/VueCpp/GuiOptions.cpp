@@ -15,7 +15,7 @@ bool GuiOptions::drawOptions(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool
     Draw draw(clicked);
     optionWindow = draw.createWindow(WIDTH, HEIGHT, "Options", optionWindow);
     optionRenderer = draw.createRenderer(optionWindow, optionRenderer);
-    OptionController* optionController;
+    OptionController* optionController = new OptionController();
 
     // Option loop
     while (!running) {
@@ -48,6 +48,10 @@ bool GuiOptions::drawOptions(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool
     rectVolume(optionRenderer, 310, 200, 680, 50, optionController->getVolume(), 132, &draw);
 
     difficultyChoice(draw, optionRenderer, optionController, mouseX, mouseY, clicked);
+
+    draw.createButton(optionRenderer, 965, 480, 65, 65, "./assets/images/validate.png", mouseX, mouseY, clicked, [&running](){
+        cout << "Options validées" << endl;
+    });
 
     SDL_RenderPresent(optionRenderer);
     }
@@ -87,10 +91,9 @@ void GuiOptions::difficultyChoice(Draw draw, SDL_Renderer* optionRenderer, Optio
             optionController->setDifficulty(i);
         });
     }
-    // cout << "Difficulte : " << optionController->getDifficulty() << endl;
-    // if (optionController->getDifficulty() != 0) {
-    //     string difficultyString = "Difficulte choisie : " + to_string(optionController->getDifficulty());
-    //     const char* difficultyChoosed = difficultyString.c_str();
-    //     draw.drawText(optionRenderer, 400, 130, difficultyChoosed, 0, 0, 0, 255, 30);
-    // }
+    if (optionController->getDifficulty() != 0) {
+        string difficultyString = "Difficulte choisie : " + to_string(optionController->getDifficulty());
+        const char* difficultyChoosed = difficultyString.c_str();
+        draw.drawText(optionRenderer, 400, 130, difficultyChoosed, 0, 0, 0, 255, 30);
+    }
 }
