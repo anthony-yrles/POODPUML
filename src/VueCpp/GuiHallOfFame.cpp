@@ -10,14 +10,15 @@ GuiHallOfFame::~GuiHallOfFame() {
 }
 
 bool GuiHallOfFame::drawHallOfFame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool clicked, bool running, SDL_Event evenement) {
-
     Draw draw(clicked); // Initialize Draw object with click status
     hallOfFameWindow = draw.createWindow(WIDTH, HEIGHT, "Hall of Fame", hallOfFameWindow); // Create SDL window
     hallOfFameRenderer = draw.createRenderer(hallOfFameWindow, hallOfFameRenderer); // Create SDL renderer
     hofController.readTxtFile(); // Read data from file
 
+    bool backButtonClicked = false; // Flag to check if back button was clicked
+
     // Game loop
-    while (!running) {
+    while (!running && !backButtonClicked) {
         // Event handling
         while (SDL_PollEvent(&evenement) != 0) {
             if (evenement.type == SDL_QUIT) {
@@ -29,26 +30,44 @@ bool GuiHallOfFame::drawHallOfFame(int WIDTH, int HEIGHT, int mouseX, int mouseY
             } else if (evenement.type == SDL_MOUSEBUTTONUP) {
                 clicked = false; // Set clicked flag to false when mouse button is released
             }
-            SDL_RenderClear(hallOfFameRenderer); // Clear the renderer
-
-            // Draw background, title, and podium
-            draw.drawImage(hallOfFameRenderer, 0, 0, WIDTH, HEIGHT, "assets/images/hofBg.png");
-            draw.drawText(hallOfFameRenderer, 500, 60, "Hall of Fame", 50, 50, 50, 255, 40);
-            draw.drawImage(hallOfFameRenderer, 200, 300, 800, 250, "assets/images/podium.png");
-
-            // Determine selected difficulty level
-            difficultyHof = returnDifficulty(draw, hallOfFameRenderer, mouseX, mouseY, clicked);
-
-            // Draw Hall of Fame data
-            drawData(difficultyHof, draw, hallOfFameRenderer, hofController);
-
-            SDL_RenderPresent(hallOfFameRenderer); // Update the renderer
         }
+        SDL_RenderClear(hallOfFameRenderer); // Clear the renderer
+
+        // Draw background, title, and podium
+        draw.drawImage(hallOfFameRenderer, 0, 0, WIDTH, HEIGHT, "assets/images/hofBg.png");
+        draw.drawText(hallOfFameRenderer, 500, 60, "Hall of Fame", 50, 50, 50, 255, 40);
+        draw.drawImage(hallOfFameRenderer, 200, 300, 800, 250, "assets/images/podium.png");
+
+        // Determine selected difficulty level
+        difficultyHof = returnDifficulty(draw, hallOfFameRenderer, mouseX, mouseY, clicked);
+
+        // Draw Hall of Fame data
+        drawData(difficultyHof, draw, hallOfFameRenderer, hofController);
+
+        draw.createButton(hallOfFameRenderer, 1050, 480, 80, 80, "assets/images/back.png", mouseX, mouseY, clicked, [&](){
+            backButtonClicked = true; // Set the flag to true when back button is clicked
+            clicked = false; // Set clicked flag to false
+        });
+
+        SDL_RenderPresent(hallOfFameRenderer); // Update the renderer
     }
-    // Destroy the renderer
+
+    // Cleanup Hall of Fame resources
     SDL_DestroyRenderer(hallOfFameRenderer);
-    // Destroy the window
     SDL_DestroyWindow(hallOfFameWindow);
+
+    // If the back button was clicked, initialize and run the menu
+    if (backButtonClicked) {
+        SDL_Window* window = nullptr;
+        SDL_Renderer* renderer = nullptr;
+
+        window = draw.createWindow(WIDTH, HEIGHT, "Menu", window);
+        renderer = draw.createRenderer(window, renderer);
+
+        GuiMenu menu(renderer, mouseX, mouseY, window, WIDTH, HEIGHT, clicked, running, evenement); // Create GuiMenu object
+        running = menu.drawMenu(renderer, mouseX, mouseY, window, WIDTH, HEIGHT, clicked, running, evenement); // Draw menu
+    }
+    
     // Quit SDL
     SDL_Quit();
     return running;

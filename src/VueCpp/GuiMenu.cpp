@@ -15,8 +15,7 @@ GuiMenu::GuiMenu(SDL_Renderer* renderer, int mouseX, int mouseY, SDL_Window* win
     this->running = running;
 }
 
-bool GuiMenu::drawMenu(SDL_Renderer* renderer, int mouseX, int mouseY, SDL_Window* window, int WIDTH, int HEIGHT, bool clicked, bool running, SDL_Event /*evenement*/) {
-
+bool GuiMenu::drawMenu(SDL_Renderer* renderer, int mouseX, int mouseY, SDL_Window* window, int WIDTH, int HEIGHT, bool clicked, bool running, SDL_Event evenement) {
     // Create a Draw object
     Draw draw(clicked);
     GuiOptions options(WIDTH, HEIGHT, mouseX, mouseY, clicked, running);
@@ -28,11 +27,13 @@ bool GuiMenu::drawMenu(SDL_Renderer* renderer, int mouseX, int mouseY, SDL_Windo
 
     // Using of the createButton method from the Draw class to create 3 buttons
     draw.createButton(renderer, 450, 230, 300, 50, "./assets/images/playButton.png", mouseX, mouseY, clicked, [&](){
+        clicked = false; // Reset clicked state
         SDL_DestroyWindow(window);
         running = game.drawInGame(WIDTH, HEIGHT, mouseX, mouseY, clicked, running, evenement);
         return running;
     });
     draw.createButton(renderer, 450, 370, 300, 50, "./assets/images/optionButton.png", mouseX, mouseY, clicked, [&](){
+        clicked = false; // Reset clicked state
         SDL_DestroyWindow(window);
         SDL_Window* optionWindow = NULL;
         SDL_Renderer* optionRenderer = NULL;
@@ -40,6 +41,7 @@ bool GuiMenu::drawMenu(SDL_Renderer* renderer, int mouseX, int mouseY, SDL_Windo
         return running;
     });
     draw.createButton(renderer, 450, 510, 300, 50, "./assets/images/hallOfFame.png", mouseX, mouseY, clicked, [&](){
+        clicked = false; // Reset clicked state
         SDL_DestroyWindow(window);
         running = hof.drawHallOfFame(WIDTH, HEIGHT, mouseX, mouseY, clicked, running, evenement);
         return running;

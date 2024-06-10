@@ -18,8 +18,10 @@ bool GuiOptions::drawOptions(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool
     optionRenderer = draw.createRenderer(optionWindow, optionRenderer); // Create SDL renderer
     OptionController* optionController = new OptionController(); // Create OptionController object
 
+    bool backButtonClicked = false; // Flag to check if back button was clicked
+
     // Option loop
-    while (!running) {
+    while (!running && !backButtonClicked) {
         // Event handling
         while (SDL_PollEvent(&evenement) != 0) {
             if (evenement.type == SDL_QUIT) {
@@ -52,8 +54,9 @@ bool GuiOptions::drawOptions(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool
         difficultyChoice(draw, optionRenderer, optionController, mouseX, mouseY, clicked);
 
         // Validate button
-        draw.createButton(optionRenderer, 965, 480, 65, 65, "./assets/images/validate.png", mouseX, mouseY, clicked, [&running](){
-            cout << "Options validées" << endl; // Log message when validate button is clicked
+        draw.createButton(optionRenderer, 965, 480, 65, 65, "./assets/images/back.png", mouseX, mouseY, clicked, [&](){
+            backButtonClicked = true; // Set the flag to true when back button is clicked
+            clicked = false; // Set clicked flag to false
         });
 
         SDL_RenderPresent(optionRenderer); // Update the renderer
@@ -63,6 +66,19 @@ bool GuiOptions::drawOptions(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool
     SDL_DestroyRenderer(optionRenderer);
     // Destroy the window
     SDL_DestroyWindow(optionWindow);
+
+    // If the back button was clicked, initialize and run the menu
+    if (backButtonClicked) {
+        SDL_Window* window = nullptr;
+        SDL_Renderer* renderer = nullptr;
+
+        window = draw.createWindow(WIDTH, HEIGHT, "Menu", window);
+        renderer = draw.createRenderer(window, renderer);
+
+        GuiMenu menu(renderer, mouseX, mouseY, window, WIDTH, HEIGHT, clicked, running, evenement); // Create GuiMenu object
+        running = menu.drawMenu(renderer, mouseX, mouseY, window, WIDTH, HEIGHT, clicked, running, evenement); // Draw menu
+    }
+
     // Quit SDL
     SDL_Quit();
 

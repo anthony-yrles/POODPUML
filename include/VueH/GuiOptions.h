@@ -2,6 +2,7 @@
 
 #include <.\VueH\Draw.h> // Including the Draw header file from the VueH directory
 #include "ControllerH/OptionController.h" // Including the OptionController header file from the ControllerH directory
+#include "VueH/GuiMenu.h" // Including the GuiMenu header file from the VueH directory
 
 class GuiOptions {
 public:

@@ -1,6 +1,7 @@
 #pragma once
 #include "./ControllerH/HofController.h"
 #include "./VueH/Draw.h"
+#include "VueH/GuiMenu.h"
 
 class GuiHallOfFame : public Observer {
 public:
