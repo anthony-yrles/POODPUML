@@ -31,7 +31,7 @@ public:
     
     // Method to draw the options interface
     void drawOption(SDL_Renderer* gameRenderer, Draw* draw, int mouseX, int mouseY, bool clicked, MapController* mapController, OptionController* optionController);
-
+    
 private:
     int WIDTH, HEIGHT;
     int mouseX, mouseY;

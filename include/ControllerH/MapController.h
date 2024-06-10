@@ -115,7 +115,7 @@ private:
     int beginX, beginY; // Coordinates of the starting point
     int tileWidth, tileHeight; // Size of tiles
     int enemyCreated = 0; // Number of enemies created
-    int levelGame = 2; // Level of the game
+    int levelGame = 1; // Level of the game
     int difficultyGame = 5; // Difficulty level of the game
     int totalEnemiesGame, totalEnemiesKilled, goldGames, costGames, gameLifePointsGames, enemyGoldEarnedGames; // Game attributes
     bool allEnemiesCreated = false; // Flag indicating if all enemies have been created
