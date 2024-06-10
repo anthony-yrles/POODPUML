@@ -28,7 +28,6 @@ bool GuiInGame::drawInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool c
 
     // Game loop
     while (!running) {
-        filename = "./assets/map/map" + to_string(mapController.getLevelGame()) + ".txt";
         // Event handling
         while (SDL_PollEvent(&evenement) != 0) {
             if (evenement.type == SDL_QUIT) {
@@ -43,6 +42,7 @@ bool GuiInGame::drawInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool c
         }
         SDL_RenderClear(gameRenderer);
 
+        cout <<mapController.getOptionValidate() << endl;
         // Check if options are validated
         if (!mapController.getOptionValidate()) {
             // Draw options interface
@@ -84,47 +84,47 @@ void GuiInGame::drawMap(const string& filename, Map* map, Draw* draw, int width,
         
         // Iterate through tiles
         for (size_t i = 0; i < tiles.size(); ++i) {
-    for(size_t j = 0; j < tiles[i].size(); ++j) {
-        if (tiles[i][j].isTowerEmplacement) {
-            bool towerPlaced = false;
-            bool towerUpgraded = false;
-            
-            // Check if tower is placed
-            for (auto tower : mapController->getTowers()) {
-                if (tower->getEntityX() == mapController->getBeginX() + j * mapController->getTileWidth() &&
-                    tower->getEntityY() == mapController->getBeginY() + i * mapController->getTileHeight()) {
-                    towerPlaced = true;
-                    if (!towerUpgraded) {
-                        draw->createButton(gameRenderer, mapController->getBeginX() + j * mapController->getTileWidth() + mapController->getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight() + mapController->getTileHeight() / 2, mapController->getTileWidth() / 4, mapController->getTileHeight() / 4, "./assets/images/+.png", mouseX, mouseY, clicked, [&](){
+            for(size_t j = 0; j < tiles[i].size(); ++j) {
+                if (tiles[i][j].isTowerEmplacement) {
+                    bool towerPlaced = false;
+                    bool towerUpgraded = false;
+                    
+                    // Check if tower is placed
+                    for (auto tower : mapController->getTowers()) {
+                        if (tower->getEntityX() == mapController->getBeginX() + j * mapController->getTileWidth() &&
+                            tower->getEntityY() == mapController->getBeginY() + i * mapController->getTileHeight()) {
+                            towerPlaced = true;
+                            if (!towerUpgraded) {
+                                draw->createButton(gameRenderer, mapController->getBeginX() + j * mapController->getTileWidth() + mapController->getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight() + mapController->getTileHeight() / 2, mapController->getTileWidth() / 4, mapController->getTileHeight() / 4, "./assets/images/+.png", mouseX, mouseY, clicked, [&](){
+                                    if (mapController->getGoldGames() >= mapController->getCostGames()) {
+                                        mapController->setGoldGames(mapController->getGoldGames() - mapController->getCostGames());
+                                        tower->upgrade();
+                                        draw->drawText(gameRenderer, 50, 420, "TowerUpgrade", 255, 0, 0, 255, 25);
+                                        towerUpgraded = true;
+                                    } else {
+                                        draw->drawText(gameRenderer, 50, 420, "Not enough gold", 255, 0, 0, 255, 25);
+                                    }
+                                });
+                            }
+                        }
+                    }
+
+                    // Draw "+" button for tower placement
+                    if (!towerPlaced) {
+                        draw->createButton(gameRenderer, mapController->getBeginX() + j * mapController->getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight(), mapController->getTileWidth(), mapController->getTileHeight(), "./assets/images/+.png", mouseX, mouseY, clicked, [&](){
                             if (mapController->getGoldGames() >= mapController->getCostGames()) {
                                 mapController->setGoldGames(mapController->getGoldGames() - mapController->getCostGames());
-                                tower->upgrade();
-                                draw->drawText(gameRenderer, 50, 420, "TowerUpgrade", 255, 0, 0, 255, 25);
-                                towerUpgraded = true;
+                                mapController->spawnTower(10, 250, 1, 1, gameRenderer, mapController->getBeginX() + j * mapController->getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight(), mapController->getTileWidth(), mapController->getTileHeight(), "./assets/images/tower.png", draw);
                             } else {
                                 draw->drawText(gameRenderer, 50, 420, "Not enough gold", 255, 0, 0, 255, 25);
                             }
                         });
                     }
+                    // Fire towers at enemies
+                    mapController->fireTowers(mapController->getEnemies());
                 }
             }
-
-            // Draw "+" button for tower placement
-            if (!towerPlaced) {
-                draw->createButton(gameRenderer, mapController->getBeginX() + j * mapController->getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight(), mapController->getTileWidth(), mapController->getTileHeight(), "./assets/images/+.png", mouseX, mouseY, clicked, [&](){
-                    if (mapController->getGoldGames() >= mapController->getCostGames()) {
-                        mapController->setGoldGames(mapController->getGoldGames() - mapController->getCostGames());
-                        mapController->spawnTower(10, 250, 1, 1, gameRenderer, mapController->getBeginX() + j * mapController->getTileWidth(), mapController->getBeginY() + i * mapController->getTileHeight(), mapController->getTileWidth(), mapController->getTileHeight(), "./assets/images/tower.png", draw);
-                    } else {
-                        draw->drawText(gameRenderer, 50, 420, "Not enough gold", 255, 0, 0, 255, 25);
-                    }
-                });
-            }
-            // Fire towers at enemies
-            mapController->fireTowers(mapController->getEnemies());
         }
-    }
-}
 
         // Draw towers
         for (auto tower : mapController->getTowers()) {
@@ -209,15 +209,15 @@ void GuiInGame::drawVictory(SDL_Renderer* gameRenderer, Draw* draw, int width, i
     draw->drawImage(gameRenderer, width / 2, 0, width - 300, height / 3, "./assets/images/win.png");
 
     // Create button for next level
-    draw->createButton(gameRenderer, 450, 350, 600, 100, "./assets/images/optionButton.png", mouseX, mouseY, clicked, [&](){
+    draw->createButton(gameRenderer, 450, 350, 600, 100, "./assets/images/optionButton.png", mouseX, mouseY, clicked, [&]() {
+
         // Increment level and reset flags
         mapController->setLevelGame(mapController->getLevelGame() + 1);
         mapController->setTotalEnemiesKilled(0);
         mapController->setGoldGames(0);
         mapController->setEnemyCreated(0);
-        attributesChanged = false;
-        gameDebut = false;
         victory = false;
+        gameDebut = false;
     });
 
     // Draw text for next level button
