@@ -18,7 +18,8 @@ bool GuiInGame::drawInGame(int WIDTH, int HEIGHT, int mouseX, int mouseY, bool c
     OptionController* optionController = new OptionController(); 
 
     MapController mapController;
-    const string filename = "./assets/map/map.txt";
+    const string filename = "./assets/map/map" + to_string(mapController.getLevelGame()) + ".txt";
+    cout << filename << endl;
     Map map(WIDTH - 300, HEIGHT, 0, 0, filename);
 
     // Game loop
@@ -58,8 +59,11 @@ void GuiInGame::drawMap(const string& filename, Map* map, Draw* draw, int width,
     drawMenuInGame(draw, mapController, gameRenderer, width, height, mouseX, mouseY, clicked, mapController->getLevelGame(), optionController->getDifficulty());
 
     if (!victory && !defeat) {
-        draw->drawImage(gameRenderer, 300, mapController->getBeginY(), width, height - mapController->getBeginY() * 2, "./assets/map/map.png");
-
+        string levelStr = to_string(mapController->getLevelGame());
+        string level = levelStr + ".png";
+        string fullPath = "./assets/map/map" + level;
+        draw->drawImage(gameRenderer, 300, mapController->getBeginY(), width, height - mapController->getBeginY() * 2, fullPath.c_str());
+        
         for (size_t i = 0; i < tiles.size(); ++i) {
             for(size_t j = 0; j < tiles[i].size(); ++j) {
                 if (tiles[i][j].isTowerEmplacement) {

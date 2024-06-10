@@ -81,7 +81,7 @@ private:
     int beginX, beginY;
     int tileWidth, tileHeight;
     int enemyCreated = 0;
-    int levelGame = 1; 
+    int levelGame = 2; 
     int difficultyGame = 5; 
     int totalEnemiesGame, totalEnemiesKilled, goldGames, costGames, gameLifePointsGames, enemyGoldEarnedGames;
     bool allEnemiesCreated = false;

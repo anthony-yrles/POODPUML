@@ -74,8 +74,6 @@ void Map::searchFileWidthHeight(const string& filename) {
         fileWidth = line.size();
         fileHeight++;
     }
-    setFileHeight(fileHeight);
-    setFileWidth(fileWidth);
 }
 
 void Map::createMap(const string& filename) {

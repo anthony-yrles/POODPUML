@@ -14,7 +14,7 @@ public:
     void setRange(int range);
 
     int getFireSpeed() const;
-    void setFireSpeed(int firespeed);
+    void setFireSpeed(int fireSpeed);
 
     int getNumberofFire() const;
     void setNumberofFire(int numberOfFire);
