@@ -14,17 +14,10 @@ vector<vector<Tile>> MapController::createAndReturnMap(const string& filename, M
 }
 
 void MapController::tileSize(int WIDTH, int HEIGHT, int filewidth, int fileheight) {
-    // if (filewidth > fileheight) {
     tileWidth = WIDTH / filewidth;
     tileHeight = HEIGHT / fileheight;
     beginY = (HEIGHT - (tileHeight * fileheight)) / 2;
     beginX = 300 + ((WIDTH - (tileWidth * filewidth)) / 2);
-    // } else {
-    //     tileHeight = HEIGHT / fileheight;
-    //     tileWidth = tileHeight;
-    //     beginX = (WIDTH - (tileWidth * filewidth)) / 2;
-    //     beginY = 0;
-    // }
 }
 
 bool MapController::spawnTime() {
