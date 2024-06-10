@@ -108,13 +108,52 @@ vector<pair<int, int>> Map::searchForWayPoints() {
     int numCols = tiles[0].size();
 
     if (!wayPointFound) {
+        // Trouver le point de départ
+        int startX = -1, startY = -1;
         for (int i = 0; i < numRows; ++i) {
             for (int j = 0; j < numCols; ++j) {
-                if (tiles[i][j].isMonsterBegin || tiles[i][j].isMonsterPath || tiles[i][j].isMonsterEnd) {
-                    wayPoints.emplace_back(j, i);
+                if (tiles[i][j].isMonsterBegin) {
+                    startX = j;
+                    startY = i;
+                    break;
+                }
+            }
+            if (startX != -1 && startY != -1) break;
+        }
+
+        if (startX == -1 || startY == -1) {
+            // Aucun point de départ trouvé
+            return wayPoints;
+        }
+
+        // Utiliser une queue pour le parcours en largeur (BFS)
+        queue<pair<int, int>> q;
+        q.emplace(startY, startX);
+        vector<vector<bool>> visited(numRows, vector<bool>(numCols, false));
+        visited[startY][startX] = true;
+
+        // Directions pour les mouvements haut, bas, gauche, droite
+        vector<pair<int, int>> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        
+        while (!q.empty()) {
+            auto [x, y] = q.front();
+            q.pop();
+            wayPoints.emplace_back(y, x);
+
+            // Parcourir les tuiles adjacentes
+            for (const auto& [dx, dy] : directions) {
+                int newX = x + dx;
+                int newY = y + dy;
+
+                if (newX >= 0 && newX < numRows && newY >= 0 && newY < numCols &&
+                    !visited[newX][newY] && 
+                    (tiles[newX][newY].isMonsterPath || tiles[newX][newY].isMonsterEnd)) {
+                    q.emplace(newX, newY);
+                    visited[newX][newY] = true;
                 }
             }
         }
+
         wayPointFound = true;
     }
     return wayPoints;
