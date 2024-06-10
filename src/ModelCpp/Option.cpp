@@ -4,6 +4,7 @@
 // Initialisation de l'instance singleton à nullptr
 Option* Option::instance = nullptr;
 
+// Method to get the singleton instance of Option
 Option* Option::getInstance() {
     if (instance == nullptr) {
         instance = new Option();
@@ -11,12 +12,14 @@ Option* Option::getInstance() {
     return instance;
 }
 
+// Constructor
 Option::Option() :
     audioDevice(0),
     obtainedSpec(),
     musicBuffer(nullptr),
     musicLength(0),
     musicPaused(false) {
+    // Initialize SDL audio
     SDL_Init(SDL_INIT_AUDIO);
     SDL_AudioSpec desiredSpec;
     SDL_zero(desiredSpec);
@@ -26,6 +29,7 @@ Option::Option() :
     desiredSpec.samples = 4096;
     desiredSpec.callback = nullptr;
 
+    // Open audio device
     audioDevice = SDL_OpenAudioDevice(nullptr, 0, &desiredSpec, &obtainedSpec, SDL_AUDIO_ALLOW_ANY_CHANGE);
     if (audioDevice == 0) {
         cerr << "Failed to open audio device: " << SDL_GetError();
@@ -34,17 +38,22 @@ Option::Option() :
     }
 }
 
+// Destructor
 Option::~Option() {
+    // Free audio buffers
     for (auto& pair : audioBuffers) {
         SDL_FreeWAV(pair.second);
     }
+    // Free music buffer
     if (musicBuffer) {
         SDL_FreeWAV(musicBuffer);
     }
+    // Close audio device and quit SDL audio
     SDL_CloseAudioDevice(audioDevice);
     SDL_Quit();
 }
 
+// Method to load music from file
 void Option::loadMusic(const std::string& music) {
     if (musicBuffer) {
         SDL_FreeWAV(musicBuffer);
@@ -55,6 +64,7 @@ void Option::loadMusic(const std::string& music) {
     }
 }
 
+// Method to play loaded music
 void Option::playMusic() {
     if (musicBuffer) {
         SDL_QueueAudio(audioDevice, musicBuffer, musicLength);
@@ -63,6 +73,7 @@ void Option::playMusic() {
     }
 }
 
+// Method to decrease volume
 void Option::decreaseVolume() {
     if (currentVolume > 0) {
         if (currentVolume < 132 / 10) {
@@ -76,6 +87,7 @@ void Option::decreaseVolume() {
     }
 }
 
+// Method to increase volume
 void Option::increaseVolume() {
     if (currentVolume < 132) {
         currentVolume += 132 / 10;
@@ -85,14 +97,17 @@ void Option::increaseVolume() {
     }
 }
 
+// Method to get the current volume level
 int Option::getVolume() {
     return currentVolume;
 }
 
+// Method to get the current difficulty level
 int Option::getDifficulty() {
     return difficulty;
 }
 
+// Method to set the difficulty level
 void Option::setDifficulty(int newDifficulty) {
     difficulty = newDifficulty;
 }
