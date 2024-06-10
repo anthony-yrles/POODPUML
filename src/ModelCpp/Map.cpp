@@ -1,26 +1,31 @@
 #include "./ModelH/Map.h"
 
-Map::Map(int width, int height, int fileWidth, int fileHeight, const string& filename) : width(width), height(height), fileWidth(fileWidth), fileHeight(fileHeight) {
-    // Ouvrir le fichier map.txt
+// Constructor: Initializes the map with given dimensions and loads map data from file
+Map::Map(int width, int height, int fileWidth, int fileHeight, const string& filename)
+    : width(width), height(height), fileWidth(fileWidth), fileHeight(fileHeight) {
+    
+    // Open the map file
     ifstream file(filename);
     if (!file.is_open()) {
         cout << "Error: could not open file " << filename << endl;
         return;
     }
 
-    // Déterminer les dimensions du fichier map.txt
+    // Determine the dimensions of the map file
     string line;
     while (getline(file, line)) {
-        fileWidth = line.size(); // La largeur correspond à la taille de la ligne
-        fileHeight++; // Compter le nombre de lignes pour la hauteur
+        fileWidth = line.size(); // Width is the size of the line
+        fileHeight++; // Count number of lines for height
     }
 
-    // Initialiser le vecteur tiles avec les dimensions obtenues
+    // Initialize the tiles vector with the obtained dimensions
     tiles = vector<vector<Tile>>(fileHeight, vector<Tile>(fileWidth));
 }
 
+// Destructor
 Map::~Map() {}
 
+// Set the type of tile at the given coordinates
 void Map::setTileType(int x, int y, bool isMonsterPath, bool isMonsterBegin, bool isMonsterEnd, bool isTowerEmplacement) {
     tiles[x][y].isMonsterPath = isMonsterPath;
     tiles[x][y].isMonsterBegin = isMonsterBegin;
@@ -28,39 +33,47 @@ void Map::setTileType(int x, int y, bool isMonsterPath, bool isMonsterBegin, boo
     tiles[x][y].isTowerEmplacement = isTowerEmplacement;
 }
 
-
+// Get the tile at the given coordinates
 Tile Map::getTile(int x, int y) const {
     return tiles[x][y];
 }
 
+// Get all tiles
 vector<vector<Tile>> Map::getTiles() const {
     return tiles;
 }
 
+// Get width of the map
 int Map::getWidth() const {
     return width;
 }
 
+// Get height of the map
 int Map::getHeight() const {
     return height;
 }
 
+// Get width of the file representing the map
 int Map::getFileWidth() const {
     return fileWidth;
 }
 
+// Get height of the file representing the map
 int Map::getFileHeight() const {
     return fileHeight;
 }
 
+// Set width of the file representing the map
 void Map::setFileWidth(int fileWidth) {
     this->fileWidth = fileWidth;
 }
 
+// Set height of the file representing the map
 void Map::setFileHeight(int fileHeight) {
     this->fileHeight = fileHeight;
 }
 
+// Search and set width and height of the file representing the map
 void Map::searchFileWidthHeight(const string& filename) {
     ifstream file(filename);
     if (!file.is_open()) {
@@ -76,10 +89,12 @@ void Map::searchFileWidthHeight(const string& filename) {
     }
 }
 
+// Create the map by loading data from the file
 void Map::createMap(const string& filename) {
-
+    // Search and set file width and height
     searchFileWidthHeight(filename);
 
+    // Open the map file
     ifstream file(filename);
     if (!file.is_open()) {
         cout << "Error: could not open file " << filename << endl;
@@ -92,6 +107,7 @@ void Map::createMap(const string& filename) {
         for (int y = 0; y < fileWidth; ++y) {
             Tile tile;
             
+            // Set tile properties based on character in the file
             tile.isMonsterPath = (line[y] == '1');
             tile.isMonsterBegin = (line[y] == '2');
             tile.isMonsterEnd = (line[y] == '3');
@@ -102,13 +118,14 @@ void Map::createMap(const string& filename) {
     }
 }
 
+// Search for waypoints in the map
 vector<pair<int, int>> Map::searchForWayPoints() {
     int numRows = tiles.size();
     if (numRows == 0) return wayPoints;
     int numCols = tiles[0].size();
 
     if (!wayPointFound) {
-        // Trouver le point de départ
+        // Find the starting point
         int startX = -1, startY = -1;
         for (int i = 0; i < numRows; ++i) {
             for (int j = 0; j < numCols; ++j) {
@@ -122,17 +139,17 @@ vector<pair<int, int>> Map::searchForWayPoints() {
         }
 
         if (startX == -1 || startY == -1) {
-            // Aucun point de départ trouvé
+            // No starting point found
             return wayPoints;
         }
 
-        // Utiliser une queue pour le parcours en largeur (BFS)
+        // Use a queue for breadth-first search (BFS)
         queue<pair<int, int>> q;
         q.emplace(startY, startX);
         vector<vector<bool>> visited(numRows, vector<bool>(numCols, false));
         visited[startY][startX] = true;
 
-        // Directions pour les mouvements haut, bas, gauche, droite
+        // Directions for up, down, left, right movements
         vector<pair<int, int>> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
         
         while (!q.empty()) {
@@ -140,7 +157,7 @@ vector<pair<int, int>> Map::searchForWayPoints() {
             q.pop();
             wayPoints.emplace_back(y, x);
 
-            // Parcourir les tuiles adjacentes
+            // Traverse adjacent tiles
             for (const auto& [dx, dy] : directions) {
                 int newX = x + dx;
                 int newY = y + dy;
